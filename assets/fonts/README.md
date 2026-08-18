@@ -38,14 +38,18 @@ Google Fonts отдаёт для DM Sans только subsets `latin` и `latin-
 `https://fonts.googleapis.com/css2?...`, subsets `cyrillic` и `latin` взяты как
 есть, без ресабсеттинга.
 
-Оба семейства распространяются по **SIL Open Font License 1.1**:
+Оба семейства распространяются по **SIL Open Font License 1.1**. OFL 1.1 требует
+прикладывать текст лицензии при распространении файлов шрифтов, поэтому рядом с
+`.woff2` лежат оригинальные тексты:
 
-* Cormorant Garamond — https://fonts.google.com/specimen/Cormorant+Garamond
-* DM Sans — https://fonts.google.com/specimen/DM+Sans
+| Файл лицензии | Семейство | Copyright |
+| --- | --- | --- |
+| `OFL-CormorantGaramond.txt` | Cormorant Garamond | Copyright 2015 the Cormorant Project Authors |
+| `OFL-DMSans.txt` | DM Sans | Copyright 2014 The DM Sans Project Authors |
 
-OFL 1.1 требует прикладывать текст лицензии при распространении файлов шрифтов.
-До боевого запуска в этот каталог нужно положить `OFL.txt` каждого семейства
-(файл `OFL.txt` лежит в их репозиториях на github.com/google/fonts).
+Оба файла взяты без изменений из `google/fonts` (`ofl/cormorantgaramond/OFL.txt`
+и `ofl/dmsans/OFL.txt`). Они не подключаются к странице и не создают сетевых
+запросов — это только сопроводительная документация в репозитории.
 
 ## Обновление
 
