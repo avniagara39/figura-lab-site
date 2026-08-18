@@ -19,16 +19,17 @@
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Перейти к основному содержанию</a>
   <div class="page-bg" aria-hidden="true"></div>
 
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a class="logo" href="#top">Figura Lab<span class="logo-by">by Елена Бастуева</span></a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню">
-        <span></span><span></span><span></span>
+        <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
-        <ul class="nav-list">
+        <ul class="nav-list" role="list">
           <li><a href="#about">Подход</a></li>
           <li><a href="#for-whom">Для кого</a></li>
           <li><a href="#testimonials">Отзывы</a></li>
@@ -38,7 +39,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main" tabindex="-1">
     <section class="hero section" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-content">
@@ -126,7 +127,7 @@
     <section class="section why" id="why" aria-labelledby="why-title">
       <div class="container reveal">
         <h2 id="why-title" class="section-title centered">Почему это работает</h2>
-        <ol class="why-list">
+        <ol class="why-list" role="list">
           <li class="why-item">
             <span class="why-num">01</span>
             <div>
@@ -159,7 +160,7 @@
             <h2 id="for-whom-title" class="section-title">Для кого</h2>
             <p class="section-text">Подходит людям разного возраста — и мужчинам, и женщинам, — которые ищут бережный и осмысленный путь.</p>
           </div>
-          <ul class="check-list">
+          <ul class="check-list" role="list">
             <li>устали от диет и хаотичных попыток снизить вес</li>
             <li>хотят наладить питание без жёстких запретов</li>
             <li>хотят снизить вес или улучшить состав тела</li>
@@ -178,7 +179,7 @@
           <h2 id="testimonials-title" class="section-title">Отзывы и результаты</h2>
           <p class="section-text muted">Истории клиентов — без медицинских обещаний и агрессивного маркетинга. Тексты примерные, блок легко расширить до отдельной страницы «Отзывы».</p>
         </div>
-        <div class="testimonial-scroll">
+        <div class="testimonial-scroll" role="region" aria-label="Отзывы клиентов, горизонтальная прокрутка" tabindex="0">
           <div class="testimonial-grid">
             <blockquote class="testimonial-card">
               <p class="testimonial-quote">«Перестала путаться в порциях и перекусах. Стало спокойнее в голове — и в зеркале.»</p>
@@ -228,7 +229,7 @@
         <p class="footer-tagline">Осознанное питание и мягкая трансформация</p>
       </div>
       <nav class="footer-nav" aria-label="Разделы страницы">
-        <ul>
+        <ul role="list">
           <li><a href="#about">Подход</a></li>
           <li><a href="#changes">Что помогает изменить</a></li>
           <li><a href="#why">Почему это работает</a></li>
@@ -239,7 +240,7 @@
       </nav>
       <div class="footer-contacts">
         <p class="footer-contacts-title">Связь</p>
-        <ul>
+        <ul role="list">
           <li><a href="mailto:figura.lite@mail.ru">figura.lite@mail.ru</a></li>
           <li><a href="tel:+78482614139">8 (8482) 61-41-39</a></li>
           <li><a href="tel:+79278914139">8 927 891-41-39</a></li>

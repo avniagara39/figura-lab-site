@@ -92,8 +92,11 @@
   --color-champagne: #ede4d6;
   --color-sand: #e5d9c8;
   --color-sage: #9daf92;
+  /* sage-deep даёт 3.48:1 на креме: остаётся для фонов и декора, но не для текста */
   --color-sage-deep: #7a8a6e;
+  --color-sage-text: #5f6e54;
   --color-olive: #6b7562;
+  --color-olive-deep: #5a6353;
   --color-graphite: #2f2e2c;
   --color-graphite-soft: #4a4844;
   --color-gold: #c4a77d;
@@ -124,6 +127,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Sticky-шапка не должна накрывать заголовок секции при переходе по якорю */
+  scroll-padding-top: calc(var(--header-h) + var(--space-sm));
 }
 
 body {
@@ -134,6 +139,64 @@ body {
   color: var(--color-graphite-soft);
   background-color: var(--color-cream);
   overflow-x: hidden;
+}
+
+/* Блокировка скролла при открытом мобильном меню — классом, а не inline-стилем (CSP) */
+body.nav-locked {
+  overflow: hidden;
+}
+
+main,
+main > section[id] {
+  scroll-margin-top: calc(var(--header-h) + var(--space-sm));
+}
+
+/* main — цель skip-link, фокус переносится программно:
+   рамка вокруг всей страницы не нужна и не является индикатором навигации */
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
+/* Skip link */
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.6rem 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-graphite);
+  text-decoration: none;
+  background: var(--color-cream);
+  border: 1px solid var(--color-sage-text);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(calc(-100% - 1.5rem));
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Focus visible — единая система для всех интерактивных элементов */
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex="0"]:focus-visible {
+  outline: 2px solid var(--color-graphite);
+  outline-offset: 3px;
 }
 
 .page-bg {
@@ -154,14 +217,14 @@ img {
 }
 
 a {
-  color: var(--color-sage-deep);
+  color: var(--color-sage-text);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   transition: color var(--transition-fast), opacity var(--transition-fast);
 }
 
 a:hover {
-  color: var(--color-olive);
+  color: var(--color-graphite);
 }
 
 .container {
@@ -210,13 +273,18 @@ a:hover {
   line-height: 1.2;
 }
 
+a.logo {
+  min-height: 44px;
+  justify-content: center;
+}
+
 .logo-by {
   font-family: var(--font-body);
   font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-sage-deep);
+  color: var(--color-sage-text);
   margin-top: 0.15rem;
 }
 
@@ -265,6 +333,9 @@ a:hover {
 }
 
 .nav-list a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-graphite-soft);
@@ -312,7 +383,7 @@ a:hover {
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-sage-deep);
+  color: var(--color-sage-text);
   margin: 0 0 var(--space-sm);
 }
 
@@ -344,7 +415,7 @@ a:hover {
 }
 
 .hero-tags {
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   letter-spacing: 0.06em;
   color: var(--color-olive);
   margin: 0 0 var(--space-lg);
@@ -379,8 +450,9 @@ a:hover {
   transform: scale(0.98);
 }
 
+/* Градиент затемнён: белый текст держит ≥4.8:1 на всей площади кнопки */
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-sage-deep), var(--color-olive));
+  background: linear-gradient(135deg, var(--color-olive), var(--color-olive-deep));
   color: #fff;
   box-shadow: 0 4px 20px rgba(122, 138, 110, 0.35);
 }
@@ -610,11 +682,12 @@ a:hover {
   padding-bottom: 0;
 }
 
+/* Нумерация несёт смысл, поэтому графит вместо золота (золото даёт 2.16:1) */
 .why-num {
   font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 500;
-  color: var(--color-gold);
+  color: var(--color-graphite);
   line-height: 1;
 }
 
@@ -681,6 +754,12 @@ a:hover {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Контейнер full-bleed: рамка фокуса рисуется внутрь, иначе уходит за край вьюпорта */
+.testimonial-scroll:focus-visible {
+  outline: 2px solid var(--color-graphite);
+  outline-offset: -3px;
+}
+
 .testimonial-grid {
   display: flex;
   gap: var(--space-md);
@@ -728,7 +807,7 @@ a:hover {
 
 .testimonial-note {
   color: var(--color-olive);
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 
 .testimonials-more {
@@ -740,7 +819,7 @@ a:hover {
 
 .link-more {
   font-size: 0.9rem;
-  color: var(--color-sage-deep);
+  color: var(--color-sage-text);
 }
 
 /* CTA */
@@ -803,7 +882,7 @@ a:hover {
 .footer-tagline {
   margin: var(--space-xs) 0 0;
   font-size: 0.9rem;
-  color: var(--color-olive);
+  color: var(--color-sage-text);
 }
 
 .footer-nav ul {
@@ -812,10 +891,13 @@ a:hover {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm) var(--space-lg);
+  gap: var(--space-xs) var(--space-lg);
 }
 
 .footer-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 0.88rem;
   text-decoration: none;
   color: var(--color-graphite-soft);
@@ -831,7 +913,7 @@ a:hover {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-sage-deep);
+  color: var(--color-sage-text);
 }
 
 .footer-contacts ul {
@@ -844,6 +926,9 @@ a:hover {
 }
 
 .footer-contacts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-size: 0.88rem;
   text-decoration: none;
   color: var(--color-graphite-soft);
@@ -855,18 +940,30 @@ a:hover {
 
 .footer-copy {
   margin: 0;
-  font-size: 0.8rem;
-  color: var(--color-olive);
+  font-size: 0.875rem;
+  color: var(--color-sage-text);
 }
 
-/* Reveal animations */
+/* Reveal animations.
+   Скрытое состояние существует только при работающем JS: класс is-visible
+   ставит site.js. Без скриптов (и в браузерах без поддержки media scripting)
+   контент виден сразу. */
 
-.reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition:
-    opacity var(--transition),
-    transform var(--transition);
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity var(--transition),
+      transform var(--transition);
+  }
+
+  /* Клавиатура может дойти до блока раньше, чем сработает observer:
+     сфокусированное содержимое не должно оставаться невидимым. */
+  .reveal:focus-within {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .reveal.is-visible {
@@ -917,35 +1014,66 @@ a:hover {
     grid-template-columns: 1fr;
   }
 
-  .nav-toggle {
-    display: flex;
-  }
-
-  .site-nav {
-    position: fixed;
-    inset: var(--header-h) 0 0 0;
-    background: rgba(250, 248, 245, 0.97);
-    backdrop-filter: blur(10px);
-    padding: var(--space-lg);
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    transition:
-      transform var(--transition),
-      opacity var(--transition),
-      visibility var(--transition);
-  }
-
-  .site-header.nav-open .site-nav {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
+  /* База и режим без скриптов: навигация остаётся видимой строкой под логотипом */
+  .header-inner {
+    flex-wrap: wrap;
+    row-gap: var(--space-xs);
   }
 
   .nav-list {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-md);
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-md);
+  }
+
+  /* Оверлей-меню имеет смысл только там, где кнопка может его открыть */
+  @media (scripting: enabled) {
+    .header-inner {
+      flex-wrap: nowrap;
+      row-gap: 0;
+    }
+
+    .nav-toggle {
+      display: flex;
+    }
+
+    .site-nav {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      background: rgba(250, 248, 245, 0.97);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: var(--space-lg);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      transform: translateY(-100%);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        transform var(--transition),
+        opacity var(--transition),
+        visibility var(--transition);
+    }
+
+    .site-header.nav-open .site-nav {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav-list {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: var(--space-md);
+    }
+  }
+
+  /* Без JS навигация переносится и шапка становится выше --header-h,
+     из-за чего sticky-шапка накрывала бы цели якорей. */
+  @media (scripting: none) {
+    .site-header {
+      position: static;
+    }
   }
 
   .hero {
@@ -985,5 +1113,16 @@ a:hover {
   .card:hover,
   .testimonial-card:hover {
     transform: none;
+  }
+
+  .btn:active {
+    transform: none;
+  }
+
+  /* Меню открывается и закрывается без движения, но остаётся управляемым */
+  .site-nav,
+  .nav-toggle span,
+  .skip-link {
+    transition: none;
   }
 }
