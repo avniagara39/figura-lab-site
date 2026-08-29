@@ -13,24 +13,30 @@ production-страницы запрещены.
 | `cormorant-500-latin.woff2` | Cormorant Garamond | normal | 500 | latin |
 | `cormorant-400i-cyrillic.woff2` | Cormorant Garamond | italic | 400 | cyrillic |
 | `cormorant-400i-latin.woff2` | Cormorant Garamond | italic | 400 | latin |
-| `dmsans-400-latin.woff2` | DM Sans | normal | 400 | latin |
-| `dmsans-500-latin.woff2` | DM Sans | normal | 500 | latin |
-| `dmsans-600-latin.woff2` | DM Sans | normal | 600 | latin |
+| `manrope-var-cyrillic.woff2` | Manrope | normal | 400–600 (variable) | cyrillic |
+| `manrope-var-latin.woff2` | Manrope | normal | 400–600 (variable) | latin |
 
-Начертания Cormorant 600 и DM Sans italic, которые загружались через Google
-Fonts, из проекта исключены — они не используются в стилях.
+Итого 8 файлов, 144 KB. Preload — только `manrope-var-cyrillic.woff2` (весь
+интерфейсный текст первого экрана) и `cormorant-500-latin.woff2` (заголовок
+«Figura Lab»), 37 KB.
 
-## Важно: DM Sans не содержит кириллицы
+## Stage 2: DM Sans заменён на Manrope
 
-Google Fonts отдаёт для DM Sans только subsets `latin` и `latin-ext`.
-Кириллических глиф в шрифте нет. Русский текст рендерится fallback-шрифтом из
-`--font-body` (`system-ui`) — так было и до самохостинга, визуально ничего не
-изменилось.
+До Stage 2 body-шрифтом был DM Sans. Google Fonts отдаёт для него только
+subsets `latin` и `latin-ext`: кириллических глиф в шрифте нет, и весь русский
+текст сайта рендерился системным fallback. Решение было отложено до Stage 2 как
+изменение визуальной системы.
 
-Выбор кириллического body-шрифта — отдельное решение уровня Stage 2 (контент и
-типографика) или Stage 7 (метрики fallback-шрифтов, `size-adjust`).
-Самостоятельно подменять DM Sans другим шрифтом нельзя: это изменение
-визуальной системы из `SKILL.md`.
+Manrope выбран потому, что:
+
+* полноценный кириллический subset той же студии-качества, что и латиница;
+* нейтральный геометрико-гуманистический характер — не спорит с антиквой
+  Cormorant в заголовках, но держит собственную современную интонацию;
+* variable-файл: один `.woff2` на subset покрывает весь диапазон 400–600, то
+  есть три статических начертания DM Sans заменяются одним файлом на subset;
+* SIL OFL 1.1 — self-hosting разрешён.
+
+Italic у Manrope не подключается: курсив в системе только у Cormorant.
 
 ## Источник и лицензия
 
@@ -45,10 +51,10 @@ Google Fonts отдаёт для DM Sans только subsets `latin` и `latin-
 | Файл лицензии | Семейство | Copyright |
 | --- | --- | --- |
 | `OFL-CormorantGaramond.txt` | Cormorant Garamond | Copyright 2015 the Cormorant Project Authors |
-| `OFL-DMSans.txt` | DM Sans | Copyright 2014 The DM Sans Project Authors |
+| `OFL-Manrope.txt` | Manrope | Copyright 2018 The Manrope Project Authors |
 
 Оба файла взяты без изменений из `google/fonts` (`ofl/cormorantgaramond/OFL.txt`
-и `ofl/dmsans/OFL.txt`). Они не подключаются к странице и не создают сетевых
+и `ofl/manrope/OFL.txt`). Они не подключаются к странице и не создают сетевых
 запросов — это только сопроводительная документация в репозитории.
 
 ## Обновление

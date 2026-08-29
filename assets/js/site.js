@@ -13,7 +13,7 @@
 
   /* Фон при открытом меню выключается из фокуса и из accessibility tree.
      Если браузер не поддерживает inert, содержание удерживает focus trap ниже. */
-  var backgroundParts = document.querySelectorAll(".skip-link, .logo, main, .site-footer");
+  var backgroundParts = document.querySelectorAll(".skip-link, .brand, main, .site-footer, .back-to-top");
 
   function toArray(collection) {
     return Array.prototype.slice.call(collection || []);
@@ -104,13 +104,58 @@
     }
   }
 
+  var backToTop = document.querySelector(".back-to-top");
+
   function onScroll() {
-    if (!header) return;
-    header.classList.toggle("is-scrolled", window.scrollY > 24);
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    if (header) header.classList.toggle("is-scrolled", y > 24);
+    if (backToTop) backToTop.classList.toggle("is-visible", y > 240);
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  var stories = toArray(document.querySelectorAll(".story"));
+
+  function setStoryOpen(story, open) {
+    var button = story.querySelector(".story-more");
+    var full = story.querySelector(".story-full");
+    if (!button || !full) return;
+
+    story.classList.toggle("is-open", open);
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+    button.textContent = open ? "Свернуть" : "Читать полностью";
+    if (open) full.removeAttribute("hidden");
+    else full.setAttribute("hidden", "");
+  }
+
+  function closeStories(except) {
+    stories.forEach(function (story) {
+      if (story !== except) setStoryOpen(story, false);
+    });
+  }
+
+  stories.forEach(function (story) {
+    var button = story.querySelector(".story-more");
+    if (!button) return;
+    button.addEventListener("click", function () {
+      var willOpen = !story.classList.contains("is-open");
+      closeStories(willOpen ? story : null);
+      setStoryOpen(story, willOpen);
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Escape" && e.key !== "Esc") return;
+    if (navIsOpen) return;
+    var openStory = stories.filter(function (story) {
+      return story.classList.contains("is-open");
+    })[0];
+    if (!openStory) return;
+    setStoryOpen(openStory, false);
+    var button = openStory.querySelector(".story-more");
+    if (button) button.focus();
+  });
 
   var revealEls = document.querySelectorAll(".reveal");
   var showAll = function () {

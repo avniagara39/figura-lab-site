@@ -5,15 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Figura Lab by Елена Бастуева — осознанное питание, мягкое снижение веса и сопровождение без жёстких диет.">
   <title>Figura Lab by Елена Бастуева</title>
+  <!-- Preload только два основных начертания первого экрана: кириллический
+       Manrope (весь интерфейсный текст) и латинский Cormorant 500 (заголовок
+       «Figura Lab»). Остальные подтягиваются из main.css по font-display: swap. -->
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/manrope-var-cyrillic.woff2" crossorigin>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-500-latin.woff2" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/cormorant-400i-cyrillic.woff2" crossorigin>
   <link
     rel="preload"
     as="image"
     type="image/webp"
     href="assets/img/elena/elena-hero-1040.webp"
     imagesrcset="assets/img/elena/elena-hero-400.webp 400w, assets/img/elena/elena-hero-520.webp 520w, assets/img/elena/elena-hero-800.webp 800w, assets/img/elena/elena-hero-1040.webp 1040w"
-    imagesizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 960px) 420px, 520px"
+    imagesizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1023px) 46vw, 540px"
     fetchpriority="high"
   >
   <link rel="stylesheet" href="assets/css/main.css">
@@ -24,13 +27,18 @@
 
   <header class="site-header" id="top">
     <div class="container header-inner">
-      <a class="logo" href="#top">Figura Lab<span class="logo-by">by Елена Бастуева</span></a>
+      <!-- Текстовая бренд-подача. Финальный логотип встраивается внутрь .brand-mark
+           отдельным <img>/<svg> без изменения раскладки шапки. -->
+      <a class="brand" href="#top">
+        <span class="brand-mark">Figura Lab</span>
+        <span class="brand-sub">by Елена Бастуева</span>
+      </a>
       <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Открыть меню">
         <span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span>
       </button>
       <nav class="site-nav" id="site-nav" aria-label="Основная навигация">
         <ul class="nav-list" role="list">
-          <li><a href="#about">Подход</a></li>
+          <li><a href="#about">Метод</a></li>
           <li><a href="#for-whom">Для кого</a></li>
           <li><a href="#testimonials">Отзывы</a></li>
           <li><a href="#consultation" class="nav-cta">Консультация</a></li>
@@ -40,111 +48,130 @@
   </header>
 
   <main id="main" tabindex="-1">
-    <section class="hero section" aria-labelledby="hero-title">
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <p class="eyebrow">Пространство заботы о теле</p>
-          <h1 id="hero-title" class="hero-title">Figura Lab<span class="hero-title-line">by Елена Бастуева</span></h1>
+    <section class="hero" aria-labelledby="hero-title">
+      <span class="hero-panel" aria-hidden="true"></span>
+      <div class="container hero-layout">
+        <div class="hero-head">
+          <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Пространство заботы о теле</p>
+          <h1 id="hero-title" class="hero-title">
+            <span class="hero-title-main">Figura Lab</span>
+            <span class="hero-title-sub">by Елена Бастуева</span>
+          </h1>
+        </div>
+        <div class="hero-visual">
+          <figure class="hero-figure">
+            <div class="hero-photo-frame">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcset="
+                    assets/img/elena/elena-hero-400.webp 400w,
+                    assets/img/elena/elena-hero-520.webp 520w,
+                    assets/img/elena/elena-hero-800.webp 800w,
+                    assets/img/elena/elena-hero-1040.webp 1040w
+                  "
+                  sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1023px) 46vw, 540px"
+                >
+                <img
+                  class="hero-photo"
+                  src="assets/img/elena/elena-hero-1040.jpg"
+                  srcset="
+                    assets/img/elena/elena-hero-400.jpg 400w,
+                    assets/img/elena/elena-hero-520.jpg 520w,
+                    assets/img/elena/elena-hero-800.jpg 800w,
+                    assets/img/elena/elena-hero-1040.jpg 1040w
+                  "
+                  sizes="(max-width: 640px) calc(100vw - 2.5rem), (max-width: 1023px) 46vw, 540px"
+                  alt="Елена Бастуева, Figura Lab"
+                  width="1040"
+                  height="1256"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority="high"
+                >
+              </picture>
+            </div>
+          </figure>
+        </div>
+        <div class="hero-body">
           <p class="hero-lead">Пространство осознанного питания, мягкого снижения веса и здоровой трансформации тела без насилия над собой.</p>
-          <p class="hero-tags">Питание · сопровождение · фигура · энергия · уверенность</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="mailto:figura.lite@mail.ru?subject=%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D0%BD%D0%B0%20%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8E%20Figura%20Lab">Записаться на консультацию</a>
-            <a class="btn btn-ghost" href="#about">Узнать подход</a>
           </div>
+          <p class="hero-rail">Питание · сопровождение · фигура · энергия · уверенность</p>
         </div>
-        <figure class="hero-visual hero-visual-photo">
-          <div class="hero-photo-frame">
-            <span class="hero-photo-glow" aria-hidden="true"></span>
-            <picture>
-              <source
-                type="image/webp"
-                srcset="
-                  assets/img/elena/elena-hero-400.webp 400w,
-                  assets/img/elena/elena-hero-520.webp 520w,
-                  assets/img/elena/elena-hero-800.webp 800w,
-                  assets/img/elena/elena-hero-1040.webp 1040w
-                "
-                sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 960px) 420px, 520px"
-              >
-              <img
-                class="hero-photo"
-                src="assets/img/elena/elena-hero-1040.jpg"
-                srcset="
-                  assets/img/elena/elena-hero-400.jpg 400w,
-                  assets/img/elena/elena-hero-520.jpg 520w,
-                  assets/img/elena/elena-hero-800.jpg 800w,
-                  assets/img/elena/elena-hero-1040.jpg 1040w
-                "
-                sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 960px) 420px, 520px"
-                alt="Елена Бастуева, Figura Lab"
-                width="1040"
-                height="1256"
-                loading="eager"
-                decoding="async"
-                fetchpriority="high"
-              >
-            </picture>
-          </div>
-        </figure>
       </div>
     </section>
 
-    <section class="section about" id="about" aria-labelledby="about-title">
-      <div class="container narrow reveal">
-        <h2 id="about-title" class="section-title">Не диета. Не марафон. Не наказание.</h2>
-        <p class="section-text lead">Figura Lab — это подход, где питание, тело и образ жизни собираются в понятную систему. Без крайностей, жёстких запретов и постоянной борьбы с собой.</p>
+    <section class="section section-about" id="about" aria-labelledby="about-title">
+      <div class="container about-layout reveal">
+        <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Метод</p>
+        <h2 id="about-title" class="statement">
+          <span>Не диета.</span>
+          <span>Не марафон.</span>
+          <span>Не наказание.</span>
+        </h2>
+        <div class="about-note">
+          <p class="lead">Figura Lab — это подход, где питание, тело и образ жизни собираются в понятную систему. Без крайностей, жёстких запретов и постоянной борьбы с собой.</p>
+        </div>
       </div>
     </section>
 
-    <section class="section cards-section" id="changes" aria-labelledby="changes-title">
+    <section class="section section-changes" id="changes" aria-labelledby="changes-title">
       <div class="container reveal">
-        <h2 id="changes-title" class="section-title centered">Что помогает изменить</h2>
-        <div class="card-grid">
-          <article class="card">
-            <span class="card-icon" aria-hidden="true">◈</span>
-            <h3 class="card-title">Вес и состав тела</h3>
-            <p class="card-text">Спокойная работа с целями без экстремальных ограничений и срывов.</p>
+        <div class="section-head">
+          <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Изменения</p>
+          <h2 id="changes-title" class="section-title">Что помогает изменить</h2>
+        </div>
+        <div class="specimen-grid reveal-stagger">
+          <article class="specimen">
+            <span class="specimen-index" aria-hidden="true">01</span>
+            <h3 class="specimen-title">Вес и состав тела</h3>
+            <p class="specimen-text">Спокойная работа с целями без экстремальных ограничений и срывов.</p>
           </article>
-          <article class="card">
-            <span class="card-icon" aria-hidden="true">◈</span>
-            <h3 class="card-title">Пищевые привычки</h3>
-            <p class="card-text">Режим и выбор продуктов, которые вписываются в вашу реальную жизнь.</p>
+          <article class="specimen">
+            <span class="specimen-index" aria-hidden="true">02</span>
+            <h3 class="specimen-title">Пищевые привычки</h3>
+            <p class="specimen-text">Режим и выбор продуктов, которые вписываются в вашу реальную жизнь.</p>
           </article>
-          <article class="card">
-            <span class="card-icon" aria-hidden="true">◈</span>
-            <h3 class="card-title">Энергия и самочувствие</h3>
-            <p class="card-text">Больше ясности в теле — меньше усталости и хаоса в питании.</p>
+          <article class="specimen">
+            <span class="specimen-index" aria-hidden="true">03</span>
+            <h3 class="specimen-title">Энергия и самочувствие</h3>
+            <p class="specimen-text">Больше ясности в теле — меньше усталости и хаоса в питании.</p>
           </article>
-          <article class="card">
-            <span class="card-icon" aria-hidden="true">◈</span>
-            <h3 class="card-title">Отношение к себе и телу</h3>
-            <p class="card-text">Мягкая опора: без стыда, с уважением к своему ритму.</p>
+          <article class="specimen">
+            <span class="specimen-index" aria-hidden="true">04</span>
+            <h3 class="specimen-title">Отношение к себе и телу</h3>
+            <p class="specimen-text">Мягкая опора: без стыда, с уважением к своему ритму.</p>
           </article>
         </div>
       </div>
     </section>
 
-    <section class="section why" id="why" aria-labelledby="why-title">
+    <section class="section section-why" id="why" aria-labelledby="why-title">
       <div class="container reveal">
-        <h2 id="why-title" class="section-title centered">Почему это работает</h2>
+        <div class="section-head section-head-center">
+          <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Метод</p>
+          <h2 id="why-title" class="section-title">Почему это работает</h2>
+        </div>
         <ol class="why-list" role="list">
           <li class="why-item">
-            <span class="why-num">01</span>
-            <div>
+            <span class="why-num" aria-hidden="true">01</span>
+            <div class="why-body">
               <h3 class="why-heading">Индивидуальный подход</h3>
               <p class="why-text">Учитываются образ жизни, вкусы, график и то, что для вас реально удержать.</p>
             </div>
           </li>
           <li class="why-item">
-            <span class="why-num">02</span>
-            <div>
+            <span class="why-num" aria-hidden="true">02</span>
+            <div class="why-body">
               <h3 class="why-heading">Поддержка и сопровождение</h3>
               <p class="why-text">Вы не один на один с «правильным меню» — рядом спокойный экспертный контакт.</p>
             </div>
           </li>
           <li class="why-item">
-            <span class="why-num">03</span>
-            <div>
+            <span class="why-num" aria-hidden="true">03</span>
+            <div class="why-body">
               <h3 class="why-heading">Реалистичная система питания</h3>
               <p class="why-text">Без магии и обещаний «на завтра» — пошаговая ясность и опора на привычки.</p>
             </div>
@@ -153,71 +180,95 @@
       </div>
     </section>
 
-    <section class="section for-whom" id="for-whom" aria-labelledby="for-whom-title">
-      <div class="container reveal">
-        <div class="for-whom-layout">
-          <div class="for-whom-intro">
-            <h2 id="for-whom-title" class="section-title">Для кого</h2>
-            <p class="section-text">Подходит людям разного возраста — и мужчинам, и женщинам, — которые ищут бережный и осмысленный путь.</p>
-          </div>
-          <ul class="check-list" role="list">
-            <li>устали от диет и хаотичных попыток снизить вес</li>
-            <li>хотят наладить питание без жёстких запретов</li>
-            <li>хотят снизить вес или улучшить состав тела</li>
-            <li>хотят больше энергии и лёгкости</li>
-            <li>хотят понять, как питаться в обычной жизни</li>
-            <li>нуждаются в спокойном сопровождении специалиста</li>
-            <li>хотят восстановить более здоровые отношения с едой и телом</li>
-          </ul>
+    <section class="section section-for-whom" id="for-whom" aria-labelledby="for-whom-title">
+      <div class="container for-whom-layout reveal">
+        <div class="for-whom-intro">
+          <h2 id="for-whom-title" class="section-title">Для кого</h2>
+          <p class="section-text">Подходит людям разного возраста — и мужчинам, и женщинам, — которые ищут бережный и осмысленный путь.</p>
         </div>
+        <ul class="check-list" role="list">
+          <li>устали от диет и хаотичных попыток снизить вес</li>
+          <li>хотят наладить питание без жёстких запретов</li>
+          <li>хотят снизить вес или улучшить состав тела</li>
+          <li>хотят больше энергии и лёгкости</li>
+          <li>хотят понять, как питаться в обычной жизни</li>
+          <li>нуждаются в спокойном сопровождении специалиста</li>
+          <li>хотят восстановить более здоровые отношения с едой и телом</li>
+        </ul>
       </div>
     </section>
 
-    <section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
-      <div class="container reveal">
-        <div class="testimonials-head">
+    <section class="section section-testimonials" id="testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-head stories-head reveal">
+          <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>Истории</p>
           <h2 id="testimonials-title" class="section-title">Отзывы и результаты</h2>
-          <p class="section-text muted">Истории клиентов — без медицинских обещаний и агрессивного маркетинга. Тексты примерные, блок легко расширить до отдельной страницы «Отзывы».</p>
+          <!-- VERIFY_WITH_ELENA: тексты ниже — временные placeholder. Не публиковать как реальные. -->
+          <p class="section-text muted">Избранные истории. Полные тексты и имена будут подтверждены перед публикацией.</p>
         </div>
-        <div class="testimonial-scroll" role="region" aria-label="Отзывы клиентов, горизонтальная прокрутка" tabindex="0">
-          <div class="testimonial-grid">
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Перестала путаться в порциях и перекусах. Стало спокойнее в голове — и в зеркале.»</p>
-              <footer><cite>М. К.</cite><span class="testimonial-note">энергия, режим</span></footer>
-            </blockquote>
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Долго боялся «диетолога». Здесь без давления: шаг за шагом собрали рацион под работу и семью.»</p>
-              <footer><cite>А. В.</cite><span class="testimonial-note">привычки, вес</span></footer>
-            </blockquote>
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Научилась есть без чувства вины. Минус хаос — плюс уверенность в том, что я делаю для тела.»</p>
-              <footer><cite>Е. С.</cite><span class="testimonial-note">отношение к еде</span></footer>
-            </blockquote>
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Важно было не «ещё одна диета», а система. Через пару месяцев — стабильнее сон и самочувствие.»</p>
-              <footer><cite>О. Н.</cite><span class="testimonial-note">самочувствие</span></footer>
-            </blockquote>
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Поняла, как совмещать цели по фигуре и нормальную жизнь с детьми и гостями.»</p>
-              <footer><cite>И. Л.</cite><span class="testimonial-note">быт, фигура</span></footer>
-            </blockquote>
-            <blockquote class="testimonial-card">
-              <p class="testimonial-quote">«Спокойный тон и конкретика: что купить, как приготовить, куда подстроить под нагрузку на работе.»</p>
-              <footer><cite>Д. Т.</cite><span class="testimonial-note">сопровождение</span></footer>
-            </blockquote>
+
+        <div class="stories-viewport reveal" role="region" aria-label="Избранные истории">
+          <div class="stories-grid reveal-stagger">
+            <article class="story">
+              <span class="story-index" aria-hidden="true">01</span>
+              <span class="story-quote-mark" aria-hidden="true">«</span>
+              <blockquote>
+                <p class="story-excerpt">Перестала путаться в порциях и перекусах.</p>
+                <div class="story-full" id="story-full-1" hidden>
+                  <p>Перестала путаться в порциях и перекусах. Стало спокойнее в голове — и в зеркале.</p>
+                </div>
+                <footer>
+                  <cite>Екатерина</cite>
+                </footer>
+              </blockquote>
+              <button type="button" class="story-more" aria-expanded="false" aria-controls="story-full-1">Читать полностью</button>
+            </article>
+
+            <article class="story">
+              <span class="story-index" aria-hidden="true">02</span>
+              <span class="story-quote-mark" aria-hidden="true">«</span>
+              <blockquote>
+                <p class="story-excerpt">Научилась есть без чувства вины.</p>
+                <div class="story-full" id="story-full-2" hidden>
+                  <p>Научилась есть без чувства вины. Минус хаос — плюс уверенность в том, что я делаю для тела.</p>
+                </div>
+                <footer>
+                  <cite>Ольга К.</cite>
+                </footer>
+              </blockquote>
+              <button type="button" class="story-more" aria-expanded="false" aria-controls="story-full-2">Читать полностью</button>
+            </article>
+
+            <article class="story">
+              <span class="story-index" aria-hidden="true">03</span>
+              <span class="story-quote-mark" aria-hidden="true">«</span>
+              <blockquote>
+                <p class="story-excerpt">Поняла, как совмещать цели по фигуре и нормальную жизнь.</p>
+                <div class="story-full" id="story-full-3" hidden>
+                  <p>Поняла, как совмещать цели по фигуре и нормальную жизнь с детьми и гостями.</p>
+                </div>
+                <footer>
+                  <cite>Ирина Б.</cite>
+                </footer>
+              </blockquote>
+              <button type="button" class="story-more" aria-expanded="false" aria-controls="story-full-3">Читать полностью</button>
+            </article>
           </div>
         </div>
-        <p class="testimonials-more">Все отзывы — скоро на отдельной странице</p>
+
+        <!-- Stage 3: заменить href на постоянный URL архива. Фиктивный путь не создаём. -->
+        <p class="stories-all-wrap reveal">
+          <a class="stories-all" href="#testimonials">Все отзывы</a>
+        </p>
       </div>
     </section>
 
-    <section class="section cta-final" id="consultation" aria-labelledby="cta-title">
-      <div class="container cta-inner reveal">
-        <div class="cta-panel">
-          <h2 id="cta-title" class="cta-title">Начните с бережного разговора о себе</h2>
-          <p class="cta-text">Первая консультация поможет понять, с чего начать путь к телу, в котором спокойно, красиво и уверенно.</p>
-          <a class="btn btn-primary btn-lg" href="mailto:figura.lite@mail.ru?subject=%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D0%BD%D0%B0%20%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8E%20Figura%20Lab">Записаться на консультацию</a>
-        </div>
+    <section class="section section-cta" id="consultation" aria-labelledby="cta-title">
+      <div class="container cta-layout reveal">
+        <p class="eyebrow eyebrow-invert"><span class="eyebrow-rule" aria-hidden="true"></span>Консультация</p>
+        <h2 id="cta-title" class="cta-title">Начните с бережного разговора о себе</h2>
+        <p class="cta-text">Первая консультация поможет понять, с чего начать путь к телу, в котором спокойно, красиво и уверенно.</p>
+        <a class="btn btn-invert btn-lg" href="mailto:figura.lite@mail.ru?subject=%D0%97%D0%B0%D0%BF%D0%B8%D1%81%D1%8C%20%D0%BD%D0%B0%20%D0%BA%D0%BE%D0%BD%D1%81%D1%83%D0%BB%D1%8C%D1%82%D0%B0%D1%86%D0%B8%D1%8E%20Figura%20Lab">Записаться на консультацию</a>
       </div>
     </section>
   </main>
@@ -225,12 +276,17 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <span class="logo logo-footer">Figura Lab</span>
+        <!-- Тот же слот бренда, что и в шапке: логотип встраивается в .brand-mark -->
+        <span class="brand brand-static">
+          <span class="brand-mark">Figura Lab</span>
+          <span class="brand-sub">by Елена Бастуева</span>
+        </span>
         <p class="footer-tagline">Осознанное питание и мягкая трансформация</p>
       </div>
-      <nav class="footer-nav" aria-label="Разделы страницы">
+      <nav class="footer-col" aria-label="Разделы страницы">
+        <p class="footer-col-title">Разделы</p>
         <ul role="list">
-          <li><a href="#about">Подход</a></li>
+          <li><a href="#about">Метод</a></li>
           <li><a href="#changes">Что помогает изменить</a></li>
           <li><a href="#why">Почему это работает</a></li>
           <li><a href="#for-whom">Для кого</a></li>
@@ -238,8 +294,8 @@
           <li><a href="#consultation">Консультация</a></li>
         </ul>
       </nav>
-      <div class="footer-contacts">
-        <p class="footer-contacts-title">Связь</p>
+      <div class="footer-col footer-contacts">
+        <p class="footer-col-title">Связь</p>
         <ul role="list">
           <li><a href="mailto:figura.lite@mail.ru">figura.lite@mail.ru</a></li>
           <li><a href="tel:+78482614139">8 (8482) 61-41-39</a></li>
@@ -249,6 +305,12 @@
       <p class="footer-copy">© Figura Lab, Елена Бастуева</p>
     </div>
   </footer>
+
+  <a class="back-to-top" href="#top" aria-label="Наверх">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+      <path d="M4 11.25 9 6.25l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
 
   <script src="assets/js/site.js"></script>
 </body>
