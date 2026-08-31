@@ -1,0 +1,64 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__inner container">
+
+    <div class="footer-grid">
+
+      {# Column 1: Brand + tagline #}
+      <div class="footer-col footer-col--brand">
+        <a href="/" class="footer-brand" aria-label="{{ site.fullName }} — На главную">
+          <span class="footer-brand__name">Figura Lab</span>
+          <span class="footer-brand__by">by Елена Бастуева</span>
+        </a>
+        <p class="footer-tagline">Пространство осознанного питания и мягкого снижения веса.</p>
+      </div>
+
+      {# Column 2: Sections #}
+      <nav class="footer-col footer-col--nav" aria-label="Навигация по разделам">
+        <h2 class="footer-col__heading">Разделы</h2>
+        <ul class="footer-nav-list" role="list">
+          {% for item in nav %}
+          <li><a href="{{ item.url }}" class="footer-nav-link">{{ item.label }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      {# Column 3: Information #}
+      <nav class="footer-col footer-col--info" aria-label="Дополнительные ссылки">
+        <h2 class="footer-col__heading">Информация</h2>
+        <ul class="footer-nav-list" role="list">
+          <li><a href="/kontakty/" class="footer-nav-link">Контакты</a></li>
+          <li><a href="/programmy/#faq" class="footer-nav-link">Вопросы и ответы</a></li>
+        </ul>
+      </nav>
+
+      {# Column 4: Contacts #}
+      <div class="footer-col footer-col--contacts">
+        <h2 class="footer-col__heading">Связь</h2>
+        {# VERIFY_WITH_ELENA V-03: все контакты требуют подтверждения #}
+        <ul class="footer-contacts-list" role="list">
+          <li>
+            <a href="tel:{{ site.phone1 }}" class="footer-contact-link">{{ site.phone1Display }}</a>
+          </li>
+          <li>
+            <a href="mailto:{{ site.email }}" class="footer-contact-link">{{ site.email }}</a>
+          </li>
+          {# Telegram / MAX / WhatsApp / VK: VERIFY_WITH_ELENA #}
+        </ul>
+      </div>
+
+    </div>{# /footer-grid #}
+
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="/privacy/" class="footer-legal-link">Политика конфиденциальности</a>
+        <a href="/consent/" class="footer-legal-link">Согласие на обработку ПДн</a>
+        {# Реквизиты оператора ПДн: VERIFY_WITH_ELENA + LEGAL_REVIEW #}
+      </div>
+      <p class="footer-copy">
+        &copy; {% year %} {{ site.fullName }}.
+        <span class="footer-copy__note">Сайт носит информационный характер и не является публичной офертой.</span>
+      </p>
+    </div>
+
+  </div>
+</footer>

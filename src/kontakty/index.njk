@@ -1,0 +1,189 @@
+---
+layout: base.njk
+title: Контакты
+description: "Записаться на консультацию к Елене Бастуевой — Figura Lab."
+pageTitle: "Контакты"
+pageIntro: "Начните с бережного разговора. Первая консультация помогает понять, с чего начать."
+eyebrow: "Записаться"
+---
+
+{# =====================================================================
+   /kontakty/ — Консультация и каналы связи
+   НЕ собирать чувствительные медицинские данные в форме.
+   Контакты: VERIFY_WITH_ELENA (V-03, V-04).
+   Куда поступают заявки: VERIFY_WITH_ELENA (V-08).
+   Форма: заглушка — реальный endpoint не подключён (Stage 3).
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Контакты</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+<section class="section" aria-labelledby="contact-main-heading">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: start;">
+
+      {# Форма консультации #}
+      <div>
+        <p class="eyebrow section__eyebrow">Форма записи</p>
+        <h2 class="section__heading" id="contact-main-heading">Запишитесь на консультацию</h2>
+        <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-8);">
+          Оставьте имя и способ связи — и я свяжусь с вами в течение рабочего дня.
+        </p>
+
+        {# Stage 3: форма — заглушка. Реальный endpoint: VERIFY_WITH_ELENA (V-08).
+           Не подключать отправку и не собирать медицинские данные. #}
+        <form
+          action="#"
+          method="POST"
+          novalidate
+          aria-label="Форма записи на консультацию">
+
+          <div style="margin-bottom: var(--space-5);">
+            <label for="contact-name" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
+              Ваше имя <span aria-label="обязательное поле">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact-name"
+              name="name"
+              required
+              autocomplete="given-name"
+              style="
+                width: 100%;
+                padding: var(--space-3) var(--space-4);
+                border: 1.5px solid var(--line-strong);
+                border-radius: var(--radius-sm);
+                font-family: var(--font-body);
+                font-size: var(--fs-body);
+                color: var(--c-graphite);
+                background: var(--c-white);
+                min-height: 44px;
+              ">
+          </div>
+
+          <div style="margin-bottom: var(--space-5);">
+            <label for="contact-messenger" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
+              Telegram или WhatsApp <span aria-label="обязательное поле">*</span>
+            </label>
+            <input
+              type="text"
+              id="contact-messenger"
+              name="messenger"
+              required
+              autocomplete="off"
+              placeholder="@username или +7..."
+              style="
+                width: 100%;
+                padding: var(--space-3) var(--space-4);
+                border: 1.5px solid var(--line-strong);
+                border-radius: var(--radius-sm);
+                font-family: var(--font-body);
+                font-size: var(--fs-body);
+                color: var(--c-graphite);
+                background: var(--c-white);
+                min-height: 44px;
+              ">
+          </div>
+
+          <div style="margin-bottom: var(--space-6);">
+            <label for="contact-goal" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
+              Коротко о запросе (необязательно)
+            </label>
+            <textarea
+              id="contact-goal"
+              name="goal"
+              rows="4"
+              placeholder="Что хотите изменить? Или просто — хочу узнать больше."
+              style="
+                width: 100%;
+                padding: var(--space-3) var(--space-4);
+                border: 1.5px solid var(--line-strong);
+                border-radius: var(--radius-sm);
+                font-family: var(--font-body);
+                font-size: var(--fs-body);
+                color: var(--c-graphite);
+                background: var(--c-white);
+                resize: vertical;
+                min-height: 100px;
+              "></textarea>
+            {# НЕ собирать медицинские данные — только общий запрос #}
+          </div>
+
+          <div style="margin-bottom: var(--space-6);">
+            <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer;">
+              <input
+                type="checkbox"
+                name="consent"
+                required
+                style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: var(--c-olive-deep);">
+              <span style="font-size: var(--fs-small); color: var(--c-graphite-soft);">
+                Я даю <a href="/consent/">согласие на обработку персональных данных</a>
+                в соответствии с <a href="/privacy/">политикой конфиденциальности</a>.
+                {# LEGAL_REVIEW: текст согласия проверяется юристом #}
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Записаться на консультацию
+          </button>
+
+          <p style="margin-top: var(--space-4); font-size: var(--fs-meta); color: var(--c-graphite-mute);">
+            {# Stage 3: форма — заглушка. Подключение endpoint: VERIFY_WITH_ELENA (V-08) #}
+            <em>Форма находится в разработке. Пока — напишите напрямую.</em>
+          </p>
+        </form>
+      </div>
+
+      {# Каналы связи #}
+      <div>
+        <p class="eyebrow section__eyebrow">Прямая связь</p>
+        <h2 class="section__heading" style="font-size: var(--fs-h2);">
+          Напишите напрямую
+        </h2>
+        <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-8);">
+          {# VERIFY_WITH_ELENA (V-03): все контакты подтверждаются у Елены #}
+          Контакты уточняются.
+        </p>
+
+        <ul style="display: flex; flex-direction: column; gap: var(--space-4); list-style: none;">
+          <li>
+            <a href="tel:{{ site.phone1 }}" class="footer-contact-link" style="color: var(--c-sage-text); font-weight: 600;">
+              {{ site.phone1Display }}
+            </a>
+            <span class="placeholder-notice" style="margin-left: var(--space-2);">VERIFY_WITH_ELENA</span>
+          </li>
+          <li>
+            <a href="mailto:{{ site.email }}" class="footer-contact-link" style="color: var(--c-sage-text); font-weight: 600;">
+              {{ site.email }}
+            </a>
+            <span class="placeholder-notice" style="margin-left: var(--space-2);">VERIFY_WITH_ELENA</span>
+          </li>
+          <li>
+            <span style="font-weight: 600;">Telegram:</span>
+            <span class="placeholder-notice">VERIFY_WITH_ELENA</span>
+          </li>
+          <li>
+            <span style="font-weight: 600;">Адрес:</span>
+            <span class="placeholder-notice">VERIFY_WITH_ELENA (V-04)</span>
+          </li>
+        </ul>
+
+        {# VERIFY_WITH_ELENA (V-04): адрес офиса — публиковать? Юбилейная 2Б или 2В? #}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# Нет финального CTA-блока на странице контактов — она сама является CTA #}

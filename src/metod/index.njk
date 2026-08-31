@@ -1,0 +1,99 @@
+---
+layout: base.njk
+title: Метод
+description: "Метод Figura Lab — система осознанного питания и бережного снижения веса без жёстких ограничений."
+pageTitle: "Метод"
+pageIntro: "Система, которая работает с вашей жизнью, а не против неё."
+eyebrow: "Метод Figura Lab"
+---
+
+{# =====================================================================
+   /metod/ — Страница метода и философии работы
+   CONFLICT-03 RESOLVED: формулировки гендерно нейтральны.
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Метод</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+{# --- Философия -------------------------------------------------------- #}
+<section class="section" aria-labelledby="philosophy-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Философия</p>
+    <h2 class="section__heading" id="philosophy-heading">
+      {# PLACEHOLDER_CONTENT — финальный заголовок согласовывается с Еленой #}
+      Тело — не проект. Это ваша жизнь.
+    </h2>
+    <div style="max-width: var(--content-text);">
+      <p class="section__intro">
+        {# PLACEHOLDER_CONTENT — финальный текст согласовывается с Еленой #}
+        Метод Figura Lab — это не очередная диетическая система.
+        Это подход, основанный на понимании причин пищевого поведения,
+        физиологических механизмов и реальных условий жизни человека.
+      </p>
+      <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-6);">
+        {# PLACEHOLDER_CONTENT #}
+        Здесь нет голодания, марафонов и чужих правил.
+        Есть системная работа, уважение к вашему телу и устойчивый результат.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# --- Принципы --------------------------------------------------------- #}
+<section class="section section--linen" aria-labelledby="principles-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Принципы</p>
+    <h2 class="section__heading" id="principles-heading">
+      {# PLACEHOLDER_CONTENT — принципы уточняются с Еленой #}
+      Что лежит в основе работы
+    </h2>
+
+    <div class="card-grid" role="list">
+      {# PLACEHOLDER: до 6 карточек-принципов — VERIFY_WITH_ELENA #}
+      <article class="card card--placeholder" role="listitem">
+        <h3 class="card__title">Принцип 1 — VERIFY_WITH_ELENA</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT</p>
+      </article>
+      <article class="card card--placeholder" role="listitem">
+        <h3 class="card__title">Принцип 2 — VERIFY_WITH_ELENA</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT</p>
+      </article>
+      <article class="card card--placeholder" role="listitem">
+        <h3 class="card__title">Принцип 3 — VERIFY_WITH_ELENA</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+{# --- Чем НЕ является метод ------------------------------------------- #}
+<section class="section" aria-labelledby="not-about-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Важно</p>
+    <h2 class="section__heading" id="not-about-heading">
+      Что метод не обещает
+    </h2>
+    <div style="max-width: var(--content-text);">
+      <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-4);">
+        Метод не является медицинским лечением и не предназначен для
+        лечения заболеваний. Результаты индивидуальны и зависят от
+        множества факторов.
+      </p>
+      {# LEGAL_REVIEW: дисклеймер проверяется юристом перед публикацией #}
+      <p class="placeholder-notice">LEGAL_REVIEW: этот блок требует проверки юристом перед публикацией</p>
+    </div>
+  </div>
+</section>
+
+{# --- CTA -------------------------------------------------------------- #}
+{% include "components/cta-block.njk" %}

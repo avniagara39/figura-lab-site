@@ -1,0 +1,9 @@
+node_modules/
+_site/
+source-images/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.env
+.env.local

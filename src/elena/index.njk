@@ -1,0 +1,104 @@
+---
+layout: base.njk
+title: Елена Бастуева
+description: "Елена Бастуева — нутрициолог и специалист по снижению веса, основатель Figura Lab."
+pageTitle: "Елена Бастуева"
+pageIntro: "Нутрициолог и специалист по снижению веса."
+eyebrow: "Об авторе метода"
+---
+
+{# =====================================================================
+   /elena/ — Экспертная персональная страница
+   Биография, образование, сертификаты: VERIFY_WITH_ELENA (V-01).
+   Команда (Ирина): VERIFY_WITH_ELENA (V-09).
+   Фото: REPLACE_WITH_FINAL_ELENA_HERO (BRAND_ASSET_PENDING_FINAL).
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Елена</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+{# --- О Елене ---------------------------------------------------------- #}
+<section class="section" aria-labelledby="about-elena-heading">
+  <div class="container">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: start;">
+
+      <div>
+        <p class="eyebrow section__eyebrow">Биография</p>
+        <h2 class="section__heading" id="about-elena-heading">
+          {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
+          PLACEHOLDER_CONTENT — заголовок биографии
+        </h2>
+        <div style="max-width: var(--content-text); color: var(--c-graphite-soft);">
+          {# PLACEHOLDER_CONTENT — биография: VERIFY_WITH_ELENA (V-01) #}
+          <p style="margin-bottom: var(--space-4);">PLACEHOLDER_CONTENT — биография Елены будет добавлена после VERIFY_WITH_ELENA.</p>
+          <p class="placeholder-notice">VERIFY_WITH_ELENA (V-01): образование, сертификаты, опыт работы</p>
+        </div>
+      </div>
+
+      <div>
+        {# REPLACE_WITH_FINAL_ELENA_HERO #}
+        <div class="hero__photo-wrap" style="max-width: 400px;">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="/assets/img/elena/elena-hero-400.webp 400w, /assets/img/elena/elena-hero-800.webp 800w"
+              sizes="(max-width: 768px) 90vw, 400px">
+            <img
+              src="/assets/img/elena/elena-hero-800.jpg"
+              alt="Елена Бастуева — нутрициолог, основатель Figura Lab"
+              class="hero__photo"
+              width="800"
+              height="1067"
+              decoding="async"
+              loading="lazy">
+          </picture>
+        </div>
+        <p class="placeholder-notice" style="margin-top: var(--space-4);">
+          REPLACE_WITH_FINAL_ELENA_HERO — dev asset, заменить финальным портретом
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# --- Образование и сертификаты --------------------------------------- #}
+<section class="section section--linen" aria-labelledby="education-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Образование</p>
+    <h2 class="section__heading" id="education-heading">
+      Квалификация и сертификаты
+    </h2>
+    <p class="placeholder-notice">
+      VERIFY_WITH_ELENA (V-01): список учебных заведений, специальностей, дат, названий сертификатов.
+      Можно ли публиковать сканы — уточнить у Елены.
+    </p>
+  </div>
+</section>
+
+{# --- Команда (условная) ---------------------------------------------- #}
+<section class="section" aria-labelledby="team-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Команда</p>
+    <h2 class="section__heading" id="team-heading">
+      {# PLACEHOLDER_CONTENT: нужно ли раздел — VERIFY_WITH_ELENA (V-09) #}
+      PLACEHOLDER_CONTENT — раздел «Команда»
+    </h2>
+    <p class="placeholder-notice">
+      VERIFY_WITH_ELENA (V-09): показывать ли Ирину как часть команды?
+      Этот раздел будет удалён или заполнен после ответа Елены.
+    </p>
+  </div>
+</section>
+
+{% include "components/cta-block.njk" %}

@@ -1,0 +1,78 @@
+---
+layout: base.njk
+title: Политика конфиденциальности
+description: "Политика конфиденциальности Figura Lab — обработка персональных данных."
+pageTitle: "Политика конфиденциальности"
+eyebrow: "Правовые документы"
+bodyClass: legal-page
+---
+
+{# =====================================================================
+   /privacy/ — Placeholder legal page
+   LEGAL_REVIEW: весь текст страницы пишется и проверяется юристом.
+   Реквизиты оператора ПДн: VERIFY_WITH_ELENA + LEGAL_REVIEW.
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Политика конфиденциальности</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+<section class="section legal-page">
+  <div class="container">
+    <div class="legal-content">
+
+      <p class="placeholder-notice" style="margin-bottom: var(--space-8);">
+        LEGAL_REVIEW: вся страница пишется юристом. Ниже — структурная заготовка. Не публиковать в текущем виде.
+      </p>
+
+      <p>Дата последнего обновления: VERIFY_WITH_ELENA</p>
+
+      <h2>1. Оператор персональных данных</h2>
+      <p>
+        Оператором персональных данных является:<br>
+        <strong>VERIFY_WITH_ELENA + LEGAL_REVIEW:</strong> ИП/ООО, полное наименование, ИНН, адрес.
+      </p>
+
+      <h2>2. Какие данные мы собираем</h2>
+      <p>
+        Через форму обратной связи на сайте мы собираем:
+      </p>
+      <ul>
+        <li>Имя</li>
+        <li>Контакт в мессенджере (Telegram или WhatsApp) или email</li>
+        <li>Свободный текст запроса (необязательно)</li>
+      </ul>
+      <p>
+        Мы не собираем медицинские данные через форму на сайте.
+      </p>
+
+      <h2>3. Цели обработки</h2>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h2>4. Передача третьим лицам</h2>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h2>5. Хранение и защита данных</h2>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h2>6. Права субъектов данных</h2>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h2>7. Контакты</h2>
+      <p>
+        По вопросам обработки персональных данных:
+        <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      </p>
+
+    </div>
+  </div>
+</section>

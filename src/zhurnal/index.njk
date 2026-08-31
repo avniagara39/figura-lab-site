@@ -1,0 +1,64 @@
+---
+layout: base.njk
+title: Журнал
+description: "Журнал Figura Lab — экспертные материалы о питании, теле и осознанном подходе к здоровью."
+pageTitle: "Журнал"
+pageIntro: "Экспертные материалы о питании, теле и осознанном подходе к жизни."
+eyebrow: "Figura Lab"
+---
+
+{# =====================================================================
+   /zhurnal/ — Foundation для editorial / экспертных материалов
+   Статьи: PLACEHOLDER_CONTENT — будут добавлены при наличии реального контента.
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Журнал</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+{# --- Статьи ----------------------------------------------------------- #}
+<section class="section" aria-labelledby="articles-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Материалы</p>
+    <h2 class="section__heading" id="articles-heading">
+      Все материалы
+    </h2>
+
+    {# PLACEHOLDER: статьи будут добавлены при наличии готового контента от Елены #}
+    <div class="card-grid" role="list">
+
+      <article class="card card--placeholder" role="listitem">
+        <p class="eyebrow card__eyebrow">Статья</p>
+        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 1</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
+        <span class="placeholder-notice">Добавить реальный контент</span>
+      </article>
+
+      <article class="card card--placeholder" role="listitem">
+        <p class="eyebrow card__eyebrow">Статья</p>
+        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 2</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
+        <span class="placeholder-notice">Добавить реальный контент</span>
+      </article>
+
+      <article class="card card--placeholder" role="listitem">
+        <p class="eyebrow card__eyebrow">Статья</p>
+        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 3</h3>
+        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
+        <span class="placeholder-notice">Добавить реальный контент</span>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+{% include "components/cta-block.njk" %}

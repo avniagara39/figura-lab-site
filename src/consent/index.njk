@@ -1,0 +1,64 @@
+---
+layout: base.njk
+title: Согласие на обработку персональных данных
+description: "Согласие на обработку персональных данных — Figura Lab."
+pageTitle: "Согласие на обработку персональных данных"
+eyebrow: "Правовые документы"
+bodyClass: legal-page
+---
+
+{# =====================================================================
+   /consent/ — Placeholder legal page
+   LEGAL_REVIEW: весь текст пишется юристом по требованиям 152-ФЗ.
+   Реквизиты оператора: VERIFY_WITH_ELENA + LEGAL_REVIEW.
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Согласие на обработку ПДн</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+<section class="section legal-page">
+  <div class="container">
+    <div class="legal-content">
+
+      <p class="placeholder-notice" style="margin-bottom: var(--space-8);">
+        LEGAL_REVIEW: весь текст пишется юристом в соответствии с требованиями 152-ФЗ. Не публиковать в текущем виде.
+      </p>
+
+      <p>Дата: VERIFY_WITH_ELENA</p>
+
+      <h2>Согласие на обработку персональных данных</h2>
+      <p>
+        Я, субъект персональных данных, даю согласие оператору —
+        <strong>VERIFY_WITH_ELENA + LEGAL_REVIEW (реквизиты ИП/ООО)</strong> —
+        на обработку следующих персональных данных:
+      </p>
+      <ul>
+        <li>Имя</li>
+        <li>Контакт в мессенджере или адрес электронной почты</li>
+      </ul>
+
+      <h3>Цели обработки</h3>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h3>Срок действия согласия</h3>
+      <p>PLACEHOLDER_CONTENT — LEGAL_REVIEW</p>
+
+      <h3>Отзыв согласия</h3>
+      <p>
+        Я понимаю, что могу отозвать данное согласие в любой момент,
+        обратившись по адресу: <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      </p>
+
+    </div>
+  </div>
+</section>

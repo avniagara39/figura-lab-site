@@ -1,0 +1,16 @@
+{
+  "name": "figura-lab-site",
+  "version": "0.3.0",
+  "description": "Figura Lab by Елена Бастуева — production website",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "eleventy --serve --watch",
+    "build": "eleventy",
+    "build:clean": "Remove-Item -Recurse -Force _site -ErrorAction SilentlyContinue; eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@fontsource-variable/manrope": "*"
+  }
+}

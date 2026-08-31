@@ -1,0 +1,44 @@
+<header class="site-header" role="banner">
+  <div class="site-header__inner container">
+
+    {# Logo / brand mark — BRAND_ASSET_PENDING_FINAL
+       Replace <span> with <img src="/assets/img/logo.svg" ...> when final logo is approved #}
+    <a href="/" class="brand-link" aria-label="{{ site.fullName }} — На главную">
+      <span class="brand-mark" aria-hidden="true">
+        <span class="brand-mark__name">Figura Lab</span>
+        <span class="brand-mark__by">by Елена Бастуева</span>
+      </span>
+    </a>
+
+    {# Mobile burger #}
+    <button
+      class="nav-toggle"
+      aria-controls="site-nav"
+      aria-expanded="false"
+      aria-label="Открыть меню навигации"
+      type="button">
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+      <span class="nav-toggle__bar" aria-hidden="true"></span>
+    </button>
+
+    {# Main navigation #}
+    <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
+      <ul class="nav-list" role="list">
+        {% for item in nav %}
+        <li class="nav-list__item">
+          <a
+            href="{{ item.url }}"
+            class="nav-link"
+            {% if page.url | isActive(item.url) %}aria-current="page"{% endif %}>
+            {{ item.label }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+
+      <a href="/kontakty/" class="btn btn-primary nav-cta">Консультация</a>
+    </nav>
+
+  </div>
+</header>

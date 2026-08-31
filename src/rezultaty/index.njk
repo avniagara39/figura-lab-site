@@ -1,0 +1,94 @@
+---
+layout: base.njk
+title: Результаты
+description: "Реальные истории клиентов Figura Lab — устойчивые результаты в снижении веса и изменении отношения к питанию."
+pageTitle: "Результаты"
+pageIntro: "Реальные истории людей, которые прошли путь изменений. Без фотошопа и выдуманных цифр."
+eyebrow: "Истории клиентов"
+---
+
+{# =====================================================================
+   /rezultaty/ — Полная система результатов и отзывов
+   LEGAL_REVIEW: каждый отзыв требует письменного согласия клиента (V-06).
+   Не использовать автоматический карусель.
+   Статистика (клиенты, кг): VERIFY_WITH_ELENA + LEGAL_REVIEW (V-05 в чеклисте).
+   ===================================================================== #}
+
+<nav class="breadcrumbs" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">Результаты</span>
+    </li>
+  </ol>
+</nav>
+
+{% include "components/page-hero.njk" %}
+
+{# --- Оговорка --- #}
+<section class="section" style="padding-bottom: 0;">
+  <div class="container">
+    <p class="placeholder-notice" style="margin-bottom: var(--space-8);">
+      LEGAL_REVIEW: дисклеймер перед отзывами — результаты индивидуальны, не являются гарантией.
+    </p>
+  </div>
+</section>
+
+{# --- Истории ---------------------------------------------------------- #}
+<section class="section" aria-labelledby="stories-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">Истории</p>
+    <h2 class="section__heading" id="stories-heading">
+      Изменения, которые остаются
+    </h2>
+
+    {# PLACEHOLDER: отзывы переносятся только с письменного согласия (V-06, LEGAL_REVIEW).
+       Не использовать отзыв Анастасии о здоровье мужа без отдельной проверки. #}
+    <div style="display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-8);">
+
+      <article class="testimonial card--placeholder" aria-labelledby="story-1">
+        <p class="testimonial__quote" id="story-1">
+          «PLACEHOLDER_CONTENT — история клиента 1 будет добавлена с письменного согласия»
+        </p>
+        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
+        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
+      </article>
+
+      <article class="testimonial card--placeholder" aria-labelledby="story-2">
+        <p class="testimonial__quote" id="story-2">
+          «PLACEHOLDER_CONTENT — история клиента 2 будет добавлена с письменного согласия»
+        </p>
+        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
+        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
+      </article>
+
+      <article class="testimonial card--placeholder" aria-labelledby="story-3">
+        <p class="testimonial__quote" id="story-3">
+          «PLACEHOLDER_CONTENT — история клиента 3 будет добавлена с письменного согласия»
+        </p>
+        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
+        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+{# --- Цифры (только с подтверждением) ---------------------------------- #}
+<section class="section section--linen" aria-labelledby="stats-heading">
+  <div class="container">
+    <p class="eyebrow section__eyebrow">В цифрах</p>
+    <h2 class="section__heading" id="stats-heading">
+      {# PLACEHOLDER_CONTENT — все цифры требуют подтверждения #}
+      Результаты в цифрах
+    </h2>
+    <p class="placeholder-notice">
+      VERIFY_WITH_ELENA + LEGAL_REVIEW: цифры (годы практики, количество клиентов, кг суммарно) публикуются только после подтверждения Еленой. До подтверждения — этот блок скрыт или не публикуется.
+    </p>
+  </div>
+</section>
+
+{% include "components/cta-block.njk" %}

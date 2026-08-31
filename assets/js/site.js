@@ -1,158 +1,97 @@
+/* Figura Lab — site.js — Stage 3 Production Foundation */
+"use strict";
+
+/* --------------------------------------------------------------------------
+   Mobile navigation — accessible toggle
+   - ARIA: aria-expanded, aria-controls
+   - Keyboard: Escape closes, focus returns to trigger
+   - Scroll lock: body.nav-locked
+   -------------------------------------------------------------------------- */
 (function () {
-  "use strict";
+  const toggle = document.querySelector(".nav-toggle");
+  const nav    = document.getElementById("site-nav");
+  if (!toggle || !nav) return;
 
-  /* Порог мобильного меню совпадает с @media (max-width: 640px) в main.css */
-  var MOBILE_NAV_QUERY = "(max-width: 640px)";
-  var FOCUSABLE = "a[href], button:not([disabled]), [tabindex='0']";
+  let isOpen = false;
 
-  var header = document.querySelector(".site-header");
-  var navToggle = document.querySelector(".nav-toggle");
-  var siteNav = document.getElementById("site-nav");
-  var mobileNav = window.matchMedia(MOBILE_NAV_QUERY);
-  var navIsOpen = false;
-
-  /* Фон при открытом меню выключается из фокуса и из accessibility tree.
-     Если браузер не поддерживает inert, содержание удерживает focus trap ниже. */
-  var backgroundParts = document.querySelectorAll(".skip-link, .logo, main, .site-footer");
-
-  function toArray(collection) {
-    return Array.prototype.slice.call(collection || []);
+  function openNav() {
+    isOpen = true;
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Закрыть меню навигации");
+    nav.classList.add("is-open");
+    document.body.classList.add("nav-locked");
+    // Move focus to first nav link
+    const firstLink = nav.querySelector("a, button");
+    if (firstLink) firstLink.focus();
   }
 
-  function visibleNavStops() {
-    if (!siteNav) return [];
-    var stops = navToggle ? [navToggle] : [];
-    toArray(siteNav.querySelectorAll(FOCUSABLE)).forEach(function (el) {
-      if (el.getClientRects().length) stops.push(el);
-    });
-    return stops;
+  function closeNav(returnFocus) {
+    if (!isOpen) return;
+    isOpen = false;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Открыть меню навигации");
+    nav.classList.remove("is-open");
+    document.body.classList.remove("nav-locked");
+    if (returnFocus) toggle.focus();
   }
 
-  function setNavOpen(open, returnFocus) {
-    if (!header || !navToggle || !siteNav) return;
+  toggle.addEventListener("click", function () {
+    if (isOpen) closeNav(true);
+    else openNav();
+  });
 
-    navIsOpen = open;
-    header.classList.toggle("nav-open", open);
-    document.body.classList.toggle("nav-locked", open);
-    navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-    navToggle.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  // Escape closes from anywhere
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && isOpen) closeNav(true);
+  });
 
-    toArray(backgroundParts).forEach(function (el) {
-      if (el.toggleAttribute) el.toggleAttribute("inert", open);
-    });
+  // Click outside nav or toggle closes
+  document.addEventListener("click", function (e) {
+    if (!isOpen) return;
+    if (!nav.contains(e.target) && !toggle.contains(e.target)) closeNav(false);
+  });
 
-    if (open) {
-      var firstLink = siteNav.querySelector(FOCUSABLE);
-      if (firstLink) firstLink.focus();
-    } else if (returnFocus) {
-      navToggle.focus();
-    }
+  // Close on nav link click (mobile: page navigation)
+  nav.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () { closeNav(false); });
+  });
+})();
+
+/* --------------------------------------------------------------------------
+   Header: add .is-scrolled class after user scrolls past 60px
+   -------------------------------------------------------------------------- */
+(function () {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+
+  function updateHeader() {
+    const scrolled = window.scrollY > 60;
+    header.classList.toggle("is-scrolled", scrolled);
   }
 
-  function keepFocusInsideNav(e) {
-    var stops = visibleNavStops();
-    if (stops.length < 2) return;
+  window.addEventListener("scroll", updateHeader, { passive: true });
+  updateHeader();
+})();
 
-    var first = stops[0];
-    var last = stops[stops.length - 1];
-    var index = stops.indexOf(document.activeElement);
+/* --------------------------------------------------------------------------
+   Reveal: light fade-in for .reveal elements via IntersectionObserver
+   Respects prefers-reduced-motion
+   -------------------------------------------------------------------------- */
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    if (index === -1) {
-      e.preventDefault();
-      (e.shiftKey ? last : first).focus();
-      return;
-    }
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  }
+  const items = document.querySelectorAll(".reveal");
+  if (!items.length) return;
 
-  if (navToggle && siteNav && header) {
-    navToggle.addEventListener("click", function () {
-      setNavOpen(!navIsOpen, navIsOpen);
-    });
-
-    /* Переход по якорю закрывает меню, но фокус не отбирается у целевой секции */
-    toArray(siteNav.querySelectorAll("a[href^='#']")).forEach(function (link) {
-      link.addEventListener("click", function () {
-        if (navIsOpen) setNavOpen(false, false);
-      });
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (!navIsOpen) return;
-      if (e.key === "Escape" || e.key === "Esc") {
-        setNavOpen(false, true);
-        return;
+  const observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
       }
-      if (e.key === "Tab") keepFocusInsideNav(e);
     });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.1 });
 
-    /* Уход на desktop-раскладку не должен оставлять меню и scroll lock включёнными */
-    var onBreakpointChange = function () {
-      if (!mobileNav.matches && navIsOpen) setNavOpen(false, false);
-    };
-
-    if (mobileNav.addEventListener) {
-      mobileNav.addEventListener("change", onBreakpointChange);
-    } else if (mobileNav.addListener) {
-      mobileNav.addListener(onBreakpointChange);
-    }
-  }
-
-  function onScroll() {
-    if (!header) return;
-    header.classList.toggle("is-scrolled", window.scrollY > 24);
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  var revealEls = document.querySelectorAll(".reveal");
-  var showAll = function () {
-    toArray(revealEls).forEach(function (el) {
-      el.classList.add("is-visible");
-    });
-  };
-
-  if (!revealEls.length) return;
-
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-  if (reduceMotion.matches || !("IntersectionObserver" in window)) {
-    showAll();
-  } else {
-    var io = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { root: null, rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-    );
-
-    toArray(revealEls).forEach(function (el) {
-      io.observe(el);
-    });
-
-    /* Включение «уменьшить движение» на ходу не должно оставить блоки скрытыми */
-    var onMotionChange = function () {
-      if (!reduceMotion.matches) return;
-      io.disconnect();
-      showAll();
-    };
-
-    if (reduceMotion.addEventListener) {
-      reduceMotion.addEventListener("change", onMotionChange);
-    } else if (reduceMotion.addListener) {
-      reduceMotion.addListener(onMotionChange);
-    }
-  }
+  items.forEach(function (el) { observer.observe(el); });
 })();

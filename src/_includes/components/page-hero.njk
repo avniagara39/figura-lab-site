@@ -1,0 +1,16 @@
+{#
+  Page Hero component
+  Usage: {% include "components/page-hero.njk" %}
+  Required page vars: pageTitle (h1), pageIntro (optional subtext)
+#}
+<section class="page-hero" aria-labelledby="page-title">
+  <div class="container">
+    {% if eyebrow %}
+    <p class="page-hero__eyebrow eyebrow">{{ eyebrow }}</p>
+    {% endif %}
+    <h1 class="page-hero__title" id="page-title">{{ pageTitle }}</h1>
+    {% if pageIntro %}
+    <p class="page-hero__intro">{{ pageIntro }}</p>
+    {% endif %}
+  </div>
+</section>
