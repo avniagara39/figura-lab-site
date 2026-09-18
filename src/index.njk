@@ -6,36 +6,46 @@ preloadHero: true
 ---
 
 {# =====================================================================
-   HOMEPAGE — Figura Lab
-   Stage 3 foundation. Маркетинговые тексты не написаны за Елену.
-   Использованы только утверждённые формулировки из TZ.md.
+   HOMEPAGE — Figura Lab · Stage 4A Visual System
+   Текст: только подтверждённые нейтральные формулировки.
+   Весь маркетинговый copy — PLACEHOLDER_CONTENT до одобрения Елены.
+   Фото: REPLACE_WITH_FINAL_ELENA_HERO — dev asset.
    ===================================================================== #}
 
-{# --- HERO ------------------------------------------------------------ #}
-<section class="hero" aria-labelledby="hero-title">
-  <div class="container">
-    <div class="hero__inner">
+{# ── 01 HERO ─────────────────────────────────────────────────────────── #}
+<section class="home-hero" aria-labelledby="home-hero-title">
+  <div class="container-wide">
+    <div class="home-hero__inner">
 
-      <div class="hero__content">
-        <p class="eyebrow hero__eyebrow">Figura Lab by Елена Бастуева</p>
-        <h1 class="hero__title" id="hero-title">
+      <div class="home-hero__content">
+        <p class="home-hero__label" aria-label="Figura Lab by Елена Бастуева">
+          Figura Lab · by Елена Бастуева
+        </p>
+
+        <h1 class="home-hero__title" id="home-hero-title">
           Не диета.<br>
           Не марафон.<br>
-          Не <em>наказание</em>.
+          Не&nbsp;<em>наказание</em>.
         </h1>
-        <p class="hero__tagline">
+
+        <p class="home-hero__sub">
           {# PLACEHOLDER_CONTENT — финальный tagline согласовывается с Еленой #}
           Пространство осознанного питания и бережной трансформации тела.
         </p>
-        <div class="hero__actions">
-          <a href="/kontakty/" class="btn btn-primary">Записаться на консультацию</a>
-          <a href="/metod/" class="btn btn-line">Узнать о методе</a>
+
+        <div class="home-hero__actions">
+          <a href="/kontakty/" class="btn btn-primary btn-lg">
+            Записаться на консультацию
+          </a>
+          <a href="/metod/" class="editorial-link" aria-label="Узнать подробнее о методе Figura Lab">
+            Узнать о методе <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
-      <div class="hero__media">
-        {# REPLACE_WITH_FINAL_ELENA_HERO — текущее фото используется только как dev asset #}
-        <div class="hero__photo-wrap">
+      <div class="home-hero__portrait-col">
+        {# REPLACE_WITH_FINAL_ELENA_HERO — dev asset, заменить финальным портретом #}
+        <div class="home-hero__portrait-wrap">
           <picture>
             <source
               type="image/webp"
@@ -43,18 +53,18 @@ preloadHero: true
                 /assets/img/elena/elena-hero-400.webp  400w,
                 /assets/img/elena/elena-hero-800.webp  800w,
                 /assets/img/elena/elena-hero-1040.webp 1040w"
-              sizes="(max-width: 768px) 90vw, 460px">
+              sizes="(max-width: 800px) 90vw, 420px">
             <source
               type="image/jpeg"
               srcset="
                 /assets/img/elena/elena-hero-400.jpg  400w,
                 /assets/img/elena/elena-hero-800.jpg  800w,
                 /assets/img/elena/elena-hero-1040.jpg 1040w"
-              sizes="(max-width: 768px) 90vw, 460px">
+              sizes="(max-width: 800px) 90vw, 420px">
             <img
               src="/assets/img/elena/elena-hero-800.jpg"
               alt="Елена Бастуева — нутрициолог и специалист по снижению веса"
-              class="hero__photo"
+              class="home-hero__portrait-img"
               width="800"
               height="1067"
               fetchpriority="high"
@@ -67,155 +77,247 @@ preloadHero: true
   </div>
 </section>
 
-{# --- МЕТОД preview ---------------------------------------------------- #}
-<section class="section section--linen" aria-labelledby="metod-preview-heading">
+{# ── 02 МЕТОД PREVIEW ───────────────────────────────────────────────── #}
+<section class="home-method" aria-labelledby="home-method-heading">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Метод</p>
-    <h2 class="section__heading" id="metod-preview-heading">
-      {# PLACEHOLDER_CONTENT #}
-      Система, которая работает с твоей жизнью, а не против неё
-    </h2>
-    <p class="section__intro">
-      {# PLACEHOLDER_CONTENT — финальный текст согласовывается с Еленой #}
-      Метод основан на реальных механизмах изменений: без жёстких ограничений, с пониманием причин и устойчивым результатом.
-    </p>
-    <a href="/metod/" class="section__link" aria-label="Подробнее о методе Figura Lab">
-      Подробнее о методе →
-    </a>
+    <div class="home-method__inner">
+
+      <div class="home-method__label-col">
+        <div class="home-method__label">
+          <p class="eyebrow">Метод</p>
+          <a href="/metod/" class="editorial-link">
+            Подробнее <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="home-method__content-col">
+        {# PLACEHOLDER_CONTENT — финальная цитата-заголовок согласовывается с Еленой #}
+        <p class="home-method__statement" id="home-method-heading">
+          Устойчивый результат начинается с понимания, а не с запрета
+        </p>
+        <p class="home-method__text">
+          {# PLACEHOLDER_CONTENT #}
+          Метод Figura Lab — это не очередная диетическая система.
+          Это работа с реальными механизмами изменений: без жёстких ограничений,
+          с уважением к вашему телу и вашей жизни.
+        </p>
+      </div>
+
+    </div>
   </div>
 </section>
 
-{# --- ПРОГРАММЫ preview ------------------------------------------------ #}
-<section class="section" aria-labelledby="programs-preview-heading">
+{# ── 03 ПРОГРАММЫ PREVIEW ────────────────────────────────────────────── #}
+<section class="home-programs" aria-labelledby="home-programs-heading">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Программы</p>
-    <h2 class="section__heading" id="programs-preview-heading">
-      {# PLACEHOLDER_CONTENT #}
-      Формат работы, который подходит именно вам
-    </h2>
 
-    <div class="card-grid" role="list">
+    <div class="home-programs__header">
+      <div class="home-programs__header-text">
+        <p class="eyebrow">Программы</p>
+        <h2 class="home-programs__header-heading" id="home-programs-heading">
+          {# PLACEHOLDER_CONTENT #}
+          Формат работы, который подходит вам
+        </h2>
+      </div>
+      <a href="/programmy/" class="editorial-link" aria-label="Все программы Figura Lab">
+        Все программы <span aria-hidden="true">→</span>
+      </a>
+    </div>
 
-      {# PLACEHOLDER: программы, их названия и описания требуют VERIFY_WITH_ELENA (V-01, V-02) #}
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Программа</p>
-        <h3 class="card__title">VERIFY_WITH_ELENA: название программы 1</h3>
-        <p class="card__body">
-          Для кого: VERIFY_WITH_ELENA<br>
-          Формат и длительность: VERIFY_WITH_ELENA<br>
-          Стоимость: VERIFY_WITH_ELENA · LEGAL_REVIEW
-        </p>
-        <span class="placeholder-notice">Данные уточняются у Елены</span>
+    <div class="programs-list" role="list">
+
+      {# PLACEHOLDER: названия, цены, форматы — VERIFY_WITH_ELENA (V-01, V-02) #}
+      <article class="program-card" role="listitem" aria-labelledby="prog-prev-1">
+        <div>
+          <p class="eyebrow program-card__eyebrow">Программа · формат уточняется</p>
+          <h3 class="program-card__title" id="prog-prev-1">
+            VERIFY_WITH_ELENA — название программы
+          </h3>
+          <p class="program-card__meta">
+            Для кого · длительность · стоимость: уточняются у Елены
+          </p>
+        </div>
+        <div class="program-card__cta">
+          <a href="/kontakty/" class="btn btn-line">Узнать подробнее</a>
+        </div>
       </article>
 
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Программа</p>
-        <h3 class="card__title">VERIFY_WITH_ELENA: название программы 2</h3>
-        <p class="card__body">
-          Для кого: VERIFY_WITH_ELENA<br>
-          Формат и длительность: VERIFY_WITH_ELENA<br>
-          Стоимость: VERIFY_WITH_ELENA · LEGAL_REVIEW
+      <article class="program-card" role="listitem" aria-labelledby="prog-prev-2">
+        <div>
+          <p class="eyebrow program-card__eyebrow">Программа · формат уточняется</p>
+          <h3 class="program-card__title" id="prog-prev-2">
+            VERIFY_WITH_ELENA — название программы
+          </h3>
+          <p class="program-card__meta">
+            Для кого · длительность · стоимость: уточняются у Елены
+          </p>
+        </div>
+        <div class="program-card__cta">
+          <a href="/kontakty/" class="btn btn-line">Узнать подробнее</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+{# ── 04 ИСТОРИИ / РЕЗУЛЬТАТЫ PREVIEW ────────────────────────────────── #}
+<section class="home-stories" aria-labelledby="home-stories-heading">
+  <div class="container">
+
+    <div class="home-stories__header">
+      <div>
+        <p class="eyebrow">Результаты</p>
+        <h2 class="home-stories__heading" id="home-stories-heading">
+          Истории реальных изменений
+        </h2>
+      </div>
+      <a href="/rezultaty/" class="editorial-link" aria-label="Все истории клиентов">
+        Все истории <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    {# PLACEHOLDER: отзывы добавляются только с письменного согласия клиента.
+       Сейчас — premium story shell. LEGAL_REVIEW (V-06). #}
+    <div class="stories-grid" role="list">
+
+      <article class="story-card" role="listitem">
+        <span class="story-card__mark" aria-hidden="true">«</span>
+        <p class="story-card__quote">
+          История ожидает публикации. Отзыв будет добавлен после получения
+          письменного согласия клиента.
         </p>
-        <span class="placeholder-notice">Данные уточняются у Елены</span>
+        <div class="story-card__sep" aria-hidden="true"></div>
+        <p class="story-card__author">VERIFY_WITH_ELENA</p>
+        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
+      </article>
+
+      <article class="story-card" role="listitem">
+        <span class="story-card__mark" aria-hidden="true">«</span>
+        <p class="story-card__quote">
+          История ожидает публикации. Отзыв будет добавлен после получения
+          письменного согласия клиента.
+        </p>
+        <div class="story-card__sep" aria-hidden="true"></div>
+        <p class="story-card__author">VERIFY_WITH_ELENA</p>
+        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
+      </article>
+
+      <article class="story-card" role="listitem">
+        <span class="story-card__mark" aria-hidden="true">«</span>
+        <p class="story-card__quote">
+          История ожидает публикации. Отзыв будет добавлен после получения
+          письменного согласия клиента.
+        </p>
+        <div class="story-card__sep" aria-hidden="true"></div>
+        <p class="story-card__author">VERIFY_WITH_ELENA</p>
+        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
       </article>
 
     </div>
 
-    <a href="/programmy/" class="section__link" aria-label="Все программы Figura Lab">
-      Все программы →
-    </a>
   </div>
 </section>
 
-{# --- РЕЗУЛЬТАТЫ preview (3 истории) ----------------------------------- #}
-<section class="section section--linen" aria-labelledby="results-preview-heading">
+{# ── 05 ЕЛЕНА PREVIEW ────────────────────────────────────────────────── #}
+<section class="home-elena" aria-labelledby="home-elena-heading">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Результаты</p>
-    <h2 class="section__heading" id="results-preview-heading">
-      Истории реальных изменений
-    </h2>
+    <div class="home-elena__inner">
 
-    {# PLACEHOLDER: отзывы переносятся только с письменного согласия (LEGAL_REVIEW, V-06) #}
-    <div class="card-grid" role="list">
+      <div class="home-elena__portrait-col">
+        {# REPLACE_WITH_FINAL_ELENA_HERO — dev asset #}
+        <div class="home-elena__portrait-wrap">
+          <picture>
+            <source
+              type="image/webp"
+              srcset="
+                /assets/img/elena/elena-hero-400.webp 400w,
+                /assets/img/elena/elena-hero-800.webp 800w"
+              sizes="(max-width: 760px) 80vw, 360px">
+            <img
+              src="/assets/img/elena/elena-hero-800.jpg"
+              alt="Елена Бастуева — нутрициолог, основатель Figura Lab"
+              class="home-elena__portrait-img"
+              width="800"
+              height="1067"
+              decoding="async"
+              loading="lazy">
+          </picture>
+        </div>
+      </div>
 
-      <article class="testimonial card--placeholder" role="listitem">
-        <p class="testimonial__quote">
-          «PLACEHOLDER_CONTENT — отзыв будет добавлен с письменного согласия клиента»
+      <div class="home-elena__content">
+        <p class="eyebrow home-elena__eyebrow">Елена Бастуева</p>
+        <h2 class="home-elena__heading" id="home-elena-heading">
+          {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
+          Нутрициолог и специалист по снижению веса
+        </h2>
+        <p class="home-elena__text">
+          {# PLACEHOLDER_CONTENT — биография и квалификация: VERIFY_WITH_ELENA (V-01) #}
+          Образование, опыт и подход к работе: данные уточняются у Елены.
+          Этот раздел будет заполнен после предоставления биографии и сертификатов.
         </p>
-        <p class="testimonial__author">Имя — VERIFY_WITH_ELENA</p>
-        <p class="testimonial__result">Результат — VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
+        <a href="/elena/" class="editorial-link" aria-label="Страница Елены Бастуевой">
+          Об Елене <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ── 06 ЖУРНАЛ PREVIEW ───────────────────────────────────────────────── #}
+<section class="home-journal" aria-labelledby="home-journal-heading">
+  <div class="container">
+
+    <div class="home-journal__header">
+      <div>
+        <p class="eyebrow">Журнал</p>
+        <h2 class="home-journal__heading" id="home-journal-heading">
+          Экспертные материалы
+        </h2>
+      </div>
+      <a href="/zhurnal/" class="editorial-link" aria-label="Все материалы журнала">
+        Все материалы <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    {# PLACEHOLDER: статьи добавляются при наличии готового контента от Елены #}
+    <div class="journal-grid" role="list">
+
+      <article class="journal-card" role="listitem">
+        <span class="journal-card__tag">Питание · PLACEHOLDER_CONTENT</span>
+        <h3 class="journal-card__title">
+          PLACEHOLDER_CONTENT — тема материала
+        </h3>
+        <p class="journal-card__desc">
+          PLACEHOLDER_CONTENT — краткое описание. Статья будет добавлена при наличии
+          готового авторского контента.
+        </p>
+        <a href="/zhurnal/" class="journal-card__link" aria-label="Читать в журнале">
+          Читать →
+        </a>
       </article>
 
-      <article class="testimonial card--placeholder" role="listitem">
-        <p class="testimonial__quote">
-          «PLACEHOLDER_CONTENT — отзыв будет добавлен с письменного согласия клиента»
+      <article class="journal-card" role="listitem">
+        <span class="journal-card__tag">Метод · PLACEHOLDER_CONTENT</span>
+        <h3 class="journal-card__title">
+          PLACEHOLDER_CONTENT — тема материала
+        </h3>
+        <p class="journal-card__desc">
+          PLACEHOLDER_CONTENT — краткое описание. Статья будет добавлена при наличии
+          готового авторского контента.
         </p>
-        <p class="testimonial__author">Имя — VERIFY_WITH_ELENA</p>
-        <p class="testimonial__result">Результат — VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
-      </article>
-
-      <article class="testimonial card--placeholder" role="listitem">
-        <p class="testimonial__quote">
-          «PLACEHOLDER_CONTENT — отзыв будет добавлен с письменного согласия клиента»
-        </p>
-        <p class="testimonial__author">Имя — VERIFY_WITH_ELENA</p>
-        <p class="testimonial__result">Результат — VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
+        <a href="/zhurnal/" class="journal-card__link" aria-label="Читать в журнале">
+          Читать →
+        </a>
       </article>
 
     </div>
 
-    <a href="/rezultaty/" class="section__link" aria-label="Все истории клиентов Figura Lab">
-      Все истории →
-    </a>
   </div>
 </section>
 
-{# --- ЕЛЕНА preview ----------------------------------------------------- #}
-<section class="section" aria-labelledby="elena-preview-heading">
-  <div class="container">
-    <p class="eyebrow section__eyebrow">Елена Бастуева</p>
-    <h2 class="section__heading" id="elena-preview-heading">
-      {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
-      Эксперт, который прошёл этот путь сам
-    </h2>
-    <p class="section__intro">
-      {# PLACEHOLDER_CONTENT — биография и квалификация: VERIFY_WITH_ELENA (V-01) #}
-      Нутрициолог, специалист по снижению веса.
-      Образование и сертификаты: VERIFY_WITH_ELENA.
-    </p>
-    <a href="/elena/" class="section__link" aria-label="Страница Елены Бастуевой">
-      Об Елене →
-    </a>
-  </div>
-</section>
-
-{# --- ЖУРНАЛ preview ---------------------------------------------------- #}
-<section class="section section--linen" aria-labelledby="zhurnal-preview-heading">
-  <div class="container">
-    <p class="eyebrow section__eyebrow">Журнал</p>
-    <h2 class="section__heading" id="zhurnal-preview-heading">
-      Экспертные материалы о питании и теле
-    </h2>
-
-    {# PLACEHOLDER: статьи журнала будут добавлены при наличии контента #}
-    <div class="card-grid" role="list">
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Статья</p>
-        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT</p>
-      </article>
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Статья</p>
-        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT</p>
-      </article>
-    </div>
-
-    <a href="/zhurnal/" class="section__link" aria-label="Все материалы журнала Figura Lab">
-      В журнал →
-    </a>
-  </div>
-</section>
-
-{# --- ФИНАЛЬНЫЙ CTA ---------------------------------------------------- #}
+{# ── 07 ФИНАЛЬНЫЙ CTA ────────────────────────────────────────────────── #}
 {% include "components/cta-block.njk" %}
