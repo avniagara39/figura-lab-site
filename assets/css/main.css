@@ -131,8 +131,8 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
-  --space-section:    clamp(4.5rem, 8.5vw, 9rem);   /* 72 → 144 */
-  --space-section-sm: clamp(3.5rem, 6vw, 6rem);
+  --space-section:    clamp(3.25rem, 5.4vw, 6.25rem); /* 52 → 100 */
+  --space-section-sm: clamp(2.5rem, 4.2vw, 4.5rem);
 
   /* Layout */
   --container:      1200px;
@@ -141,7 +141,8 @@
   --measure-narrow: 38rem;
   --gutter:         clamp(1.25rem, 4vw, 3rem);
   --header-h:       4.5rem;
-  --rail-w:         5.5rem;
+  --rail-w:         5.75rem;
+  --chapter-entry:  2.5rem;  /* 40px — header → first meaningful content */
 
   /* Shape */
   --radius-pill:    999px;
@@ -166,7 +167,7 @@
   --t-reveal: 900ms;
 
   /* Chapter mechanics */
-  --arc-h: 4rem;
+  --arc-h: 3.15rem;
 }
 
 @media (min-width: 64rem) {
@@ -180,7 +181,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  /* Chapter top sits at the sticky header edge; --chapter-entry lives inside the scene. */
+  scroll-padding-top: var(--header-h);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -357,20 +359,22 @@ main:focus { outline: none; }
   top: 0;
   z-index: 100;
   height: var(--header-h);
+  isolation: isolate;
+  background: var(--color-bg);
   view-transition-name: site-header;
 }
 .site-header::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(247, 242, 234, 0.86);
-  backdrop-filter: blur(14px) saturate(120%);
-  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  background: rgba(247, 242, 234, 0.94);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
   border-bottom: 1px solid transparent;
   transition: border-color var(--t-base), background var(--t-base);
 }
 .site-header.is-scrolled::before {
-  background: rgba(247, 242, 234, 0.95);
+  background: rgba(247, 242, 234, 0.98);
   border-bottom-color: var(--color-border);
 }
 
@@ -664,28 +668,28 @@ body.nav-locked { overflow: hidden; }
 .chapter {
   --chapter-bg: var(--color-bg);
   position: relative;
-  z-index: 1;
+  z-index: 2;
   background: var(--chapter-bg);
   padding-block: var(--space-section);
-  scroll-margin-top: var(--header-h);
 }
 .chapter--light { --chapter-bg: var(--color-bg-light); }
 .chapter--sand  { --chapter-bg: var(--color-sand-soft); }
 .chapter--sand-deep { --chapter-bg: var(--color-sand); }
 
-/* Chapter that rises and overlaps the previous one */
+/* Chapter that rises and overlaps the previous one on inner pages.
+   Homepage resting state overrides this in 9b — no merged scenes after rail nav. */
 .chapter--arc {
   margin-top: calc(-1 * var(--arc-h));
-  padding-top: calc(var(--space-section) + var(--arc-h) * 0.5);
+  padding-top: var(--space-section);
   border-radius: 50% 50% 0 0 / var(--arc-h) var(--arc-h) 0 0;
   box-shadow: var(--shadow-rise);
 }
 /* Chapter heading block */
 .chapter-head {
   display: grid;
-  gap: var(--space-6) var(--space-12);
+  gap: var(--space-5) var(--space-12);
   align-items: end;
-  margin-bottom: var(--space-12);
+  margin-bottom: clamp(1.75rem, 3.2vw, 2.75rem);
 }
 @media (min-width: 56rem) {
   .chapter-head--split { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -701,6 +705,76 @@ body.nav-locked { overflow: hidden; }
 }
 
 /* --------------------------------------------------------------------------
+   9b. HOMEPAGE CHAPTER VIEWPORT — scene containers
+   Desktop/tablet landscape only. Inner pages keep normal document flow.
+   Resting state: one complete chapter in the viewport.
+   Transition state (immersive / portrait / tools expand) may overlap
+   while in motion, then resolve into a clean scene.
+   -------------------------------------------------------------------------- */
+@media (min-width: 64rem) {
+  html:has(body.home) {
+    scroll-snap-type: y proximity;
+  }
+
+  body.home .chapter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
+    min-height: calc(100svh - var(--header-h));
+    padding-top: var(--chapter-entry);
+    padding-bottom: var(--space-section-sm);
+    overflow: clip;
+    isolation: isolate;
+    scroll-margin-top: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+  body.home .chapter > * {
+    width: 100%;
+  }
+
+  /* Resting chapters do not pull the previous scene into view. */
+  body.home .chapter.chapter--arc {
+    margin-top: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Process keeps overflow visible so the pinned aside can travel inside the scene. */
+  body.home #chapter-process {
+    overflow: visible;
+  }
+  body.home #chapter-process .process__aside {
+    top: calc(var(--header-h) + var(--chapter-entry));
+  }
+
+  /* Transition interlude is not a snap target. */
+  body.home .immersive {
+    scroll-snap-align: none;
+  }
+
+  /* Nested tools wrappers participate in vertical composition. */
+  body.home .tools-band__track,
+  body.home .tools-band__stage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe center;
+    flex: 1 0 auto;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(body.home) { scroll-snap-type: none; }
+}
+
+@media (max-width: 63.99em) {
+  html:has(body.home) { scroll-snap-type: none; }
+}
+
+/* --------------------------------------------------------------------------
    10. CHAPTER RAIL — desktop-only progress navigation
    -------------------------------------------------------------------------- */
 .chapter-rail { display: none; }
@@ -710,22 +784,24 @@ body.nav-locked { overflow: hidden; }
     display: block;
     position: fixed;
     top: 50%;
-    right: max(1rem, calc((100vw - var(--container)) / 2 - var(--rail-w) - 1rem));
+    right: max(0.85rem, calc((100vw - var(--container)) / 2 - var(--rail-w) - 0.85rem));
     z-index: 60;
     width: var(--rail-w);
     transform: translateY(-50%);
+    pointer-events: none;
   }
   .chapter-rail__list {
     display: flex;
     flex-direction: column;
-    gap: 0.125rem;
+    gap: 0.05rem;
     border-left: 1px solid var(--color-border);
+    pointer-events: auto;
   }
   .chapter-rail__link {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    padding: 0.45rem 0 0.45rem 0.75rem;
+    gap: 0.08rem;
+    padding: 0.38rem 0 0.38rem 0.7rem;
     margin-left: -1px;
     border-left: 1px solid transparent;
     text-decoration: none;
@@ -741,9 +817,10 @@ body.nav-locked { overflow: hidden; }
     transition: color var(--t-fast);
   }
   .chapter-rail__label {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     line-height: 1.25;
     letter-spacing: 0.01em;
+    max-width: 6.6rem;
   }
   .chapter-rail__link:hover {
     color: var(--color-primary-hover);
@@ -756,18 +833,19 @@ body.nav-locked { overflow: hidden; }
   .chapter-rail__link[aria-current="true"] .chapter-rail__num { color: var(--color-primary); }
   .chapter-rail__link:focus-visible { outline-offset: 1px; }
 
-  /* The rail owns the right gutter from here up, so decorative hero bleed
-     stops at the container edge instead of sliding under it. */
-  .home-hero__figure::before { inset: -6% 0 8% 12%; }
-  .home-hero__figure::after { right: 0; }
+  /* Decorative hero wash stops at the container, not under the rail. */
+  .home-hero__portrait-wash { right: 8%; }
 }
 
 /* --------------------------------------------------------------------------
    11. HOME — 01 HERO
    -------------------------------------------------------------------------- */
 .home-hero {
-  padding-top: clamp(2.5rem, 5vw, 4.5rem);
+  z-index: 1;
+  padding-top: clamp(1.75rem, 3.2vw, 2.85rem);
+  padding-bottom: var(--space-section);
   overflow: clip;
+  scroll-margin-top: 0;
 }
 .home-hero__inner {
   display: grid;
@@ -826,41 +904,35 @@ body.nav-locked { overflow: hidden; }
 }
 .home-hero__keywords { padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
 
-/* Portrait — arch frame on a warm sand panel */
+/* Portrait — quiet editorial stage, not a decorative arch window.
+   The photo file can be swapped later without changing this layout. */
 .home-hero__figure { position: relative; margin: 0; }
-.home-hero__figure::before {
-  content: "";
-  position: absolute;
-  inset: -6% -8% 8% 12%;
-  background: var(--color-sand-soft);
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
-  z-index: 0;
+.home-hero__portrait-stage {
+  position: relative;
+  max-width: 30rem;
+  margin-inline: auto;
 }
-.home-hero__figure::after {
-  content: "";
+.home-hero__portrait-wash {
   position: absolute;
-  right: -4%;
-  bottom: 2%;
-  width: 46%;
-  aspect-ratio: 1;
-  background: radial-gradient(circle at 50% 50%, rgba(199, 149, 147, 0.28), transparent 68%);
-  border-radius: 50%;
   z-index: 0;
+  inset: 10% 14% 6% -6%;
+  background:
+    linear-gradient(165deg, #EFE8DD 0%, #E6DCD0 52%, #D9CFC3 100%);
+  border-radius: 1.35rem;
   pointer-events: none;
 }
 .home-hero__portrait-wrap {
   position: relative;
   z-index: 1;
-  max-width: 30rem;
-  margin-inline: auto;
 }
 .home-hero__portrait {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: 50% 26%;
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
-  box-shadow: var(--shadow-photo);
+  object-position: 50% 22%;
+  border-radius: 1.15rem;
+  box-shadow: 0 28px 64px -36px rgba(48, 47, 43, 0.32);
+  background: #E7DFD4;
 }
 .home-hero__meta {
   position: relative;
@@ -870,7 +942,7 @@ body.nav-locked { overflow: hidden; }
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-6);
-  margin-top: var(--space-8);
+  margin-top: var(--space-6);
 }
 .home-hero__meta .hand-note { flex: 0 1 11rem; }
 .home-hero__caption { font-size: var(--fs-small); line-height: 1.5; }
@@ -892,42 +964,50 @@ body.nav-locked { overflow: hidden; }
    -------------------------------------------------------------------------- */
 .method-block__inner {
   display: grid;
-  gap: clamp(2.5rem, 5vw, 5rem);
+  gap: clamp(2rem, 4.5vw, 4.25rem);
   align-items: center;
 }
 @media (min-width: 56rem) {
-  .method-block__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr); }
+  .method-block__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
 }
-.method-block__title { font-size: var(--fs-h2); margin-bottom: var(--space-6); }
+.method-block__title { font-size: var(--fs-h2); margin-bottom: var(--space-5); }
 .method-block__statement {
   font-size: clamp(1.375rem, 2.2vw, 2rem);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   max-width: 24em;
 }
 .method-block__body {
   max-width: var(--measure-narrow);
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-8);
 }
 .method-block__body p + p { margin-top: var(--space-5); }
 .method-block__body p { color: var(--color-text-soft); }
 
+.method-block__visual { display: grid; justify-items: center; }
 .method-block__figure {
   position: relative;
   display: grid;
   place-items: center;
-  max-width: 24rem;
-  margin-inline: auto;
-  padding: clamp(2rem, 3.5vw, 3rem);
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
+  width: min(100%, 22rem);
+  margin: 0;
+  padding: clamp(1.25rem, 2.4vw, 2rem);
+}
+.method-block__figure::before {
+  content: "";
+  position: absolute;
+  inset: 6%;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(252, 250, 246, 0.95) 0%, rgba(240, 232, 220, 0.35) 62%, transparent 74%);
+  pointer-events: none;
 }
 .method-block__symbol {
-  width: min(100%, 16rem);
+  position: relative;
+  z-index: 1;
+  width: min(100%, 18.5rem);
   aspect-ratio: 1;
   object-fit: contain;
 }
-.method-block__note { max-width: 24rem; margin: var(--space-8) auto 0; }
+.method-block__note { max-width: 22rem; margin: var(--space-6) auto 0; text-align: left; }
 
 /* --------------------------------------------------------------------------
    13. HOME — 03 ДЛЯ КОГО
@@ -943,7 +1023,7 @@ body.nav-locked { overflow: hidden; }
 .audience-card {
   display: flex;
   flex-direction: column;
-  padding: var(--space-6) var(--space-6) var(--space-8);
+  padding: var(--space-5) var(--space-5) var(--space-6);
   background: var(--color-bg-light);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -971,9 +1051,9 @@ body.nav-locked { overflow: hidden; }
 .immersive {
   --p: 1;
   position: relative;
-  padding-block: var(--space-section);
+  z-index: 2;
+  padding-block: var(--space-section-sm);
   background: var(--color-bg-light);
-  overflow: clip;
 }
 .immersive__stage {
   display: grid;
@@ -1020,7 +1100,7 @@ body.nav-locked { overflow: hidden; }
 
 @media (min-width: 64rem) {
   .motion .immersive { padding-block: 0; }
-  .motion .immersive__track { height: 260vh; }
+  .motion .immersive__track { height: 210vh; }
   .motion .immersive__stage {
     position: sticky;
     top: var(--header-h);
@@ -1029,29 +1109,29 @@ body.nav-locked { overflow: hidden; }
     padding-inline: 0;
   }
   .motion .immersive__frame {
-    width: calc(34% + (66% * var(--p)));
-    height: calc(56% + (44% * var(--p)));
-    border-radius: calc(var(--radius-card) - (12px * var(--p)));
+    width: calc(36% + (64% * var(--p)));
+    height: calc(52% + (48% * var(--p)));
+    border-radius: calc(var(--radius-card) - (10px * var(--p)));
     box-shadow: 0 40px 90px -50px rgba(48, 47, 43, calc(0.4 - 0.25 * var(--p)));
     transition: none;
   }
   .motion .immersive__img { aspect-ratio: auto; }
-  .motion .immersive__scrim { opacity: calc(0.25 + 0.75 * var(--p)); }
-  .motion .immersive__overlay { opacity: clamp(0, calc((var(--p) - 0.45) * 2.6), 1); }
+  .motion .immersive__scrim { opacity: calc(0.22 + 0.78 * var(--p)); }
+  .motion .immersive__overlay { opacity: clamp(0, calc((var(--p) - 0.38) * 2.4), 1); }
 }
 
 /* --------------------------------------------------------------------------
    15. HOME — 04 КАК РАБОТАЕТ МЕТОД (pinned storytelling)
    -------------------------------------------------------------------------- */
-.process__inner { display: grid; gap: clamp(2.5rem, 5vw, 5rem); }
+.process__inner { display: grid; gap: clamp(2rem, 4.5vw, 4.25rem); }
 @media (min-width: 64rem) {
   .process__inner { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
-  .process__aside { position: sticky; top: calc(var(--header-h) + 3.5rem); align-self: start; }
+  .process__aside { position: sticky; top: calc(var(--header-h) + var(--chapter-entry)); align-self: start; }
 }
-.process__title { font-size: var(--fs-h2); margin-bottom: var(--space-6); }
+.process__title { font-size: var(--fs-h2); margin-bottom: var(--space-5); }
 .process__lead { max-width: 24em; margin-bottom: var(--space-8); }
 
-.process__stages { display: flex; flex-direction: column; gap: clamp(2.5rem, 6vw, 5.5rem); }
+.process__stages { display: flex; flex-direction: column; gap: clamp(1.75rem, 4vw, 3.25rem); }
 .process__stage {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -1073,8 +1153,8 @@ body.nav-locked { overflow: hidden; }
 
 @media (min-width: 64rem) {
   .motion .process__stage {
-    opacity: 0.45;
-    transform: translateY(0.75rem);
+    opacity: 0.58;
+    transform: translateY(0.4rem);
     transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
   }
   .motion .process__stage.is-active { opacity: 1; transform: none; }
@@ -1209,7 +1289,8 @@ body.nav-locked { overflow: hidden; }
 .story-card {
   display: flex;
   flex-direction: column;
-  padding: var(--space-8) var(--space-6);
+  min-height: 100%;
+  padding: var(--space-6) var(--space-6) var(--space-6);
   background: var(--color-bg-light);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -1229,24 +1310,31 @@ body.nav-locked { overflow: hidden; }
 /* --------------------------------------------------------------------------
    18. HOME — 07 ЕЛЕНА (portrait reveal)
    -------------------------------------------------------------------------- */
-.elena-block__inner { display: grid; gap: clamp(2.5rem, 5vw, 5rem); align-items: center; }
+.elena-block__inner { display: grid; gap: clamp(2rem, 4.5vw, 4.25rem); align-items: center; }
 @media (min-width: 56rem) {
-  .elena-block__inner { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  .elena-block__inner { grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr); }
 }
-.elena-block__figure { position: relative; margin: 0; max-width: 26rem; }
-.elena-block__figure::before {
-  content: "";
+.elena-block__figure { position: relative; margin: 0; max-width: 26rem; overflow: clip; }
+.elena-block__portrait-stage { position: relative; overflow: clip; }
+.elena-block__portrait-wash {
   position: absolute;
-  inset: 6% -7% -6% 10%;
-  background: var(--color-sand);
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
+  inset: 10% 0 0 8%;
+  background: linear-gradient(165deg, #E8DFD4 0%, #DDD3C6 100%);
+  border-radius: 1.15rem;
+  z-index: 0;
 }
-.elena-block__portrait-wrap { position: relative; overflow: hidden; border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card); }
+.elena-block__portrait-wrap {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 1.15rem;
+}
 .elena-block__portrait {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  object-position: 50% 24%;
+  object-position: 50% 22%;
+  background: #E7DFD4;
 }
 .elena-block__title { font-size: var(--fs-h2); margin-bottom: var(--space-3); }
 .elena-block__role {
@@ -1254,46 +1342,32 @@ body.nav-locked { overflow: hidden; }
   font-size: var(--fs-h4);
   font-style: italic;
   color: var(--color-primary);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
 }
 .elena-block__body { max-width: var(--measure-narrow); margin-bottom: var(--space-8); }
 .elena-block__body p { color: var(--color-text-soft); }
 .elena-block__body p + p { margin-top: var(--space-5); }
-.elena-block__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-6) var(--space-10); }
+.elena-block__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-5) var(--space-8); }
 .elena-block__foot .hand-note { flex: 0 1 13rem; }
 
 /* Stacked layout: the figure already spans the column, so no side bleed */
 @media (max-width: 55.99em) {
   .elena-block__figure { max-width: 24rem; margin-inline: auto; }
-  .elena-block__figure::before { inset: 6% 0 -6% 8%; }
-}
-
-/* Portrait reveal: restricted frame -> expanding crop -> final composition */
-@media (prefers-reduced-motion: no-preference) {
-  .motion .portrait-reveal .elena-block__portrait {
-    clip-path: inset(9% 16% 9% 16% round var(--arch) var(--arch) var(--radius-card) var(--radius-card));
-    transform: scale(1.1);
-    transition:
-      clip-path var(--t-reveal) var(--ease-out),
-      transform calc(var(--t-reveal) + 200ms) var(--ease-out);
-  }
-  .motion .portrait-reveal.is-visible .elena-block__portrait {
-    clip-path: inset(0 0 0 0 round var(--arch) var(--arch) var(--radius-card) var(--radius-card));
-    transform: none;
-  }
+  .elena-block__portrait-wash { inset: 8% 0 0 6%; }
 }
 
 /* --------------------------------------------------------------------------
    19. HOME / PAGE — JOURNAL
    -------------------------------------------------------------------------- */
-.journal-grid { display: grid; gap: var(--space-6); }
+.journal-grid { display: grid; gap: var(--space-6); align-items: stretch; }
 @media (min-width: 48rem) { .journal-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 64rem) { .journal-grid { grid-template-columns: 1.3fr 1fr 1fr; } }
+@media (min-width: 64rem) { .journal-grid { grid-template-columns: 1.35fr 1fr 1fr; } }
 
 .journal-card {
   display: flex;
   flex-direction: column;
-  padding: var(--space-6) var(--space-6) var(--space-8);
+  height: 100%;
+  padding: var(--space-6) var(--space-6) var(--space-6);
   background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
@@ -1322,28 +1396,32 @@ body.nav-locked { overflow: hidden; }
    -------------------------------------------------------------------------- */
 .tools-band {
   position: relative;
-  overflow: clip;
+  z-index: 2;
+  --p: 1;
 }
+.tools-band__track,
+.tools-band__stage { position: relative; }
 .tools-band__bg {
   position: absolute;
   inset: 0;
   z-index: 0;
+  overflow: hidden;
   pointer-events: none;
 }
 .tools-band__bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 45%;
-  opacity: 0.4;
+  object-position: 50% 42%;
+  opacity: 0.46;
 }
 .tools-band__bg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, var(--color-sand-soft) 8%, rgba(240, 232, 220, 0.72) 48%, rgba(240, 232, 220, 0.4) 100%);
+  background: linear-gradient(100deg, var(--color-sand-soft) 6%, rgba(240, 232, 220, 0.78) 46%, rgba(240, 232, 220, 0.42) 100%);
 }
-.tools-band__inner { position: relative; z-index: 1; display: grid; gap: clamp(2rem, 4vw, 4rem); }
+.tools-band__inner { position: relative; z-index: 1; display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
 @media (min-width: 64rem) {
   .tools-band__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); align-items: center; }
 }
@@ -1384,15 +1462,15 @@ body.nav-locked { overflow: hidden; }
 .cta-block {
   --chapter-bg: var(--color-bg-light);
   position: relative;
-  overflow: clip;
+  z-index: 2;
 }
-.cta-block__inner { display: grid; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
+.cta-block__inner { display: grid; gap: clamp(2rem, 4.5vw, 3.75rem); align-items: center; }
 @media (min-width: 64rem) {
   .cta-block__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
 }
 .cta-block__eyebrow { margin-bottom: var(--space-5); }
-.cta-block__heading { font-size: var(--fs-h2); margin-bottom: var(--space-6); }
-.cta-block__text { max-width: 30em; margin-bottom: var(--space-10); }
+.cta-block__heading { font-size: var(--fs-h2); margin-bottom: var(--space-5); }
+.cta-block__text { max-width: 30em; margin-bottom: var(--space-8); }
 .cta-block__direct { display: grid; gap: var(--space-5); }
 .cta-block__direct-label {
   font-size: var(--fs-label);
@@ -1401,7 +1479,7 @@ body.nav-locked { overflow: hidden; }
   text-transform: uppercase;
   color: var(--color-text-soft);
 }
-.cta-block__note { margin-top: var(--space-10); }
+.cta-block__note { margin-top: var(--space-8); }
 
 /* Contact channel chips */
 .channel-list { display: flex; flex-wrap: wrap; gap: var(--space-3); }
@@ -1429,14 +1507,17 @@ body.nav-locked { overflow: hidden; }
 .site-footer {
   position: relative;
   z-index: 3;
-  margin-top: calc(-1 * var(--arc-h));
-  padding-top: calc(var(--space-20) + var(--arc-h) * 0.5);
+  padding-top: var(--space-20);
   padding-bottom: var(--space-10);
   background: var(--color-sand);
   color: var(--color-text);
+  view-transition-name: site-footer;
+}
+body:not(.home) .site-footer {
+  margin-top: calc(-1 * var(--arc-h));
+  padding-top: calc(var(--space-20) + var(--arc-h) * 0.5);
   border-radius: 50% 50% 0 0 / var(--arc-h) var(--arc-h) 0 0;
   box-shadow: var(--shadow-rise);
-  view-transition-name: site-footer;
 }
 .site-footer a { color: var(--color-primary-hover); }
 
@@ -1824,16 +1905,105 @@ body.nav-locked { overflow: hidden; }
    26. MOTION — reveal on scroll (content is always readable without it)
    -------------------------------------------------------------------------- */
 .reveal { opacity: 1; }
+.reveal-group > * { opacity: 1; }
 .motion .reveal {
   opacity: 0;
-  transform: translateY(1.25rem);
+  transform: translateY(1.1rem);
   transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
 }
 .motion .reveal.is-visible { opacity: 1; transform: none; }
-.motion .reveal--rise { transform: translateY(3rem); }
-.motion .reveal--delay-1 { transition-delay: 90ms; }
-.motion .reveal--delay-2 { transition-delay: 180ms; }
-.motion .reveal--delay-3 { transition-delay: 270ms; }
+.motion .reveal--rise { transform: translateY(2.25rem); }
+.motion .reveal--delay-1 { transition-delay: 80ms; }
+.motion .reveal--delay-2 { transition-delay: 150ms; }
+.motion .reveal--delay-3 { transition-delay: 220ms; }
+
+/* One controlled stagger for card groups — not per-card theatrics */
+.motion .reveal-group > * {
+  opacity: 0;
+  transform: translateY(0.9rem);
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+}
+.motion .reveal-group.is-visible > * { opacity: 1; transform: none; }
+.motion .reveal-group.is-visible > *:nth-child(1) { transition-delay: 0ms; }
+.motion .reveal-group.is-visible > *:nth-child(2) { transition-delay: 70ms; }
+.motion .reveal-group.is-visible > *:nth-child(3) { transition-delay: 140ms; }
+.motion .reveal-group.is-visible > *:nth-child(4) { transition-delay: 200ms; }
+
+.motion .reveal-group.is-visible > .audience-card:hover,
+.motion .reveal-group.is-visible > .program-panel:hover,
+.motion .reveal-group.is-visible > .journal-card:hover {
+  transform: translateY(-3px);
+}
+
+/* --------------------------------------------------------------------------
+   26b. SIGNATURE CHAPTER MOTION — four homepage moments only
+   A rise · B immersive (existing) · C portrait · D tools world
+   Desktop + .motion + .signature-motion. Reverses on scroll up.
+   -------------------------------------------------------------------------- */
+@media (min-width: 64rem) {
+  /* A. Hero → Суть метода: curved chapter already rises; symbol opens into place */
+  .signature-motion.motion [data-scene="rise"] .method-block__visual {
+    transform: translateY(1.75rem);
+    opacity: 0.72;
+    transition: transform 1000ms var(--ease-out), opacity 800ms var(--ease-out);
+  }
+  .signature-motion.motion [data-scene="rise"].is-in .method-block__visual {
+    transform: none;
+    opacity: 1;
+  }
+  .signature-motion.motion [data-scene="rise"] .method-block__symbol {
+    clip-path: inset(16% 16% 16% 16% round 46%);
+    transform: scale(0.84);
+    transition:
+      clip-path 1100ms var(--ease-out),
+      transform 1100ms var(--ease-out);
+  }
+  .signature-motion.motion [data-scene="rise"].is-in .method-block__symbol {
+    clip-path: inset(0);
+    transform: none;
+  }
+
+  /* C. Результаты → Елена: frame opens only inside the Elena scene */
+  .signature-motion.motion [data-scene="portrait"] .elena-block__portrait-wrap {
+    clip-path: inset(8% 12% 10% 12%);
+    transition: clip-path 1100ms var(--ease-out);
+  }
+  .signature-motion.motion [data-scene="portrait"].is-in .elena-block__portrait-wrap {
+    clip-path: inset(0);
+  }
+  .signature-motion.motion [data-scene="portrait"] .elena-block__portrait-wash {
+    opacity: 0.55;
+    transform: scale(0.92);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+  }
+  .signature-motion.motion [data-scene="portrait"].is-in .elena-block__portrait-wash {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* D. Журнал → Инструменты: constrained visual becomes the section world.
+     No extra sticky track — progress is mapped to section entry so rail
+     landing is already the settled composition. */
+  .signature-motion.motion .tools-band[data-scene-expand] .tools-band__bg {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: calc(34% + 66% * var(--p));
+    height: calc(42% + 58% * var(--p));
+    transform: translate(-50%, -50%);
+    border-radius: calc(1.4rem * (1 - var(--p)));
+    box-shadow: 0 28px 64px -36px rgba(48, 47, 43, calc(0.26 * (1 - var(--p))));
+  }
+  .signature-motion.motion .tools-band[data-scene-expand] .tools-band__bg img {
+    opacity: calc(0.3 + 0.2 * var(--p));
+  }
+}
+
+@media (max-width: 63.99em) {
+  /* No sticky chapter traps on small screens */
+  .tools-band[data-scene-expand] { --p: 1; }
+  .immersive { --p: 1; }
+}
 
 /* --------------------------------------------------------------------------
    27. PAGE TRANSITIONS — progressive enhancement only
@@ -1858,17 +2028,27 @@ body.nav-locked { overflow: hidden; }
   html { scroll-behavior: auto; }
 
   .motion .reveal,
-  .reveal { opacity: 1 !important; transform: none !important; }
+  .reveal,
+  .motion .reveal-group > *,
+  .reveal-group > * { opacity: 1 !important; transform: none !important; }
 
   .motion .process__stage { opacity: 1 !important; transform: none !important; }
   .motion .process__num { color: var(--color-rose-deep); }
   .process__aside { position: static; }
 
-  .motion .portrait-reveal .elena-block__portrait { clip-path: none; transform: none; }
+  .signature-motion.motion [data-scene="rise"],
+  .signature-motion.motion [data-scene="rise"] .method-block__visual,
+  .signature-motion.motion [data-scene="rise"] .method-block__symbol,
+  .signature-motion.motion [data-scene="portrait"] .elena-block__portrait-wrap,
+  .signature-motion.motion [data-scene="portrait"] .elena-block__portrait-wash {
+    clip-path: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
   .chapter--arc { box-shadow: none; }
 
-  /* Immersive section falls back to its finished static composition */
-  .immersive { --p: 1; padding-block: var(--space-section) !important; }
+  /* Immersive + tools scenes fall back to finished static composition */
+  .immersive { --p: 1; padding-block: var(--space-section-sm) !important; }
   .motion .immersive__track { height: auto !important; }
   .motion .immersive__stage {
     position: static !important;
@@ -1879,6 +2059,19 @@ body.nav-locked { overflow: hidden; }
   .motion .immersive__frame { width: 100% !important; height: auto !important; border-radius: var(--radius-card) !important; }
   .motion .immersive__img { aspect-ratio: 16 / 9 !important; }
   .motion .immersive__overlay { opacity: 1 !important; }
+
+  .tools-band,
+  .tools-band[data-scene-expand] { --p: 1; }
+  .motion .tools-band[data-scene-expand] .tools-band__bg {
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
 
   @view-transition { navigation: none; }
 }

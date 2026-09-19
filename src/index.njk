@@ -3,6 +3,7 @@ layout: base.njk
 title: Осознанный путь к устойчивому благополучию
 description: "Figura Lab by Елена Бастуева — гармония тела, энергии и образа жизни без крайностей и временных решений. Осознанный подход и поддержка на каждом этапе."
 preloadHero: true
+bodyClass: home
 ---
 
 {# =====================================================================
@@ -53,19 +54,23 @@ preloadHero: true
       </div>
 
       <figure class="home-hero__figure">
-        <div class="home-hero__portrait-wrap">
-          <img
-            src="/assets/img/elena/elena-portrait-760.jpg"
-            srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
-                    /assets/img/elena/elena-portrait-760.jpg 760w,
-                    /assets/img/elena/elena-portrait-1040.jpg 1040w"
-            sizes="(max-width: 56rem) 26rem, 30rem"
-            alt="Елена Бастуева — основатель Figura Lab"
-            class="home-hero__portrait"
-            width="760"
-            height="1013"
-            fetchpriority="high"
-            decoding="sync">
+        {# Stage is independent of the photo file — swap the image later without layout work. #}
+        <div class="home-hero__portrait-stage">
+          <div class="home-hero__portrait-wash" aria-hidden="true"></div>
+          <div class="home-hero__portrait-wrap">
+            <img
+              src="/assets/img/elena/elena-portrait-760.jpg"
+              srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
+                      /assets/img/elena/elena-portrait-760.jpg 760w,
+                      /assets/img/elena/elena-portrait-1040.jpg 1040w"
+              sizes="(max-width: 56rem) 26rem, 30rem"
+              alt="Елена Бастуева — основатель Figura Lab"
+              class="home-hero__portrait"
+              width="760"
+              height="1013"
+              fetchpriority="high"
+              decoding="sync">
+          </div>
         </div>
         <figcaption class="home-hero__meta">
           <span class="home-hero__caption">
@@ -81,7 +86,7 @@ preloadHero: true
 </section>
 
 {# ── 02 СУТЬ МЕТОДА — editorial composition + first chapter rise ─────── #}
-<section class="chapter chapter--light chapter--arc" id="chapter-method" aria-labelledby="method-title">
+<section class="chapter chapter--light chapter--arc method-block" id="chapter-method" aria-labelledby="method-title"{% if features.signatureMotion %} data-scene="rise"{% endif %}>
   <div class="container">
     <div class="method-block__inner">
 
@@ -96,7 +101,7 @@ preloadHero: true
         </a>
       </div>
 
-      <div class="reveal reveal--delay-1">
+      <div class="method-block__visual reveal reveal--delay-1">
         <figure class="method-block__figure">
           <img src="{{ home.method.symbol.src }}" alt="{{ home.method.symbol.alt }}"
                class="method-block__symbol" width="480" height="480" loading="lazy" decoding="async">
@@ -121,9 +126,9 @@ preloadHero: true
       </div>
     </div>
 
-    <div class="audience-grid">
+    <div class="audience-grid reveal-group">
       {% for item in home.audience.items %}
-      <article class="audience-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+      <article class="audience-card">
         <div class="audience-card__media">
           <img src="{{ item.symbol }}" alt="{{ item.symbolAlt }}" class="audience-card__symbol"
                width="480" height="480" loading="lazy" decoding="async">
@@ -140,8 +145,8 @@ preloadHero: true
 {# ── IMMERSIVE REVEAL — «войти в изображение» ─────────────────────────
    Небольшой кадр раскрывается по мере прокрутки и становится сценой.
    Без JS / при prefers-reduced-motion — готовая статическая композиция. #}
-<section class="immersive" data-immersive aria-labelledby="immersive-statement">
-  <div class="immersive__track" data-immersive-track>
+<section class="immersive" data-immersive data-chapter-proxy="chapter-process" aria-labelledby="immersive-statement">
+  <div class="immersive__track" data-scene-track>
     <div class="immersive__stage">
       <figure class="immersive__frame">
         <img
@@ -211,9 +216,9 @@ preloadHero: true
 
     {# Состав, длительность и стоимость НЕ публикуются до подтверждения (VERIFY_WITH_ELENA V-06, V-07).
        Названия программ — из утверждённого North Star. #}
-    <div class="programs-grid">
+    <div class="programs-grid reveal-group">
       {% for prog in home.programs.items %}
-      <article class="program-panel reveal reveal--delay-{{ loop.index0 % 3 + 1 }}" aria-labelledby="prog-{{ loop.index }}">
+      <article class="program-panel" aria-labelledby="prog-{{ loop.index }}">
         <div class="program-panel__media">
           <img src="{{ prog.image }}"
                alt=""
@@ -271,10 +276,10 @@ preloadHero: true
     {# Реальные истории публикуются только с письменного согласия клиента
        (features.stories.published + home.results.items). Пока согласий нет —
        выводится честная структура тем без выдуманных цитат, имён и цифр. #}
-    <div class="stories-grid">
+    <div class="stories-grid reveal-group">
       {% if features.stories.published and home.results.items | length %}
         {% for story in home.results.items %}
-        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+        <article class="story-card">
           <span class="story-card__mark" aria-hidden="true">«</span>
           <h3 class="story-card__theme">{{ story.theme }}</h3>
           <p class="story-card__text">{{ story.excerpt }}</p>
@@ -287,7 +292,7 @@ preloadHero: true
         {% endfor %}
       {% else %}
         {% for theme in home.results.themes %}
-        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+        <article class="story-card">
           <span class="story-card__mark" aria-hidden="true">«</span>
           <h3 class="story-card__theme">{{ theme.theme }}</h3>
           <p class="story-card__text">{{ theme.text }}</p>
@@ -307,12 +312,14 @@ preloadHero: true
 </section>
 
 {# ── 07 ЕЛЕНА БАСТУЕВА — portrait reveal ─────────────────────────────── #}
-<section class="chapter chapter--sand chapter--arc" id="chapter-elena" aria-labelledby="elena-title">
+<section class="chapter chapter--sand chapter--arc" id="chapter-elena" aria-labelledby="elena-title"{% if features.signatureMotion %} data-scene="portrait"{% endif %}>
   <div class="container">
     <div class="elena-block__inner">
 
-      <figure class="elena-block__figure portrait-reveal reveal">
-        <div class="elena-block__portrait-wrap">
+      <figure class="elena-block__figure reveal">
+        <div class="elena-block__portrait-stage">
+          <div class="elena-block__portrait-wash" aria-hidden="true"></div>
+          <div class="elena-block__portrait-wrap">
           <img
             src="/assets/img/elena/elena-portrait-520.jpg"
             srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
@@ -324,6 +331,7 @@ preloadHero: true
             height="693"
             loading="lazy"
             decoding="async">
+          </div>
         </div>
       </figure>
 
@@ -363,9 +371,9 @@ preloadHero: true
 
     {# Статьи публикуются при наличии готового авторского материала (published: true).
        Пока материал не готов — карточка не содержит ссылки (никаких мёртвых кнопок). #}
-    <div class="journal-grid">
+    <div class="journal-grid reveal-group">
       {% for art in home.journal.items %}
-      <article class="journal-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}{% if loop.first %} journal-card--featured{% endif %}">
+      <article class="journal-card{% if loop.first %} journal-card--featured{% endif %}">
         {% if loop.first %}
         <div class="journal-card__cover">
           <img src="/assets/img/editorial/symbols/symbol-06-480.png" alt=""
@@ -395,44 +403,52 @@ preloadHero: true
    Управляется features.tools. Инструмент с enabled: true автоматически
    становится ссылкой — без переработки секции. Мёртвых кнопок нет. #}
 {% if features.tools.sectionVisible %}
-<section class="chapter chapter--sand tools-band" id="chapter-tools" aria-labelledby="tools-title">
-  <div class="tools-band__bg" aria-hidden="true">
-    <img src="/assets/img/editorial/abstract/abstract-05-1760.jpg" alt=""
-         width="1760" height="1173" loading="lazy" decoding="async">
-  </div>
-  <div class="container">
-    <div class="tools-band__inner">
-
-      <div class="reveal">
-        <p class="badge tools-band__badge">{{ home.tools.badge }}</p>
-        <h2 class="tools-band__title" id="tools-title">{{ home.tools.heading }}</h2>
-        <p class="tools-band__lead lead">{{ home.tools.lead }}</p>
-
-        <ul class="tools-list" role="list">
-          {% for tool in features.tools.items %}
-          <li class="tools-list__item">
-            <span class="tools-list__title">{{ tool.title }}</span>
-            <span class="tools-list__text">{{ tool.text }}</span>
-            {% if tool.enabled and tool.url %}
-            <a href="{{ tool.url }}" class="editorial-link editorial-link--sm">
-              Открыть <span class="btn__arrow" aria-hidden="true">→</span>
-            </a>
-            {% else %}
-            <span class="tools-list__state">{{ home.tools.badge }}</span>
-            {% endif %}
-          </li>
-          {% endfor %}
-        </ul>
+<section class="chapter chapter--sand tools-band" id="chapter-tools" aria-labelledby="tools-title"{% if features.signatureMotion %} data-scene-expand{% endif %}>
+  <div class="tools-band__track" data-scene-track>
+    <div class="tools-band__stage">
+      <div class="tools-band__bg" aria-hidden="true">
+        <img src="/assets/img/editorial/abstract/abstract-01-1760.jpg"
+             srcset="/assets/img/editorial/abstract/abstract-01-900.jpg 900w,
+                     /assets/img/editorial/abstract/abstract-01-1760.jpg 1760w"
+             sizes="100vw"
+             alt=""
+             width="1760" height="1173" loading="lazy" decoding="async">
       </div>
+      <div class="container">
+        <div class="tools-band__inner">
 
-      <div class="tools-band__aside reveal reveal--delay-1">
-        <div class="tools-band__symbol-wrap">
-          <img src="{{ home.tools.symbol.src }}" alt="{{ home.tools.symbol.alt }}"
-               class="tools-band__symbol" width="400" height="480" loading="lazy" decoding="async">
+          <div class="reveal">
+            <p class="badge tools-band__badge">{{ home.tools.badge }}</p>
+            <h2 class="tools-band__title" id="tools-title">{{ home.tools.heading }}</h2>
+            <p class="tools-band__lead lead">{{ home.tools.lead }}</p>
+
+            <ul class="tools-list" role="list">
+              {% for tool in features.tools.items %}
+              <li class="tools-list__item">
+                <span class="tools-list__title">{{ tool.title }}</span>
+                <span class="tools-list__text">{{ tool.text }}</span>
+                {% if tool.enabled and tool.url %}
+                <a href="{{ tool.url }}" class="editorial-link editorial-link--sm">
+                  Открыть <span class="btn__arrow" aria-hidden="true">→</span>
+                </a>
+                {% else %}
+                <span class="tools-list__state">{{ home.tools.badge }}</span>
+                {% endif %}
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <div class="tools-band__aside reveal reveal--delay-1">
+            <div class="tools-band__symbol-wrap">
+              <img src="{{ home.tools.symbol.src }}" alt="{{ home.tools.symbol.alt }}"
+                   class="tools-band__symbol" width="400" height="480" loading="lazy" decoding="async">
+            </div>
+            <p class="tools-band__aside-text">{{ home.tools.aside }}</p>
+          </div>
+
         </div>
-        <p class="tools-band__aside-text">{{ home.tools.aside }}</p>
       </div>
-
     </div>
   </div>
 </section>

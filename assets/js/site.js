@@ -17,6 +17,29 @@
     reduceMotion.addEventListener("change", syncMotionFlag);
   }
 
+  function headerOffset() {
+    var header = document.querySelector(".site-header");
+    return header ? Math.round(header.getBoundingClientRect().height) : 80;
+  }
+
+  function prefersReduce() {
+    return reduceMotion.matches;
+  }
+
+  function settleScene(el) {
+    if (!el || !el.hasAttribute) return;
+    if (el.hasAttribute("data-scene")) el.classList.add("is-in");
+    if (el.hasAttribute("data-scene-expand")) el.style.setProperty("--p", "1");
+  }
+
+  /* Land on the element itself (chapter container on the homepage). */
+  function scrollToEntry(el, behavior) {
+    if (!el) return;
+    var top = window.scrollY + el.getBoundingClientRect().top - headerOffset();
+    window.scrollTo({ top: Math.max(0, top), behavior: behavior || "auto" });
+    settleScene(el);
+  }
+
   /* ------------------------------------------------------------------------
      Mobile navigation — accessible disclosure
      aria-expanded · Escape closes and returns focus · focus trap · scroll lock
@@ -109,12 +132,51 @@
   })();
 
   /* ------------------------------------------------------------------------
+     In-page anchors — homepage rail lands on chapter containers
+     ------------------------------------------------------------------------ */
+  (function inPageAnchors() {
+    function resolveTarget(hash) {
+      if (!hash || hash.charAt(0) !== "#") return null;
+      var id = hash.slice(1);
+      if (!id) return null;
+      return document.getElementById(id);
+    }
+
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var link = e.target.closest("a[href]");
+      if (!link) return;
+      var href = link.getAttribute("href");
+      if (!href || href.charAt(0) !== "#") return;
+      var target = resolveTarget(href);
+      if (!target) return;
+      e.preventDefault();
+      if (history.pushState) history.pushState(null, "", href);
+      scrollToEntry(target, prefersReduce() ? "auto" : "smooth");
+      if (target.hasAttribute("tabindex") && typeof target.focus === "function") {
+        try { target.focus({ preventScroll: true }); } catch (err) { target.focus(); }
+      }
+    });
+
+    if (location.hash.length > 1) {
+      var initial = resolveTarget(location.hash);
+      if (initial) {
+        requestAnimationFrame(function () { scrollToEntry(initial, "auto"); });
+      }
+    }
+  })();
+
+  /* ------------------------------------------------------------------------
      Reveal on scroll
      ------------------------------------------------------------------------ */
   (function reveal() {
-    if (!("IntersectionObserver" in window)) return;
-    var items = document.querySelectorAll(".reveal");
+    var items = document.querySelectorAll(".reveal, .reveal-group");
     if (!items.length) return;
+
+    if (!("IntersectionObserver" in window)) {
+      items.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -123,29 +185,52 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
 
     items.forEach(function (el) { observer.observe(el); });
   })();
 
   /* ------------------------------------------------------------------------
-     Chapter rail — active chapter follows the scroll position
+     Signature scenes — reversible in/out (rise, portrait)
+     ------------------------------------------------------------------------ */
+  (function scenes() {
+    var nodes = document.querySelectorAll("[data-scene]");
+    if (!nodes.length) return;
+
+    if (!("IntersectionObserver" in window) || prefersReduce()) {
+      nodes.forEach(function (el) { el.classList.add("is-in"); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        entry.target.classList.toggle("is-in", entry.isIntersecting);
+      });
+    }, { rootMargin: "-38% 0px -42% 0px", threshold: 0.28 });
+
+    nodes.forEach(function (el) { observer.observe(el); });
+  })();
+
+  /* ------------------------------------------------------------------------
+     Chapter rail — active chapter follows the reading line under the header
      ------------------------------------------------------------------------ */
   (function chapterRail() {
     var rail = document.querySelector("[data-chapter-rail]");
-    if (!rail || !("IntersectionObserver" in window)) return;
+    if (!rail) return;
 
     var links = Array.prototype.slice.call(rail.querySelectorAll("[data-chapter-link]"));
     var sections = links
-      .map(function (link) { return document.getElementById(link.getAttribute("data-chapter-link")); })
+      .map(function (link) {
+        return document.getElementById(link.getAttribute("data-chapter-link"));
+      })
       .filter(Boolean);
     if (!sections.length) return;
 
+    var proxies = Array.prototype.slice.call(document.querySelectorAll("[data-chapter-proxy]"));
     var activeId = null;
-    var visible = {};
 
     function setActive(id) {
-      if (id === activeId) return;
+      if (!id || id === activeId) return;
       activeId = id;
       links.forEach(function (link) {
         if (link.getAttribute("data-chapter-link") === id) {
@@ -156,26 +241,39 @@
       });
     }
 
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) visible[entry.target.id] = true;
-        else delete visible[entry.target.id];
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var line = headerOffset() + 8;
+      var current = sections[0];
+
+      sections.forEach(function (section) {
+        if (section.getBoundingClientRect().top <= line) current = section;
       });
 
-      /* Of the sections inside the reading zone, mark the topmost one */
-      var best = null;
-      sections.forEach(function (section) {
-        if (!visible[section.id]) return;
-        var distance = Math.abs(section.getBoundingClientRect().top);
-        if (best === null || distance < best.distance) {
-          best = { id: section.id, distance: distance };
+      proxies.forEach(function (proxy) {
+        var rect = proxy.getBoundingClientRect();
+        if (rect.top <= line && rect.bottom > line) {
+          var proxyId = proxy.getAttribute("data-chapter-proxy");
+          if (proxyId) {
+            var mapped = document.getElementById(proxyId);
+            if (mapped) current = mapped;
+          }
         }
       });
 
-      if (best) setActive(best.id);
-    }, { rootMargin: "-25% 0px -60% 0px", threshold: 0 });
+      if (current) setActive(current.id);
+    }
 
-    sections.forEach(function (section) { observer.observe(section); });
+    function request() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }
+
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    update();
   })();
 
   /* ------------------------------------------------------------------------
@@ -190,7 +288,7 @@
     if (!stages.length) return;
 
     /* Without motion every stage stays fully legible — nothing to do */
-    if (reduceMotion.matches) {
+    if (prefersReduce()) {
       stages.forEach(function (s) { s.classList.add("is-active"); });
       return;
     }
@@ -199,7 +297,7 @@
       entries.forEach(function (entry) {
         entry.target.classList.toggle("is-active", entry.isIntersecting);
       });
-    }, { rootMargin: "-30% 0px -30% 0px", threshold: 0 });
+    }, { rootMargin: "-28% 0px -38% 0px", threshold: 0 });
 
     stages.forEach(function (s) { observer.observe(s); });
 
@@ -208,30 +306,47 @@
   })();
 
   /* ------------------------------------------------------------------------
-     Immersive reveal — the framed image expands into the scene and back
-     Progress 0 → 1 is written to a custom property; all sizing lives in CSS.
+     Scene progress — writes --p (0 → 1) for immersive / expanding worlds
      ------------------------------------------------------------------------ */
-  (function immersive() {
-    var section = document.querySelector("[data-immersive]");
-    if (!section) return;
+  (function sceneProgress() {
+    var immersive = document.querySelector("[data-immersive]");
+    var expanders = Array.prototype.slice.call(document.querySelectorAll("[data-scene-expand]"));
+    if (!immersive && !expanders.length) return;
 
-    var track = section.querySelector("[data-immersive-track]");
-    if (!track) return;
-
+    var canPin = window.matchMedia("(min-width: 64em)");
     var enabled = false;
     var ticking = false;
 
-    function progress() {
+    function clamp01(n) {
+      return Math.min(1, Math.max(0, n));
+    }
+
+    function trackProgress(track) {
       var rect = track.getBoundingClientRect();
       var travel = rect.height - window.innerHeight;
       if (travel <= 0) return 1;
-      var p = -rect.top / travel;
-      return Math.min(1, Math.max(0, p));
+      return clamp01(-rect.top / travel);
+    }
+
+    /* Maps section entry: 0 when approaching from below, 1 when heading is at the header. */
+    function entryProgress(section) {
+      var rect = section.getBoundingClientRect();
+      var start = window.innerHeight * 0.88;
+      var end = headerOffset();
+      var span = start - end;
+      if (span <= 0) return 1;
+      return clamp01((start - rect.top) / span);
     }
 
     function update() {
       ticking = false;
-      section.style.setProperty("--p", progress().toFixed(4));
+      if (immersive) {
+        var track = immersive.querySelector("[data-scene-track]");
+        if (track) immersive.style.setProperty("--p", trackProgress(track).toFixed(4));
+      }
+      expanders.forEach(function (section) {
+        section.style.setProperty("--p", entryProgress(section).toFixed(4));
+      });
     }
 
     function request() {
@@ -240,12 +355,12 @@
       window.requestAnimationFrame(update);
     }
 
-    /* Matches the CSS breakpoint that turns the sticky stage on */
-    var canRun = window.matchMedia("(min-width: 64em)");
-
     function sync() {
-      var next = canRun.matches && !reduceMotion.matches;
-      if (next === enabled) return;
+      var next = canPin.matches && !prefersReduce();
+      if (next === enabled) {
+        if (enabled) request();
+        return;
+      }
       enabled = next;
 
       if (enabled) {
@@ -255,12 +370,13 @@
       } else {
         window.removeEventListener("scroll", request);
         window.removeEventListener("resize", request);
-        section.style.removeProperty("--p");
+        if (immersive) immersive.style.removeProperty("--p");
+        expanders.forEach(function (section) { section.style.removeProperty("--p"); });
       }
     }
 
     sync();
-    if (canRun.addEventListener) canRun.addEventListener("change", sync);
+    if (canPin.addEventListener) canPin.addEventListener("change", sync);
     if (reduceMotion.addEventListener) reduceMotion.addEventListener("change", sync);
   })();
 })();
