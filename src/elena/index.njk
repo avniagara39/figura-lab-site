@@ -1,103 +1,159 @@
 ---
 layout: base.njk
 title: Елена Бастуева
-description: "Елена Бастуева — нутрициолог и специалист по снижению веса, основатель Figura Lab."
-pageTitle: "Елена Бастуева"
-pageIntro: "Нутрициолог и специалист по снижению веса."
-eyebrow: "Об авторе метода"
+description: "Елена Бастуева — создательница Figura Lab. Осознанный подход, уважение к себе и знания, которые работают в реальной жизни."
+crumb: "Елена"
+preloadHero: true
 ---
 
 {# =====================================================================
-   /elena/ — Экспертная персональная страница
-   Биография, образование, сертификаты: VERIFY_WITH_ELENA (V-01).
-   Команда (Ирина): VERIFY_WITH_ELENA (V-09).
-   Фото: REPLACE_WITH_FINAL_ELENA_HERO (BRAND_ASSET_PENDING_FINAL).
+   /elena/ — Страница эксперта
+   Контент: src/_data/elena.json
+   Образование, квалификация, опыт и сертификаты публикуются ТОЛЬКО
+   при available/published = true и подтверждённых данных (V-10).
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Елена</span>
-    </li>
-  </ol>
-</nav>
+{% include "components/breadcrumbs.njk" %}
 
-{% include "components/page-hero.njk" %}
-
-{# --- О Елене ---------------------------------------------------------- #}
-<section class="section" aria-labelledby="about-elena-heading">
+{# --- Hero с портретом ------------------------------------------------- #}
+<section class="page-hero chapter chapter--light" aria-labelledby="page-title">
   <div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: start;">
+    <div class="page-hero__inner page-hero__inner--media">
 
       <div>
-        <p class="eyebrow section__eyebrow">Биография</p>
-        <h2 class="section__heading" id="about-elena-heading">
-          {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
-          PLACEHOLDER_CONTENT — заголовок биографии
-        </h2>
-        <div style="max-width: var(--content-text); color: var(--c-graphite-soft);">
-          {# PLACEHOLDER_CONTENT — биография: VERIFY_WITH_ELENA (V-01) #}
-          <p style="margin-bottom: var(--space-4);">PLACEHOLDER_CONTENT — биография Елены будет добавлена после VERIFY_WITH_ELENA.</p>
-          <p class="placeholder-notice">VERIFY_WITH_ELENA (V-01): образование, сертификаты, опыт работы</p>
+        <p class="page-hero__eyebrow eyebrow">{{ elena.role }}</p>
+        <h1 class="page-hero__title" id="page-title">{{ elena.name }}</h1>
+        <p class="page-hero__intro">{{ elena.lead }}</p>
+        <div class="page-hero__actions">
+          <a href="/kontakty/" class="btn btn-primary">
+            Записаться на консультацию <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/metod/" class="editorial-link">
+            Узнать о методе <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
-      <div>
-        {# REPLACE_WITH_FINAL_ELENA_HERO #}
-        <div class="hero__photo-wrap" style="max-width: 400px;">
-          <picture>
-            <source
-              type="image/webp"
-              srcset="/assets/img/elena/elena-hero-400.webp 400w, /assets/img/elena/elena-hero-800.webp 800w"
-              sizes="(max-width: 768px) 90vw, 400px">
-            <img
-              src="/assets/img/elena/elena-hero-800.jpg"
-              alt="Елена Бастуева — нутрициолог, основатель Figura Lab"
-              class="hero__photo"
-              width="800"
-              height="1067"
-              decoding="async"
-              loading="lazy">
-          </picture>
-        </div>
-        <p class="placeholder-notice" style="margin-top: var(--space-4);">
-          REPLACE_WITH_FINAL_ELENA_HERO — dev asset, заменить финальным портретом
-        </p>
-      </div>
+      <figure class="page-hero__figure page-hero__figure--portrait portrait-reveal">
+        <img
+          src="/assets/img/elena/elena-portrait-760.jpg"
+          srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
+                  /assets/img/elena/elena-portrait-760.jpg 760w,
+                  /assets/img/elena/elena-portrait-1040.jpg 1040w"
+          sizes="(max-width: 56rem) 22rem, 26rem"
+          alt="Елена Бастуева — создательница Figura Lab"
+          class="page-hero__portrait"
+          width="760"
+          height="1013"
+          fetchpriority="high"
+          decoding="async">
+      </figure>
 
     </div>
   </div>
 </section>
 
-{# --- Образование и сертификаты --------------------------------------- #}
-<section class="section section--linen" aria-labelledby="education-heading">
+{# --- Биография -------------------------------------------------------- #}
+{% if elena.bio.available %}
+<section class="chapter chapter--arc" aria-labelledby="bio-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Образование</p>
-    <h2 class="section__heading" id="education-heading">
-      Квалификация и сертификаты
-    </h2>
-    <p class="placeholder-notice">
-      VERIFY_WITH_ELENA (V-01): список учебных заведений, специальностей, дат, названий сертификатов.
-      Можно ли публиковать сканы — уточнить у Елены.
-    </p>
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="bio-title">{{ elena.bio.heading }}</h2>
+    </div>
+    <div class="prose reveal">
+      {% for p in elena.bio.paragraphs %}<p>{{ p }}</p>{% endfor %}
+    </div>
   </div>
 </section>
+{% endif %}
 
-{# --- Команда (условная) ---------------------------------------------- #}
-<section class="section" aria-labelledby="team-heading">
+{# --- Подход ----------------------------------------------------------- #}
+{% if elena.philosophy.available %}
+<section class="chapter chapter--sand chapter--arc" aria-labelledby="approach-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Команда</p>
-    <h2 class="section__heading" id="team-heading">
-      {# PLACEHOLDER_CONTENT: нужно ли раздел — VERIFY_WITH_ELENA (V-09) #}
-      PLACEHOLDER_CONTENT — раздел «Команда»
-    </h2>
-    <p class="placeholder-notice">
-      VERIFY_WITH_ELENA (V-09): показывать ли Ирину как часть команды?
-      Этот раздел будет удалён или заполнен после ответа Елены.
-    </p>
+    <div class="chapter-head chapter-head--split reveal">
+      <div>
+        <h2 class="chapter-head__title" id="approach-title">{{ elena.philosophy.heading }}</h2>
+      </div>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">{{ elena.philosophy.intro }}</p>
+      </div>
+    </div>
+
+    <ol class="numbered-list numbered-list--3" role="list">
+      {% for item in elena.philosophy.items %}
+      <li class="numbered-list__item reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+        <span class="numbered-list__num" aria-hidden="true">0{{ loop.index }}</span>
+        <h3 class="numbered-list__title">{{ item.title }}</h3>
+        <p class="numbered-list__text">{{ item.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+{% endif %}
+
+{# --- Образование, квалификация и документы ---------------------------
+   available/published = false => спокойная человеческая формулировка,
+   без выдуманных дипломов, лет опыта и числа клиентов.
+   Галерея документов готова к подключению: при published: true и
+   заполненных items документы выводятся сеткой. #}
+<section class="chapter chapter--light chapter--arc" aria-labelledby="credentials-title">
+  <div class="container">
+    <div class="chapter-head chapter-head--split reveal">
+      <div>
+        <h2 class="chapter-head__title" id="credentials-title">{{ elena.credentials.heading }}</h2>
+      </div>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">
+          Мы публикуем только подтверждённые сведения — без округлённых цифр и общих формулировок.
+        </p>
+      </div>
+    </div>
+
+    {% if elena.credentials.available %}
+    <div class="credentials reveal">
+      {% for group in elena.credentials.groups %}
+      {% if group.items | length %}
+      <div class="credentials__group">
+        <p class="credentials__label">{{ group.label }}</p>
+        <ul class="credentials__items" role="list">
+          {% for item in group.items %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if features.certificates.published and elena.certificates.items | length %}
+    <h3 class="section-subtitle reveal">{{ elena.certificates.heading }}</h3>
+    <div class="doc-gallery reveal">
+      {% for doc in elena.certificates.items %}
+      <figure class="doc-gallery__item">
+        <img src="{{ doc.src }}" alt="{{ doc.alt }}" width="600" height="800" loading="lazy" decoding="async">
+        <figcaption class="doc-gallery__caption">{{ doc.caption }}</figcaption>
+      </figure>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if not elena.credentials.available or not features.certificates.published %}
+    <div class="info-panel-grid reveal">
+      {% if not elena.credentials.available %}
+      <div class="info-panel info-panel--grid">
+        <p class="info-panel__title">Сведения об образовании готовятся</p>
+        <p>{{ elena.credentials.pendingNote }}</p>
+      </div>
+      {% endif %}
+      {% if not features.certificates.published %}
+      <div class="info-panel info-panel--grid">
+        <p class="info-panel__title">{{ elena.certificates.heading }}</p>
+        <p>{{ elena.certificates.pendingNote }}</p>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
   </div>
 </section>
 

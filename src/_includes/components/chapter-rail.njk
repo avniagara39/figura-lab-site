@@ -1,0 +1,21 @@
+{#
+  Навигация по главам главной страницы.
+  Desktop-only (CSS ≥ 1440px), никогда не перекрывает контент.
+  Данные: src/_data/chapters.json · флаг: features.chapterRail
+#}
+{% if features.chapterRail %}
+<nav class="chapter-rail" aria-label="Навигация по главам страницы">
+  <ol class="chapter-rail__list" role="list" data-chapter-rail>
+    {% for c in chapters %}
+    <li>
+      <a href="#{{ c.id }}" class="chapter-rail__link"
+         aria-label="Глава {{ c.num }}. {{ c.full }}"
+         data-chapter-link="{{ c.id }}">
+        <span class="chapter-rail__num" aria-hidden="true">{{ c.num }}</span>
+        <span class="chapter-rail__label" aria-hidden="true">{{ c.label }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ol>
+</nav>
+{% endif %}

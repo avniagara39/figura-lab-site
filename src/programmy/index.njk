@@ -1,119 +1,98 @@
 ---
 layout: base.njk
 title: Программы
-description: "Программы Figura Lab — форматы работы с Еленой Бастуевой по осознанному питанию и снижению веса."
-pageTitle: "Программы"
-pageIntro: "Каждая программа имеет блок «Для кого» — чтобы вы сразу понимали, подходит ли она вам."
-eyebrow: "Работа с Еленой"
+description: "Программы Figura Lab — три формата работы с Еленой Бастуевой. Подходящий вариант выбирается на консультации."
+crumb: "Программы"
 ---
 
 {# =====================================================================
-   /programmy/ — Каталог программ
-   ПРАВИЛО: каждая программа ОБЯЗАНА иметь блок «Для кого».
-   CONFLICT-03 RESOLVED: по умолчанию гендерно нейтральные формулировки.
-   Данные программ: VERIFY_WITH_ELENA (V-01, V-02, V-07).
+   /programmy/ — Программы
+   Контент: src/_data/pages.json → pages.programmy, home.programs.items
+   Цены, длительность и состав НЕ публикуются до подтверждения Еленой.
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Программы</span>
-    </li>
-  </ol>
-</nav>
+{% set pageTitle = pages.programmy.title %}
+{% set eyebrow = pages.programmy.eyebrow %}
+{% set pageIntro = pages.programmy.intro %}
+{% set heroPrimary = { label: "Записаться на консультацию", url: "/kontakty/" } %}
+{% set heroSecondary = { label: "Узнать о методе", url: "/metod/" } %}
 
+{% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-{# --- Каталог программ ------------------------------------------------- #}
-<section class="section" aria-labelledby="programs-heading">
+{# --- Программы -------------------------------------------------------- #}
+<section class="chapter chapter--light chapter--arc" aria-labelledby="programs-list-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Форматы работы</p>
-    <h2 class="section__heading" id="programs-heading">
-      {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
-      Выберите формат, который подходит вам
-    </h2>
+    <h2 class="visually-hidden" id="programs-list-title">Список программ</h2>
 
-    {# PLACEHOLDER: все параметры программ — VERIFY_WITH_ELENA (V-01, V-02, V-07) #}
-    {# Шаблон программы — заменить реальными данными после V-01, V-02 #}
+    <div class="programs-page">
+      {% for prog in home.programs.items %}
+      <article class="program-detail reveal" id="{{ prog.url | replace('/programmy/#', '') }}"
+               aria-labelledby="program-{{ loop.index }}">
+        <div class="program-detail__inner">
 
-    <article class="card card--placeholder" style="max-width: 680px; margin-bottom: var(--space-8);" aria-labelledby="prog-1-title">
-      <p class="eyebrow card__eyebrow">Программа 1</p>
-      <h3 class="card__title" id="prog-1-title">VERIFY_WITH_ELENA: название программы</h3>
+          <figure class="program-detail__figure">
+            <img src="{{ prog.image }}" alt=""
+                 width="900" height="600" loading="lazy" decoding="async"
+                 class="program-panel__img--{{ loop.index }}">
+          </figure>
 
-      <dl style="margin-block: var(--space-4) var(--space-6); color: var(--c-graphite-soft); font-size: var(--fs-small);">
-        <dt style="font-weight: 700; color: var(--c-graphite);">Для кого</dt>
-        <dd style="margin-bottom: var(--space-3);">
-          {# VERIFY_WITH_ELENA + CONFLICT-03: гендерно нейтральная формулировка по умолчанию.
-             Если программа имеет ограничения — указать явно только после подтверждения. #}
-          VERIFY_WITH_ELENA
-        </dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Формат</dt>
-        <dd style="margin-bottom: var(--space-3);">VERIFY_WITH_ELENA</dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Длительность</dt>
-        <dd style="margin-bottom: var(--space-3);">VERIFY_WITH_ELENA</dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Стоимость</dt>
-        <dd>
-          VERIFY_WITH_ELENA · <span class="placeholder-notice">LEGAL_REVIEW</span>
-        </dd>
-      </dl>
+          <div>
+            <h3 class="program-detail__title" id="program-{{ loop.index }}">{{ prog.name }}</h3>
+            <p class="program-detail__summary">{{ prog.summary }}</p>
 
-      <a href="/kontakty/" class="btn btn-primary">Записаться</a>
-    </article>
+            <dl class="spec-list">
+              <div class="spec-list__row">
+                <dt class="spec-list__label">Для кого</dt>
+                <dd class="spec-list__value">{{ prog.audience }}</dd>
+              </div>
+              <div class="spec-list__row">
+                <dt class="spec-list__label">Что входит</dt>
+                <dd class="spec-list__value">{{ prog.includes }}</dd>
+              </div>
+              <div class="spec-list__row">
+                <dt class="spec-list__label">Формат</dt>
+                <dd class="spec-list__value">{{ prog.format }}</dd>
+              </div>
+            </dl>
 
-    <article class="card card--placeholder" style="max-width: 680px; margin-bottom: var(--space-8);" aria-labelledby="prog-2-title">
-      <p class="eyebrow card__eyebrow">Программа 2</p>
-      <h3 class="card__title" id="prog-2-title">VERIFY_WITH_ELENA: название программы</h3>
+            <a href="/kontakty/" class="btn btn-primary">
+              Записаться на консультацию <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
 
-      <dl style="margin-block: var(--space-4) var(--space-6); color: var(--c-graphite-soft); font-size: var(--fs-small);">
-        <dt style="font-weight: 700; color: var(--c-graphite);">Для кого</dt>
-        <dd style="margin-bottom: var(--space-3);">VERIFY_WITH_ELENA</dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Формат</dt>
-        <dd style="margin-bottom: var(--space-3);">VERIFY_WITH_ELENA</dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Длительность</dt>
-        <dd style="margin-bottom: var(--space-3);">VERIFY_WITH_ELENA</dd>
-        <dt style="font-weight: 700; color: var(--c-graphite);">Стоимость</dt>
-        <dd>
-          VERIFY_WITH_ELENA · <span class="placeholder-notice">LEGAL_REVIEW</span>
-        </dd>
-      </dl>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 
-      <a href="/kontakty/" class="btn btn-primary">Записаться</a>
-    </article>
-
+{# --- О составе и условиях --------------------------------------------- #}
+<section class="chapter chapter--sand chapter--arc" aria-labelledby="programs-details-title">
+  <div class="container">
+    <div class="info-panel reveal">
+      <h2 class="info-panel__title" id="programs-details-title">{{ pages.programmy.detailsHeading }}</h2>
+      <p>{{ pages.programmy.detailsNote }}</p>
+    </div>
   </div>
 </section>
 
 {# --- FAQ -------------------------------------------------------------- #}
-<section class="section section--linen" id="faq" aria-labelledby="faq-heading">
+<section class="chapter chapter--light chapter--arc" id="faq" aria-labelledby="programs-faq-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Вопросы и ответы</p>
-    <h2 class="section__heading" id="faq-heading">Часто спрашивают</h2>
-
-    {# PLACEHOLDER: FAQ — VERIFY_WITH_ELENA, LEGAL_REVIEW при необходимости #}
-    <div style="max-width: var(--content-text);">
-      <details style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--hairline); padding-bottom: var(--space-4);">
-        <summary style="font-weight: 600; cursor: pointer; min-height: 44px; display: flex; align-items: center;">
-          PLACEHOLDER_CONTENT — вопрос 1 (VERIFY_WITH_ELENA)
-        </summary>
-        <p style="margin-top: var(--space-3); color: var(--c-graphite-soft);">PLACEHOLDER_CONTENT</p>
-      </details>
-      <details style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--hairline); padding-bottom: var(--space-4);">
-        <summary style="font-weight: 600; cursor: pointer; min-height: 44px; display: flex; align-items: center;">
-          PLACEHOLDER_CONTENT — вопрос 2 (VERIFY_WITH_ELENA)
-        </summary>
-        <p style="margin-top: var(--space-3); color: var(--c-graphite-soft);">PLACEHOLDER_CONTENT</p>
-      </details>
-      <details style="border-bottom: 1px solid var(--hairline); padding-bottom: var(--space-4);">
-        <summary style="font-weight: 600; cursor: pointer; min-height: 44px; display: flex; align-items: center;">
-          PLACEHOLDER_CONTENT — вопрос 3 (VERIFY_WITH_ELENA)
-        </summary>
-        <p style="margin-top: var(--space-3); color: var(--c-graphite-soft);">PLACEHOLDER_CONTENT</p>
-      </details>
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="programs-faq-title">{{ pages.programmy.faqHeading }}</h2>
     </div>
 
+    <div class="faq reveal">
+      {% for item in pages.programmy.faq %}
+      <details class="faq__item">
+        <summary>{{ item.q }}</summary>
+        <div class="faq__body"><p>{{ item.a }}</p></div>
+      </details>
+      {% endfor %}
+    </div>
   </div>
 </section>
 

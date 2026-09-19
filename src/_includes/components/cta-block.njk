@@ -1,15 +1,36 @@
-<section class="cta-block" aria-labelledby="cta-block-heading">
+{#
+  Финальный CTA — «Начнём с разговора».
+  Спокойная конверсия: одна основная кнопка + прямые каналы связи.
+  Никаких таймеров, дефицита и давления.
+#}
+{% from "components/channels.njk" import channelChips, directContacts %}
+{% set liveMessengers = contact.messengers | selectattr("enabled") | selectattr("url") %}
+
+<section class="cta-block chapter chapter--arc" id="chapter-contact" aria-labelledby="cta-heading">
   <div class="container">
-    <p class="cta-block__eyebrow">Первый шаг</p>
-    <h2 class="cta-block__heading" id="cta-block-heading">
-      Начните с бережного<br>разговора о себе
-    </h2>
-    <p class="cta-block__text">
-      Первая консультация — это разговор, не сделка.
-      Возможность понять, с чего начать путь к телу, в котором спокойно, красиво и уверенно.
-    </p>
-    <a href="/kontakty/" class="btn btn-invert btn-lg">
-      Записаться на консультацию
-    </a>
+    <div class="cta-block__inner">
+
+      <div class="reveal">
+        <h2 class="cta-block__heading" id="cta-heading">{{ home.finalCta.heading }}</h2>
+        <p class="cta-block__text lead">{{ home.finalCta.body }}</p>
+        <a href="{{ home.finalCta.primaryCta.url }}" class="btn btn-primary btn-lg">
+          {{ home.finalCta.primaryCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="cta-block__direct reveal reveal--delay-1">
+        {% if liveMessengers | length %}
+        <p class="cta-block__direct-label">{{ home.finalCta.directLabel }}</p>
+        {{ channelChips(contact.messengers) }}
+        {% else %}
+        {# VERIFY_WITH_ELENA (V-03): Telegram / MAX / WhatsApp не подтверждены —
+           показываем работающие прямые контакты вместо мёртвых ссылок. #}
+        <p class="cta-block__direct-label">{{ home.finalCta.directLabel }}</p>
+        {{ directContacts(contact) }}
+        {% endif %}
+        <p class="hand-note cta-block__note">{{ home.finalCta.note }}</p>
+      </div>
+
+    </div>
   </div>
 </section>

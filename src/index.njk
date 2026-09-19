@@ -1,323 +1,442 @@
 ---
 layout: base.njk
-title: Figura Lab — пространство осознанного питания
-description: "Figura Lab by Елена Бастуева — пространство осознанного питания, мягкого снижения веса и здоровой трансформации тела без насилия над собой."
+title: Осознанный путь к устойчивому благополучию
+description: "Figura Lab by Елена Бастуева — гармония тела, энергии и образа жизни без крайностей и временных решений. Осознанный подход и поддержка на каждом этапе."
 preloadHero: true
 ---
 
 {# =====================================================================
-   HOMEPAGE — Figura Lab · Stage 4A Visual System
-   Текст: только подтверждённые нейтральные формулировки.
-   Весь маркетинговый copy — PLACEHOLDER_CONTENT до одобрения Елены.
-   Фото: REPLACE_WITH_FINAL_ELENA_HERO — dev asset.
+   ГЛАВНАЯ — North Star production implementation
+   Визуальный эталон: references/figura-lab-north-star.png
+   Контент: src/_data/home.json (заменяется без правки шаблона)
+   Порядок глав: 01 Hero · 02 Суть метода · 03 Для кого · 04 Как работает
+                 05 Программы · 06 Результаты · 07 Елена · 08 Журнал
+                 09 Инструменты · 10 Начнём с разговора · 11 Footer
    ===================================================================== #}
 
+{% include "components/chapter-rail.njk" %}
+
 {# ── 01 HERO ─────────────────────────────────────────────────────────── #}
-<section class="home-hero" aria-labelledby="home-hero-title">
+<section class="home-hero chapter" id="chapter-hero" aria-labelledby="hero-title">
   <div class="container-wide">
     <div class="home-hero__inner">
 
       <div class="home-hero__content">
-        <p class="home-hero__label" aria-label="Figura Lab by Елена Бастуева">
-          Figura Lab · by Елена Бастуева
-        </p>
-
-        <h1 class="home-hero__title" id="home-hero-title">
-          Не диета.<br>
-          Не марафон.<br>
-          Не&nbsp;<em>наказание</em>.
+      <div class="home-hero__head">
+        <h1 class="home-hero__title" id="hero-title">
+          <span class="home-hero__wordmark">{{ home.hero.wordmark }}</span>
+          <span class="home-hero__headline">{{ home.hero.headline | safe }}</span>
         </h1>
+      </div>
 
-        <p class="home-hero__sub">
-          {# PLACEHOLDER_CONTENT — финальный tagline согласовывается с Еленой #}
-          Пространство осознанного питания и бережной трансформации тела.
-        </p>
+      {# Порядок на узких экранах: заголовок → портрет → текст и кнопки #}
+      <div class="home-hero__body">
+        <p class="home-hero__lead">{{ home.hero.lead }}</p>
 
         <div class="home-hero__actions">
-          <a href="/kontakty/" class="btn btn-primary btn-lg">
-            Записаться на консультацию
+          <a href="{{ home.hero.primaryCta.url }}" class="btn btn-primary btn-lg">
+            {{ home.hero.primaryCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
           </a>
-          <a href="/metod/" class="editorial-link" aria-label="Узнать подробнее о методе Figura Lab">
-            Узнать о методе <span aria-hidden="true">→</span>
+          <a href="{{ home.hero.secondaryCta.url }}" class="editorial-link">
+            {{ home.hero.secondaryCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
           </a>
         </div>
+
+        <div class="home-hero__keywords">
+          <ul class="keyword-strip" role="list">
+            {% for word in home.hero.keywords %}
+            <li class="keyword-strip__item">{{ word }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
       </div>
 
-      <div class="home-hero__portrait-col">
-        {# REPLACE_WITH_FINAL_ELENA_HERO — dev asset, заменить финальным портретом #}
+      <figure class="home-hero__figure">
         <div class="home-hero__portrait-wrap">
-          <picture>
-            <source
-              type="image/webp"
-              srcset="
-                /assets/img/elena/elena-hero-400.webp  400w,
-                /assets/img/elena/elena-hero-800.webp  800w,
-                /assets/img/elena/elena-hero-1040.webp 1040w"
-              sizes="(max-width: 800px) 90vw, 420px">
-            <source
-              type="image/jpeg"
-              srcset="
-                /assets/img/elena/elena-hero-400.jpg  400w,
-                /assets/img/elena/elena-hero-800.jpg  800w,
-                /assets/img/elena/elena-hero-1040.jpg 1040w"
-              sizes="(max-width: 800px) 90vw, 420px">
-            <img
-              src="/assets/img/elena/elena-hero-800.jpg"
-              alt="Елена Бастуева — нутрициолог и специалист по снижению веса"
-              class="home-hero__portrait-img"
-              width="800"
-              height="1067"
-              fetchpriority="high"
-              decoding="async">
-          </picture>
+          <img
+            src="/assets/img/elena/elena-portrait-760.jpg"
+            srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
+                    /assets/img/elena/elena-portrait-760.jpg 760w,
+                    /assets/img/elena/elena-portrait-1040.jpg 1040w"
+            sizes="(max-width: 56rem) 26rem, 30rem"
+            alt="Елена Бастуева — основатель Figura Lab"
+            class="home-hero__portrait"
+            width="760"
+            height="1013"
+            fetchpriority="high"
+            decoding="sync">
         </div>
+        <figcaption class="home-hero__meta">
+          <span class="home-hero__caption">
+            <span class="home-hero__caption-name">{{ home.hero.portraitCaption }}</span>
+            <span class="home-hero__caption-role">{{ home.hero.portraitRole }}</span>
+          </span>
+          <span class="hand-note">{{ home.hero.note }}</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+{# ── 02 СУТЬ МЕТОДА — editorial composition + first chapter rise ─────── #}
+<section class="chapter chapter--light chapter--arc" id="chapter-method" aria-labelledby="method-title">
+  <div class="container">
+    <div class="method-block__inner">
+
+      <div class="reveal reveal--rise">
+        <h2 class="method-block__title" id="method-title">{{ home.method.heading }}</h2>
+        <p class="statement method-block__statement">{{ home.method.statement }}</p>
+        <div class="method-block__body">
+          {% for p in home.method.body %}<p>{{ p }}</p>{% endfor %}
+        </div>
+        <a href="{{ home.method.cta.url }}" class="editorial-link">
+          {{ home.method.cta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="reveal reveal--delay-1">
+        <figure class="method-block__figure">
+          <img src="{{ home.method.symbol.src }}" alt="{{ home.method.symbol.alt }}"
+               class="method-block__symbol" width="480" height="480" loading="lazy" decoding="async">
+        </figure>
+        <p class="hand-note method-block__note">{{ home.method.note }}</p>
       </div>
 
     </div>
   </div>
 </section>
 
-{# ── 02 МЕТОД PREVIEW ───────────────────────────────────────────────── #}
-<section class="home-method" aria-labelledby="home-method-heading">
+{# ── 03 ДЛЯ КОГО FIGURA LAB ──────────────────────────────────────────── #}
+<section class="chapter chapter--arc" id="chapter-audience" aria-labelledby="audience-title">
   <div class="container">
-    <div class="home-method__inner">
 
-      <div class="home-method__label-col">
-        <div class="home-method__label">
-          <p class="eyebrow">Метод</p>
-          <a href="/metod/" class="editorial-link">
-            Подробнее <span aria-hidden="true">→</span>
+    <div class="chapter-head chapter-head--split reveal">
+      <div>
+        <h2 class="chapter-head__title" id="audience-title">{{ home.audience.heading }}</h2>
+      </div>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">{{ home.audience.intro }}</p>
+      </div>
+    </div>
+
+    <div class="audience-grid">
+      {% for item in home.audience.items %}
+      <article class="audience-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+        <div class="audience-card__media">
+          <img src="{{ item.symbol }}" alt="{{ item.symbolAlt }}" class="audience-card__symbol"
+               width="480" height="480" loading="lazy" decoding="async">
+        </div>
+        <h3 class="audience-card__title">{{ item.title }}</h3>
+        <p class="audience-card__text">{{ item.text }}</p>
+      </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{# ── IMMERSIVE REVEAL — «войти в изображение» ─────────────────────────
+   Небольшой кадр раскрывается по мере прокрутки и становится сценой.
+   Без JS / при prefers-reduced-motion — готовая статическая композиция. #}
+<section class="immersive" data-immersive aria-labelledby="immersive-statement">
+  <div class="immersive__track" data-immersive-track>
+    <div class="immersive__stage">
+      <figure class="immersive__frame">
+        <img
+          src="{{ home.immersive.image.srcSmall }}"
+          srcset="{{ home.immersive.image.srcSmall }} 900w, {{ home.immersive.image.src }} 1760w"
+          sizes="100vw"
+          alt="{{ home.immersive.image.alt }}"
+          class="immersive__img"
+          width="1760"
+          height="1173"
+          loading="lazy"
+          decoding="async">
+        <span class="immersive__scrim" aria-hidden="true"></span>
+        <figcaption class="immersive__overlay">
+          <p class="eyebrow immersive__eyebrow">{{ home.immersive.eyebrow }}</p>
+          <p class="statement immersive__statement" id="immersive-statement">{{ home.immersive.statement }}</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+{# ── 04 КАК РАБОТАЕТ МЕТОД — pinned storytelling ─────────────────────── #}
+<section class="chapter chapter--arc" id="chapter-process" aria-labelledby="process-title">
+  <div class="container">
+    <div class="process__inner">
+
+      <div class="process__aside reveal">
+        <h2 class="process__title" id="process-title">{{ home.process.heading }}</h2>
+        <p class="process__lead lead">{{ home.process.lead }}</p>
+        <a href="{{ home.process.cta.url }}" class="btn btn-soft">
+          {{ home.process.cta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <ol class="process__stages" role="list" data-process-stages>
+        {% for stage in home.process.stages %}
+        <li class="process__stage" data-process-stage>
+          <span class="process__num" aria-hidden="true">{{ stage.num }}</span>
+          <div>
+            <h3 class="process__stage-title">{{ stage.title }}</h3>
+            <p class="process__stage-text">{{ stage.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+
+    </div>
+  </div>
+</section>
+
+{# ── 05 ПРОГРАММЫ ────────────────────────────────────────────────────── #}
+<section class="chapter chapter--sand chapter--arc" id="chapter-programs" aria-labelledby="programs-title">
+  <div class="container">
+
+    <div class="chapter-head chapter-head--split reveal">
+      <div>
+        <h2 class="chapter-head__title" id="programs-title">{{ home.programs.heading }}</h2>
+      </div>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">{{ home.programs.intro }}</p>
+        <a href="{{ home.programs.archiveCta.url }}" class="editorial-link editorial-link--sm">
+          {{ home.programs.archiveCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    {# Состав, длительность и стоимость НЕ публикуются до подтверждения (VERIFY_WITH_ELENA V-06, V-07).
+       Названия программ — из утверждённого North Star. #}
+    <div class="programs-grid">
+      {% for prog in home.programs.items %}
+      <article class="program-panel reveal reveal--delay-{{ loop.index0 % 3 + 1 }}" aria-labelledby="prog-{{ loop.index }}">
+        <div class="program-panel__media">
+          <img src="{{ prog.image }}"
+               alt=""
+               width="900" height="600" loading="lazy" decoding="async"
+               class="program-panel__img program-panel__img--{{ loop.index }}">
+        </div>
+        <div class="program-panel__body">
+          <h3 class="program-panel__title" id="prog-{{ loop.index }}">{{ prog.name }}</h3>
+          <p class="program-panel__summary">{{ prog.summary }}</p>
+
+          <div class="program-panel__rows">
+            <details class="program-panel__row">
+              <summary>Для кого</summary>
+              <p class="program-panel__row-body">{{ prog.audience }}</p>
+            </details>
+            <details class="program-panel__row">
+              <summary>Что входит</summary>
+              <p class="program-panel__row-body">{{ prog.includes }}</p>
+            </details>
+            <details class="program-panel__row">
+              <summary>Формат</summary>
+              <p class="program-panel__row-body">{{ prog.format }}</p>
+            </details>
+          </div>
+
+          <div class="program-panel__cta">
+            <a href="{{ prog.url }}" class="btn btn-line btn-block">
+              Подробнее <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+
+{# ── 06 РЕЗУЛЬТАТЫ ───────────────────────────────────────────────────── #}
+<section class="chapter chapter--light chapter--arc" id="chapter-results" aria-labelledby="results-title">
+  <div class="container">
+
+    <div class="chapter-head chapter-head--split reveal">
+      <div>
+        <h2 class="chapter-head__title" id="results-title">{{ home.results.heading }}</h2>
+      </div>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">{{ home.results.intro }}</p>
+        <a href="{{ home.results.archiveCta.url }}" class="editorial-link editorial-link--sm">
+          {{ home.results.archiveCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    {# Реальные истории публикуются только с письменного согласия клиента
+       (features.stories.published + home.results.items). Пока согласий нет —
+       выводится честная структура тем без выдуманных цитат, имён и цифр. #}
+    <div class="stories-grid">
+      {% if features.stories.published and home.results.items | length %}
+        {% for story in home.results.items %}
+        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+          <span class="story-card__mark" aria-hidden="true">«</span>
+          <h3 class="story-card__theme">{{ story.theme }}</h3>
+          <p class="story-card__text">{{ story.excerpt }}</p>
+          <div class="story-card__foot">
+            <a href="{{ story.url }}" class="editorial-link editorial-link--sm">
+              Читать историю <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        {% for theme in home.results.themes %}
+        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+          <span class="story-card__mark" aria-hidden="true">«</span>
+          <h3 class="story-card__theme">{{ theme.theme }}</h3>
+          <p class="story-card__text">{{ theme.text }}</p>
+          <div class="story-card__foot">
+            <span class="pending-line">Готовится к публикации</span>
+          </div>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if not features.stories.published %}
+    <p class="pending-note measure stories-note reveal">{{ home.results.pendingNote }}</p>
+    {% endif %}
+
+  </div>
+</section>
+
+{# ── 07 ЕЛЕНА БАСТУЕВА — portrait reveal ─────────────────────────────── #}
+<section class="chapter chapter--sand chapter--arc" id="chapter-elena" aria-labelledby="elena-title">
+  <div class="container">
+    <div class="elena-block__inner">
+
+      <figure class="elena-block__figure portrait-reveal reveal">
+        <div class="elena-block__portrait-wrap">
+          <img
+            src="/assets/img/elena/elena-portrait-520.jpg"
+            srcset="/assets/img/elena/elena-portrait-520.jpg 520w,
+                    /assets/img/elena/elena-portrait-760.jpg 760w"
+            sizes="(max-width: 56rem) 20rem, 26rem"
+            alt="Елена Бастуева — создательница Figura Lab"
+            class="elena-block__portrait"
+            width="520"
+            height="693"
+            loading="lazy"
+            decoding="async">
+        </div>
+      </figure>
+
+      <div class="reveal reveal--delay-1">
+        <h2 class="elena-block__title" id="elena-title">{{ home.elena.heading }}</h2>
+        <p class="elena-block__role">{{ home.elena.role }}</p>
+        <div class="elena-block__body">
+          {% for p in home.elena.body %}<p>{{ p }}</p>{% endfor %}
+        </div>
+        <div class="elena-block__foot">
+          <a href="{{ home.elena.cta.url }}" class="btn btn-primary">
+            {{ home.elena.cta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
           </a>
+          <p class="hand-note">{{ home.elena.note }}</p>
         </div>
-      </div>
-
-      <div class="home-method__content-col">
-        {# PLACEHOLDER_CONTENT — финальная цитата-заголовок согласовывается с Еленой #}
-        <p class="home-method__statement" id="home-method-heading">
-          Устойчивый результат начинается с понимания, а не с запрета
-        </p>
-        <p class="home-method__text">
-          {# PLACEHOLDER_CONTENT #}
-          Метод Figura Lab — это не очередная диетическая система.
-          Это работа с реальными механизмами изменений: без жёстких ограничений,
-          с уважением к вашему телу и вашей жизни.
-        </p>
       </div>
 
     </div>
   </div>
 </section>
 
-{# ── 03 ПРОГРАММЫ PREVIEW ────────────────────────────────────────────── #}
-<section class="home-programs" aria-labelledby="home-programs-heading">
+{# ── 08 ЖУРНАЛ ───────────────────────────────────────────────────────── #}
+<section class="chapter chapter--light chapter--arc" id="chapter-journal" aria-labelledby="journal-title">
   <div class="container">
 
-    <div class="home-programs__header">
-      <div class="home-programs__header-text">
-        <p class="eyebrow">Программы</p>
-        <h2 class="home-programs__header-heading" id="home-programs-heading">
-          {# PLACEHOLDER_CONTENT #}
-          Формат работы, который подходит вам
-        </h2>
-      </div>
-      <a href="/programmy/" class="editorial-link" aria-label="Все программы Figura Lab">
-        Все программы <span aria-hidden="true">→</span>
-      </a>
-    </div>
-
-    <div class="programs-list" role="list">
-
-      {# PLACEHOLDER: названия, цены, форматы — VERIFY_WITH_ELENA (V-01, V-02) #}
-      <article class="program-card" role="listitem" aria-labelledby="prog-prev-1">
-        <div>
-          <p class="eyebrow program-card__eyebrow">Программа · формат уточняется</p>
-          <h3 class="program-card__title" id="prog-prev-1">
-            VERIFY_WITH_ELENA — название программы
-          </h3>
-          <p class="program-card__meta">
-            Для кого · длительность · стоимость: уточняются у Елены
-          </p>
-        </div>
-        <div class="program-card__cta">
-          <a href="/kontakty/" class="btn btn-line">Узнать подробнее</a>
-        </div>
-      </article>
-
-      <article class="program-card" role="listitem" aria-labelledby="prog-prev-2">
-        <div>
-          <p class="eyebrow program-card__eyebrow">Программа · формат уточняется</p>
-          <h3 class="program-card__title" id="prog-prev-2">
-            VERIFY_WITH_ELENA — название программы
-          </h3>
-          <p class="program-card__meta">
-            Для кого · длительность · стоимость: уточняются у Елены
-          </p>
-        </div>
-        <div class="program-card__cta">
-          <a href="/kontakty/" class="btn btn-line">Узнать подробнее</a>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-{# ── 04 ИСТОРИИ / РЕЗУЛЬТАТЫ PREVIEW ────────────────────────────────── #}
-<section class="home-stories" aria-labelledby="home-stories-heading">
-  <div class="container">
-
-    <div class="home-stories__header">
+    <div class="chapter-head chapter-head--split reveal">
       <div>
-        <p class="eyebrow">Результаты</p>
-        <h2 class="home-stories__heading" id="home-stories-heading">
-          Истории реальных изменений
-        </h2>
+        <h2 class="chapter-head__title" id="journal-title">{{ home.journal.heading }}</h2>
       </div>
-      <a href="/rezultaty/" class="editorial-link" aria-label="Все истории клиентов">
-        Все истории <span aria-hidden="true">→</span>
-      </a>
+      <div class="chapter-head__aside">
+        <p class="chapter-head__intro">{{ home.journal.intro }}</p>
+        <a href="{{ home.journal.archiveCta.url }}" class="editorial-link editorial-link--sm">
+          {{ home.journal.archiveCta.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
     </div>
 
-    {# PLACEHOLDER: отзывы добавляются только с письменного согласия клиента.
-       Сейчас — premium story shell. LEGAL_REVIEW (V-06). #}
-    <div class="stories-grid" role="list">
-
-      <article class="story-card" role="listitem">
-        <span class="story-card__mark" aria-hidden="true">«</span>
-        <p class="story-card__quote">
-          История ожидает публикации. Отзыв будет добавлен после получения
-          письменного согласия клиента.
-        </p>
-        <div class="story-card__sep" aria-hidden="true"></div>
-        <p class="story-card__author">VERIFY_WITH_ELENA</p>
-        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
-      </article>
-
-      <article class="story-card" role="listitem">
-        <span class="story-card__mark" aria-hidden="true">«</span>
-        <p class="story-card__quote">
-          История ожидает публикации. Отзыв будет добавлен после получения
-          письменного согласия клиента.
-        </p>
-        <div class="story-card__sep" aria-hidden="true"></div>
-        <p class="story-card__author">VERIFY_WITH_ELENA</p>
-        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
-      </article>
-
-      <article class="story-card" role="listitem">
-        <span class="story-card__mark" aria-hidden="true">«</span>
-        <p class="story-card__quote">
-          История ожидает публикации. Отзыв будет добавлен после получения
-          письменного согласия клиента.
-        </p>
-        <div class="story-card__sep" aria-hidden="true"></div>
-        <p class="story-card__author">VERIFY_WITH_ELENA</p>
-        <p class="story-card__status">Ожидает согласия на публикацию · LEGAL_REVIEW</p>
-      </article>
-
-    </div>
-
-  </div>
-</section>
-
-{# ── 05 ЕЛЕНА PREVIEW ────────────────────────────────────────────────── #}
-<section class="home-elena" aria-labelledby="home-elena-heading">
-  <div class="container">
-    <div class="home-elena__inner">
-
-      <div class="home-elena__portrait-col">
-        {# REPLACE_WITH_FINAL_ELENA_HERO — dev asset #}
-        <div class="home-elena__portrait-wrap">
-          <picture>
-            <source
-              type="image/webp"
-              srcset="
-                /assets/img/elena/elena-hero-400.webp 400w,
-                /assets/img/elena/elena-hero-800.webp 800w"
-              sizes="(max-width: 760px) 80vw, 360px">
-            <img
-              src="/assets/img/elena/elena-hero-800.jpg"
-              alt="Елена Бастуева — нутрициолог, основатель Figura Lab"
-              class="home-elena__portrait-img"
-              width="800"
-              height="1067"
-              decoding="async"
-              loading="lazy">
-          </picture>
+    {# Статьи публикуются при наличии готового авторского материала (published: true).
+       Пока материал не готов — карточка не содержит ссылки (никаких мёртвых кнопок). #}
+    <div class="journal-grid">
+      {% for art in home.journal.items %}
+      <article class="journal-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}{% if loop.first %} journal-card--featured{% endif %}">
+        {% if loop.first %}
+        <div class="journal-card__cover">
+          <img src="/assets/img/editorial/symbols/symbol-06-480.png" alt=""
+               class="journal-card__cover-symbol" width="480" height="240" loading="lazy" decoding="async">
         </div>
-      </div>
-
-      <div class="home-elena__content">
-        <p class="eyebrow home-elena__eyebrow">Елена Бастуева</p>
-        <h2 class="home-elena__heading" id="home-elena-heading">
-          {# PLACEHOLDER_CONTENT — заголовок согласовывается с Еленой #}
-          Нутрициолог и специалист по снижению веса
-        </h2>
-        <p class="home-elena__text">
-          {# PLACEHOLDER_CONTENT — биография и квалификация: VERIFY_WITH_ELENA (V-01) #}
-          Образование, опыт и подход к работе: данные уточняются у Елены.
-          Этот раздел будет заполнен после предоставления биографии и сертификатов.
-        </p>
-        <a href="/elena/" class="editorial-link" aria-label="Страница Елены Бастуевой">
-          Об Елене <span aria-hidden="true">→</span>
-        </a>
-      </div>
-
+        {% endif %}
+        <span class="badge journal-card__tag">{{ art.tag }}</span>
+        <h3 class="journal-card__title">{{ art.title }}</h3>
+        <p class="journal-card__excerpt">{{ art.excerpt }}</p>
+        <div class="journal-card__foot">
+          {% if art.published and art.url %}
+          <a href="{{ art.url }}" class="editorial-link editorial-link--sm">
+            Читать статью <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          {% else %}
+          <span class="pending-line">{{ home.journal.pendingLabel }}</span>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
     </div>
+
   </div>
 </section>
 
-{# ── 06 ЖУРНАЛ PREVIEW ───────────────────────────────────────────────── #}
-<section class="home-journal" aria-labelledby="home-journal-heading">
+{# ── 09 ИНСТРУМЕНТЫ FIGURA LAB — future tools architecture ────────────
+   Управляется features.tools. Инструмент с enabled: true автоматически
+   становится ссылкой — без переработки секции. Мёртвых кнопок нет. #}
+{% if features.tools.sectionVisible %}
+<section class="chapter chapter--sand tools-band" id="chapter-tools" aria-labelledby="tools-title">
+  <div class="tools-band__bg" aria-hidden="true">
+    <img src="/assets/img/editorial/abstract/abstract-05-1760.jpg" alt=""
+         width="1760" height="1173" loading="lazy" decoding="async">
+  </div>
   <div class="container">
+    <div class="tools-band__inner">
 
-    <div class="home-journal__header">
-      <div>
-        <p class="eyebrow">Журнал</p>
-        <h2 class="home-journal__heading" id="home-journal-heading">
-          Экспертные материалы
-        </h2>
+      <div class="reveal">
+        <p class="badge tools-band__badge">{{ home.tools.badge }}</p>
+        <h2 class="tools-band__title" id="tools-title">{{ home.tools.heading }}</h2>
+        <p class="tools-band__lead lead">{{ home.tools.lead }}</p>
+
+        <ul class="tools-list" role="list">
+          {% for tool in features.tools.items %}
+          <li class="tools-list__item">
+            <span class="tools-list__title">{{ tool.title }}</span>
+            <span class="tools-list__text">{{ tool.text }}</span>
+            {% if tool.enabled and tool.url %}
+            <a href="{{ tool.url }}" class="editorial-link editorial-link--sm">
+              Открыть <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+            {% else %}
+            <span class="tools-list__state">{{ home.tools.badge }}</span>
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
       </div>
-      <a href="/zhurnal/" class="editorial-link" aria-label="Все материалы журнала">
-        Все материалы <span aria-hidden="true">→</span>
-      </a>
-    </div>
 
-    {# PLACEHOLDER: статьи добавляются при наличии готового контента от Елены #}
-    <div class="journal-grid" role="list">
-
-      <article class="journal-card" role="listitem">
-        <span class="journal-card__tag">Питание · PLACEHOLDER_CONTENT</span>
-        <h3 class="journal-card__title">
-          PLACEHOLDER_CONTENT — тема материала
-        </h3>
-        <p class="journal-card__desc">
-          PLACEHOLDER_CONTENT — краткое описание. Статья будет добавлена при наличии
-          готового авторского контента.
-        </p>
-        <a href="/zhurnal/" class="journal-card__link" aria-label="Читать в журнале">
-          Читать →
-        </a>
-      </article>
-
-      <article class="journal-card" role="listitem">
-        <span class="journal-card__tag">Метод · PLACEHOLDER_CONTENT</span>
-        <h3 class="journal-card__title">
-          PLACEHOLDER_CONTENT — тема материала
-        </h3>
-        <p class="journal-card__desc">
-          PLACEHOLDER_CONTENT — краткое описание. Статья будет добавлена при наличии
-          готового авторского контента.
-        </p>
-        <a href="/zhurnal/" class="journal-card__link" aria-label="Читать в журнале">
-          Читать →
-        </a>
-      </article>
+      <div class="tools-band__aside reveal reveal--delay-1">
+        <div class="tools-band__symbol-wrap">
+          <img src="{{ home.tools.symbol.src }}" alt="{{ home.tools.symbol.alt }}"
+               class="tools-band__symbol" width="400" height="480" loading="lazy" decoding="async">
+        </div>
+        <p class="tools-band__aside-text">{{ home.tools.aside }}</p>
+      </div>
 
     </div>
-
   </div>
 </section>
+{% endif %}
 
-{# ── 07 ФИНАЛЬНЫЙ CTA ────────────────────────────────────────────────── #}
+{# ── 10 НАЧНЁМ С РАЗГОВОРА ───────────────────────────────────────────── #}
 {% include "components/cta-block.njk" %}

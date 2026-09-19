@@ -1,14 +1,23 @@
 <header class="site-header" role="banner">
-  <div class="site-header__inner container">
+  <div class="site-header__inner">
 
-    {# ── Wordmark — BRAND_ASSET_PENDING_FINAL
-       Заменить <span> на <img src="/assets/img/logo.svg"> когда лого утверждён #}
-    <a href="/" class="brand-link" aria-label="{{ site.name }} — На главную">
-      <span class="brand-mark__name">Figura Lab</span>
-      <span class="brand-mark__by">by Елена Бастуева</span>
+    {# Compact brand lockup: approved logo mark + readable HTML wordmark.
+       Логотип не переработан — используется только утверждённый знак. #}
+    <a href="/" class="brand-link" aria-label="{{ site.fullName }} — на главную">
+      <img
+        src="{{ site.brand.mark }}"
+        alt=""
+        class="brand-link__mark"
+        width="218"
+        height="321"
+        fetchpriority="high"
+        decoding="sync">
+      <span class="brand-link__text">
+        <span class="brand-link__name">{{ site.brand.nameLatin }}</span>
+        <span class="brand-link__by">{{ site.brand.by }}</span>
+      </span>
     </a>
 
-    {# ── Burger (mobile only) #}
     <button
       class="nav-toggle"
       type="button"
@@ -20,12 +29,10 @@
       <span class="nav-toggle__bar" aria-hidden="true"></span>
     </button>
 
-    {# ── Main navigation #}
     <nav id="site-nav" class="site-nav" aria-label="Основная навигация">
-
       <ul class="nav-list" role="list">
         {% for item in nav %}
-        <li class="nav-list__item">
+        <li>
           <a
             href="{{ item.url }}"
             class="nav-link"
@@ -36,10 +43,10 @@
         {% endfor %}
       </ul>
 
-      <a href="/kontakty/" class="nav-cta" aria-label="Записаться на консультацию">
-        Консультация
+      <a href="{{ site.consultationCta.url }}" class="nav-cta" aria-label="{{ site.consultationCta.full }}">
+        <span class="nav-cta__short">{{ site.consultationCta.short }}</span>
+        <span class="nav-cta__long">{{ site.consultationCta.full }}</span>
       </a>
-
     </nav>
 
   </div>

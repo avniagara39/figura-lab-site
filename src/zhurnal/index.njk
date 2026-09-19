@@ -1,63 +1,64 @@
 ---
 layout: base.njk
 title: Журнал
-description: "Журнал Figura Lab — экспертные материалы о питании, теле и осознанном подходе к здоровью."
-pageTitle: "Журнал"
-pageIntro: "Экспертные материалы о питании, теле и осознанном подходе к жизни."
-eyebrow: "Figura Lab"
+description: "Журнал Figura Lab — материалы о благополучии, осознанном питании и гармоничной жизни."
+crumb: "Журнал"
 ---
 
 {# =====================================================================
-   /zhurnal/ — Foundation для editorial / экспертных материалов
-   Статьи: PLACEHOLDER_CONTENT — будут добавлены при наличии реального контента.
+   /zhurnal/ — Журнал
+   Контент: src/_data/pages.json → pages.zhurnal, home.journal.items
+   Карточка становится ссылкой только при published: true и заданном url.
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Журнал</span>
-    </li>
-  </ol>
-</nav>
+{% set pageTitle = pages.zhurnal.title %}
+{% set eyebrow = pages.zhurnal.eyebrow %}
+{% set pageIntro = pages.zhurnal.intro %}
+{% set heroSymbol = home.audience.items[0].symbol %}
+{% set heroSymbolAlt = home.audience.items[0].symbolAlt %}
 
+{% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-{# --- Статьи ----------------------------------------------------------- #}
-<section class="section" aria-labelledby="articles-heading">
+<section class="chapter chapter--light chapter--arc" aria-labelledby="journal-list-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Материалы</p>
-    <h2 class="section__heading" id="articles-heading">
-      Все материалы
-    </h2>
 
-    {# PLACEHOLDER: статьи будут добавлены при наличии готового контента от Елены #}
-    <div class="card-grid" role="list">
-
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Статья</p>
-        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 1</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
-        <span class="placeholder-notice">Добавить реальный контент</span>
-      </article>
-
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Статья</p>
-        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 2</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
-        <span class="placeholder-notice">Добавить реальный контент</span>
-      </article>
-
-      <article class="card card--placeholder" role="listitem">
-        <p class="eyebrow card__eyebrow">Статья</p>
-        <h3 class="card__title">PLACEHOLDER_CONTENT — тема материала 3</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT — краткое описание</p>
-        <span class="placeholder-notice">Добавить реальный контент</span>
-      </article>
-
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="journal-list-title">Материалы</h2>
     </div>
+
+    {% if not features.journal.published %}
+    <div class="info-panel journal-note reveal">
+      <p class="info-panel__title">{{ pages.zhurnal.pendingTitle }}</p>
+      <p>{{ pages.zhurnal.pendingNote }}</p>
+    </div>
+    {% endif %}
+
+    <div class="journal-grid">
+      {% for art in home.journal.items %}
+      <article class="journal-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}{% if loop.first %} journal-card--featured{% endif %}">
+        {% if loop.first %}
+        <div class="journal-card__cover">
+          <img src="/assets/img/editorial/symbols/symbol-06-480.png" alt=""
+               class="journal-card__cover-symbol" width="480" height="240" loading="lazy" decoding="async">
+        </div>
+        {% endif %}
+        <span class="badge journal-card__tag">{{ art.tag }}</span>
+        <h3 class="journal-card__title">{{ art.title }}</h3>
+        <p class="journal-card__excerpt">{{ art.excerpt }}</p>
+        <div class="journal-card__foot">
+          {% if art.published and art.url %}
+          <a href="{{ art.url }}" class="editorial-link editorial-link--sm">
+            Читать статью <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          {% else %}
+          <span class="pending-line">{{ home.journal.pendingLabel }}</span>
+          {% endif %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+
   </div>
 </section>
 

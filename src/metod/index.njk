@@ -1,99 +1,116 @@
 ---
 layout: base.njk
 title: Метод
-description: "Метод Figura Lab — система осознанного питания и бережного снижения веса без жёстких ограничений."
-pageTitle: "Метод"
-pageIntro: "Система, которая работает с вашей жизнью, а не против неё."
-eyebrow: "Метод Figura Lab"
+description: "Метод Figura Lab — целостный подход к благополучию: тело, привычки, мышление и качество жизни без крайностей и временных решений."
+crumb: "Метод"
 ---
 
 {# =====================================================================
-   /metod/ — Страница метода и философии работы
+   /metod/ — Метод и философия работы
+   Контент: src/_data/pages.json → pages.metod (+ home.process для этапов)
    CONFLICT-03 RESOLVED: формулировки гендерно нейтральны.
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Метод</span>
-    </li>
-  </ol>
-</nav>
+{% set pageTitle = pages.metod.title %}
+{% set eyebrow = pages.metod.eyebrow %}
+{% set pageIntro = pages.metod.intro %}
+{% set heroSymbol = home.method.symbol.src %}
+{% set heroSymbolAlt = home.method.symbol.alt %}
+{% set heroPrimary = { label: "Записаться на консультацию", url: "/kontakty/" } %}
+{% set heroSecondary = { label: "Все программы", url: "/programmy/" } %}
 
+{% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
 {# --- Философия -------------------------------------------------------- #}
-<section class="section" aria-labelledby="philosophy-heading">
+<section class="chapter chapter--light chapter--arc" aria-labelledby="philosophy-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Философия</p>
-    <h2 class="section__heading" id="philosophy-heading">
-      {# PLACEHOLDER_CONTENT — финальный заголовок согласовывается с Еленой #}
-      Тело — не проект. Это ваша жизнь.
-    </h2>
-    <div style="max-width: var(--content-text);">
-      <p class="section__intro">
-        {# PLACEHOLDER_CONTENT — финальный текст согласовывается с Еленой #}
-        Метод Figura Lab — это не очередная диетическая система.
-        Это подход, основанный на понимании причин пищевого поведения,
-        физиологических механизмов и реальных условий жизни человека.
-      </p>
-      <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-6);">
-        {# PLACEHOLDER_CONTENT #}
-        Здесь нет голодания, марафонов и чужих правил.
-        Есть системная работа, уважение к вашему телу и устойчивый результат.
-      </p>
+    <div class="method-block__inner">
+
+      <div class="reveal reveal--rise">
+        <h2 class="method-block__title" id="philosophy-title">{{ pages.metod.philosophyHeading }}</h2>
+        <p class="statement method-block__statement">{{ home.method.statement }}</p>
+        <div class="method-block__body">
+          {% for p in pages.metod.philosophy %}<p>{{ p }}</p>{% endfor %}
+        </div>
+      </div>
+
+      <div class="reveal reveal--delay-1">
+        <figure class="program-detail__figure">
+          <img src="/assets/img/editorial/abstract/abstract-05-900.jpg"
+               alt="{{ home.immersive.image.alt }}"
+               width="900" height="600" loading="lazy" decoding="async">
+        </figure>
+        <p class="hand-note method-block__note">{{ home.method.note }}</p>
+      </div>
+
     </div>
   </div>
 </section>
 
 {# --- Принципы --------------------------------------------------------- #}
-<section class="section section--linen" aria-labelledby="principles-heading">
+<section class="chapter chapter--arc" aria-labelledby="principles-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Принципы</p>
-    <h2 class="section__heading" id="principles-heading">
-      {# PLACEHOLDER_CONTENT — принципы уточняются с Еленой #}
-      Что лежит в основе работы
-    </h2>
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="principles-title">{{ pages.metod.principlesHeading }}</h2>
+    </div>
 
-    <div class="card-grid" role="list">
-      {# PLACEHOLDER: до 6 карточек-принципов — VERIFY_WITH_ELENA #}
-      <article class="card card--placeholder" role="listitem">
-        <h3 class="card__title">Принцип 1 — VERIFY_WITH_ELENA</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT</p>
-      </article>
-      <article class="card card--placeholder" role="listitem">
-        <h3 class="card__title">Принцип 2 — VERIFY_WITH_ELENA</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT</p>
-      </article>
-      <article class="card card--placeholder" role="listitem">
-        <h3 class="card__title">Принцип 3 — VERIFY_WITH_ELENA</h3>
-        <p class="card__body">PLACEHOLDER_CONTENT</p>
-      </article>
+    <ol class="numbered-list numbered-list--2" role="list">
+      {% for item in pages.metod.principles %}
+      <li class="numbered-list__item reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+        <span class="numbered-list__num" aria-hidden="true">{{ item.num }}</span>
+        <h3 class="numbered-list__title">{{ item.title }}</h3>
+        <p class="numbered-list__text">{{ item.text }}</p>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+
+{# --- Этапы работы (те же этапы, что и на главной) --------------------- #}
+<section class="chapter chapter--sand chapter--arc" aria-labelledby="stages-title">
+  <div class="container">
+    <div class="process__inner">
+
+      <div class="process__aside reveal">
+        <h2 class="process__title" id="stages-title">{{ pages.metod.stagesHeading }}</h2>
+        <p class="process__lead lead">{{ pages.metod.stagesLead }}</p>
+        <a href="/programmy/" class="btn btn-soft">
+          Все программы <span class="btn__arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <ol class="process__stages" role="list" data-process-stages>
+        {% for stage in home.process.stages %}
+        <li class="process__stage" data-process-stage>
+          <span class="process__num" aria-hidden="true">{{ stage.num }}</span>
+          <div>
+            <h3 class="process__stage-title">{{ stage.title }}</h3>
+            <p class="process__stage-text">{{ stage.text }}</p>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+
     </div>
   </div>
 </section>
 
-{# --- Чем НЕ является метод ------------------------------------------- #}
-<section class="section" aria-labelledby="not-about-heading">
+{# --- Границы метода ---------------------------------------------------
+   Честные ограничения без медицинских обещаний.
+   LEGAL_REVIEW: итоговые формулировки проверяются юристом (см. docs). #}
+<section class="chapter chapter--light chapter--arc" aria-labelledby="limits-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">Важно</p>
-    <h2 class="section__heading" id="not-about-heading">
-      Что метод не обещает
-    </h2>
-    <div style="max-width: var(--content-text);">
-      <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-4);">
-        Метод не является медицинским лечением и не предназначен для
-        лечения заболеваний. Результаты индивидуальны и зависят от
-        множества факторов.
-      </p>
-      {# LEGAL_REVIEW: дисклеймер проверяется юристом перед публикацией #}
-      <p class="placeholder-notice">LEGAL_REVIEW: этот блок требует проверки юристом перед публикацией</p>
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="limits-title">{{ pages.metod.limitsHeading }}</h2>
+    </div>
+    <div class="prose reveal">
+      <ul role="list">
+        {% for line in pages.metod.limits %}<li>{{ line }}</li>{% endfor %}
+      </ul>
+      <p>{{ pages.metod.legalNote }}</p>
     </div>
   </div>
 </section>
 
-{# --- CTA -------------------------------------------------------------- #}
 {% include "components/cta-block.njk" %}

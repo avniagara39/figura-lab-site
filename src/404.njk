@@ -1,22 +1,20 @@
 ---
 layout: base.njk
 title: Страница не найдена
-description: "Страница не найдена — Figura Lab"
+description: "Страница не найдена — Figura Lab."
 permalink: /404.html
 ---
 
 {# =====================================================================
-   404 — Branded not-found page
+   404 — фирменная страница «не найдено»
    ===================================================================== #}
 
-<div class="page-404 container" role="main" aria-labelledby="page-404-title">
+<div class="page-404 container" aria-labelledby="page-404-title">
   <p class="page-404__code" aria-hidden="true">404</p>
-  <h1 class="page-404__title" id="page-404-title">Страница не найдена</h1>
-  <p class="page-404__text">
-    Возможно, она была перемещена, или вы перешли по устаревшей ссылке.
-  </p>
-  <div style="display: flex; flex-wrap: wrap; gap: var(--space-4); justify-content: center;">
+  <h1 class="page-404__title" id="page-404-title">{{ pages.notFound.title }}</h1>
+  <p class="page-404__text">{{ pages.notFound.text }}</p>
+  <div class="page-404__actions">
     <a href="/" class="btn btn-primary">На главную</a>
-    <a href="/kontakty/" class="btn btn-line">Связаться с нами</a>
+    <a href="/kontakty/" class="btn btn-line">Связаться</a>
   </div>
 </div>

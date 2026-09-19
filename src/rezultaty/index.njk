@@ -1,93 +1,84 @@
 ---
 layout: base.njk
 title: Результаты
-description: "Реальные истории клиентов Figura Lab — устойчивые результаты в снижении веса и изменении отношения к питанию."
-pageTitle: "Результаты"
-pageIntro: "Реальные истории людей, которые прошли путь изменений. Без фотошопа и выдуманных цифр."
-eyebrow: "Истории клиентов"
+description: "Результаты и истории клиентов Figura Lab — реальный опыт, публикуемый только с письменного согласия."
+crumb: "Результаты"
 ---
 
 {# =====================================================================
-   /rezultaty/ — Полная система результатов и отзывов
-   LEGAL_REVIEW: каждый отзыв требует письменного согласия клиента (V-06).
-   Не использовать автоматический карусель.
-   Статистика (клиенты, кг): VERIFY_WITH_ELENA + LEGAL_REVIEW (V-05 в чеклисте).
+   /rezultaty/ — Результаты и истории
+   Контент: src/_data/pages.json → pages.rezultaty, home.results
+   Реальные истории появляются при features.stories.published = true
+   и заполненном home.results.items. Ничего не выдумывать.
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Результаты</span>
-    </li>
-  </ol>
-</nav>
+{% set pageTitle = pages.rezultaty.title %}
+{% set eyebrow = pages.rezultaty.eyebrow %}
+{% set pageIntro = pages.rezultaty.intro %}
+{% set heroSymbol = home.audience.items[3].symbol %}
+{% set heroSymbolAlt = home.audience.items[3].symbolAlt %}
+{% set heroPrimary = { label: "Записаться на консультацию", url: "/kontakty/" } %}
 
+{% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-{# --- Оговорка --- #}
-<section class="section" style="padding-bottom: 0;">
+{# --- Истории --------------------------------------------------------- #}
+<section class="chapter chapter--light chapter--arc" aria-labelledby="stories-title">
   <div class="container">
-    <p class="placeholder-notice" style="margin-bottom: var(--space-8);">
-      LEGAL_REVIEW: дисклеймер перед отзывами — результаты индивидуальны, не являются гарантией.
-    </p>
-  </div>
-</section>
 
-{# --- Истории ---------------------------------------------------------- #}
-<section class="section" aria-labelledby="stories-heading">
-  <div class="container">
-    <p class="eyebrow section__eyebrow">Истории</p>
-    <h2 class="section__heading" id="stories-heading">
-      Изменения, которые остаются
-    </h2>
-
-    {# PLACEHOLDER: отзывы переносятся только с письменного согласия (V-06, LEGAL_REVIEW).
-       Не использовать отзыв Анастасии о здоровье мужа без отдельной проверки. #}
-    <div style="display: flex; flex-direction: column; gap: var(--space-8); margin-top: var(--space-8);">
-
-      <article class="testimonial card--placeholder" aria-labelledby="story-1">
-        <p class="testimonial__quote" id="story-1">
-          «PLACEHOLDER_CONTENT — история клиента 1 будет добавлена с письменного согласия»
-        </p>
-        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
-        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
-      </article>
-
-      <article class="testimonial card--placeholder" aria-labelledby="story-2">
-        <p class="testimonial__quote" id="story-2">
-          «PLACEHOLDER_CONTENT — история клиента 2 будет добавлена с письменного согласия»
-        </p>
-        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
-        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
-      </article>
-
-      <article class="testimonial card--placeholder" aria-labelledby="story-3">
-        <p class="testimonial__quote" id="story-3">
-          «PLACEHOLDER_CONTENT — история клиента 3 будет добавлена с письменного согласия»
-        </p>
-        <p class="testimonial__author">VERIFY_WITH_ELENA · LEGAL_REVIEW</p>
-        <p class="testimonial__result">Результат: VERIFY_WITH_ELENA</p>
-      </article>
-
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="stories-title">
+        {% if features.stories.published and home.results.items | length %}Истории{% else %}{{ pages.rezultaty.themesHeading }}{% endif %}
+      </h2>
     </div>
 
+    <div class="stories-grid">
+      {% if features.stories.published and home.results.items | length %}
+        {% for story in home.results.items %}
+        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+          <span class="story-card__mark" aria-hidden="true">«</span>
+          <h3 class="story-card__theme">{{ story.theme }}</h3>
+          <p class="story-card__text">{{ story.excerpt }}</p>
+          <div class="story-card__foot">
+            <a href="{{ story.url }}" class="editorial-link editorial-link--sm">
+              Читать историю <span class="btn__arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      {% else %}
+        {% for theme in home.results.themes %}
+        <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
+          <span class="story-card__mark" aria-hidden="true">«</span>
+          <h3 class="story-card__theme">{{ theme.theme }}</h3>
+          <p class="story-card__text">{{ theme.text }}</p>
+          <div class="story-card__foot">
+            <span class="pending-line">Готовится к публикации</span>
+          </div>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    {% if not features.stories.published %}
+    <div class="info-panel stories-note reveal">
+      <p class="info-panel__title">{{ pages.rezultaty.pendingTitle }}</p>
+      <p>{{ pages.rezultaty.pendingNote }}</p>
+    </div>
+    {% endif %}
+
   </div>
 </section>
 
-{# --- Цифры (только с подтверждением) ---------------------------------- #}
-<section class="section section--linen" aria-labelledby="stats-heading">
+{# --- Как мы публикуем истории ----------------------------------------- #}
+<section class="chapter chapter--sand chapter--arc" aria-labelledby="stories-how-title">
   <div class="container">
-    <p class="eyebrow section__eyebrow">В цифрах</p>
-    <h2 class="section__heading" id="stats-heading">
-      {# PLACEHOLDER_CONTENT — все цифры требуют подтверждения #}
-      Результаты в цифрах
-    </h2>
-    <p class="placeholder-notice">
-      VERIFY_WITH_ELENA + LEGAL_REVIEW: цифры (годы практики, количество клиентов, кг суммарно) публикуются только после подтверждения Еленой. До подтверждения — этот блок скрыт или не публикуется.
-    </p>
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="stories-how-title">{{ pages.rezultaty.howHeading }}</h2>
+    </div>
+    <div class="prose reveal">
+      {% for p in pages.rezultaty.how %}<p>{{ p }}</p>{% endfor %}
+    </div>
   </div>
 </section>
 

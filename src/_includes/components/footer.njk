@@ -1,61 +1,82 @@
+{% from "components/channels.njk" import channelChips, directContacts %}
+{% set liveMessengers = contact.messengers | selectattr("enabled") | selectattr("url") %}
+{% set liveSocials = contact.socials | selectattr("enabled") | selectattr("url") %}
+
 <footer class="site-footer" role="contentinfo">
-  <div class="site-footer__inner container">
+  <div class="container">
 
     <div class="footer-grid">
 
-      {# Column 1: Brand + tagline #}
-      <div class="footer-col footer-col--brand">
-        <a href="/" class="footer-brand" aria-label="{{ site.fullName }} — На главную">
-          <span class="footer-brand__name">Figura Lab</span>
-          <span class="footer-brand__by">by Елена Бастуева</span>
+      <div class="footer-col">
+        <a href="/" class="footer-brand" aria-label="{{ site.fullName }} — на главную">
+          <img src="{{ site.brand.mark }}" alt="" class="footer-brand__mark" width="218" height="321" loading="lazy" decoding="async">
+          <span class="footer-brand__text">
+            <span class="footer-brand__name">{{ site.brand.nameLatin }}</span>
+            <span class="footer-brand__by">{{ site.brand.by }}</span>
+          </span>
         </a>
-        <p class="footer-tagline">Пространство осознанного питания и мягкого снижения веса.</p>
+        <p class="footer-tagline">
+          Осознанный путь к устойчивому благополучию: гармония тела, энергии и образа жизни — без крайностей и временных решений.
+        </p>
       </div>
 
-      {# Column 2: Sections #}
-      <nav class="footer-col footer-col--nav" aria-label="Навигация по разделам">
+      <nav class="footer-col" aria-label="Разделы сайта">
         <h2 class="footer-col__heading">Разделы</h2>
-        <ul class="footer-nav-list" role="list">
+        <ul class="footer-list" role="list">
           {% for item in nav %}
-          <li><a href="{{ item.url }}" class="footer-nav-link">{{ item.label }}</a></li>
+          <li><a href="{{ item.url }}" class="footer-list__link">{{ item.label }}</a></li>
           {% endfor %}
+          <li><a href="/kontakty/" class="footer-list__link">Контакты</a></li>
         </ul>
       </nav>
 
-      {# Column 3: Information #}
-      <nav class="footer-col footer-col--info" aria-label="Дополнительные ссылки">
-        <h2 class="footer-col__heading">Информация</h2>
-        <ul class="footer-nav-list" role="list">
-          <li><a href="/kontakty/" class="footer-nav-link">Контакты</a></li>
-          <li><a href="/programmy/#faq" class="footer-nav-link">Вопросы и ответы</a></li>
-        </ul>
-      </nav>
-
-      {# Column 4: Contacts #}
-      <div class="footer-col footer-col--contacts">
-        <h2 class="footer-col__heading">Связь</h2>
-        {# VERIFY_WITH_ELENA V-03: все контакты требуют подтверждения #}
-        <ul class="footer-contacts-list" role="list">
-          <li>
-            <a href="tel:{{ site.phone1 }}" class="footer-contact-link">{{ site.phone1Display }}</a>
-          </li>
-          <li>
-            <a href="mailto:{{ site.email }}" class="footer-contact-link">{{ site.email }}</a>
-          </li>
-          {# Telegram / MAX / WhatsApp / VK: VERIFY_WITH_ELENA #}
+      <div class="footer-col">
+        <h2 class="footer-col__heading">Консультация</h2>
+        <ul class="footer-list" role="list">
+          <li><a href="{{ site.consultationCta.url }}" class="footer-list__link">{{ site.consultationCta.full }}</a></li>
+          <li><a href="/programmy/#faq" class="footer-list__link">Вопросы и ответы</a></li>
+          {% if contact.phone.enabled %}
+          <li><a href="{{ contact.phone.url }}" class="footer-list__link">{{ contact.phone.label }}</a></li>
+          {% endif %}
+          {% if contact.email.enabled %}
+          <li><a href="{{ contact.email.url }}" class="footer-list__link">{{ contact.email.label }}</a></li>
+          {% endif %}
         </ul>
       </div>
 
-    </div>{# /footer-grid #}
+      <div class="footer-col">
+        <h2 class="footer-col__heading">Связь</h2>
+        <div class="footer-channels">
+          {% if liveMessengers | length %}
+          <div>
+            <p class="footer-channels__group-label">Мессенджеры</p>
+            {{ channelChips(contact.messengers) }}
+          </div>
+          {% endif %}
+          {% if liveSocials | length %}
+          <div>
+            <p class="footer-channels__group-label">Социальные сети</p>
+            {{ channelChips(contact.socials) }}
+          </div>
+          {% endif %}
+          {% if not (liveMessengers | length) and not (liveSocials | length) %}
+          {# VERIFY_WITH_ELENA (V-03): Telegram / MAX / WhatsApp / VK / Instagram — ссылки не подтверждены,
+             поэтому каналы не публикуются. Включаются в src/_data/contact.json через enabled: true. #}
+          <p class="footer-list__text">Telegram, MAX, WhatsApp, VK и Instagram появятся здесь, как только каналы будут открыты.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
 
     <div class="footer-bottom">
       <div class="footer-legal">
-        <a href="/privacy/" class="footer-legal-link">Политика конфиденциальности</a>
-        <a href="/consent/" class="footer-legal-link">Согласие на обработку ПДн</a>
-        {# Реквизиты оператора ПДн: VERIFY_WITH_ELENA + LEGAL_REVIEW #}
+        <a href="/privacy/" class="footer-legal__link">Политика конфиденциальности</a>
+        <a href="/consent/" class="footer-legal__link">Согласие на обработку данных</a>
       </div>
       <p class="footer-copy">
         &copy; {% year %} {{ site.fullName }}.
+        {# Реквизиты оператора ПДн: VERIFY_WITH_ELENA (V-11) + LEGAL_REVIEW #}
         <span class="footer-copy__note">Сайт носит информационный характер и не является публичной офертой.</span>
       </p>
     </div>

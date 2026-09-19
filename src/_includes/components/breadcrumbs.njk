@@ -1,0 +1,13 @@
+{#
+  Breadcrumbs. Требуемая переменная страницы: crumb (название текущего раздела).
+#}
+<nav class="breadcrumbs container" aria-label="Хлебные крошки">
+  <ol class="breadcrumbs__list" role="list">
+    <li class="breadcrumbs__item">
+      <a href="/" class="breadcrumbs__link">Главная</a>
+    </li>
+    <li class="breadcrumbs__item">
+      <span class="breadcrumbs__current" aria-current="page">{{ crumb or pageTitle }}</span>
+    </li>
+  </ol>
+</nav>

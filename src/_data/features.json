@@ -1,0 +1,50 @@
+{
+  "_note": "Центральные флаги. Переключение флага активирует готовую секцию без переработки страниц.",
+
+  "chapterRail": true,
+  "signatureMotion": true,
+
+  "tools": {
+    "sectionVisible": true,
+    "status": "soon",
+    "items": [
+      {
+        "title": "Калькулятор питания",
+        "text": "Спокойный расчёт для ежедневных ориентиров — без подсчёта каждой калории.",
+        "enabled": false,
+        "url": ""
+      },
+      {
+        "title": "Приложение Figura Lab",
+        "text": "Дневник привычек, материалы и поддержка в одном пространстве.",
+        "enabled": false,
+        "url": ""
+      },
+      {
+        "title": "Среда поддержки",
+        "text": "Личное пространство клиента с рекомендациями и обратной связью.",
+        "enabled": false,
+        "url": ""
+      }
+    ]
+  },
+
+  "stories": {
+    "published": false,
+    "archiveUrl": "/rezultaty/"
+  },
+
+  "journal": {
+    "published": false,
+    "archiveUrl": "/zhurnal/"
+  },
+
+  "certificates": {
+    "published": false
+  },
+
+  "contactForm": {
+    "liveEndpoint": false,
+    "endpoint": ""
+  }
+}

@@ -1,189 +1,141 @@
 ---
 layout: base.njk
 title: Контакты
-description: "Записаться на консультацию к Елене Бастуевой — Figura Lab."
-pageTitle: "Контакты"
-pageIntro: "Начните с бережного разговора. Первая консультация помогает понять, с чего начать."
-eyebrow: "Записаться"
+description: "Записаться на консультацию к Елене Бастуевой — Figura Lab. Телефон, почта и подтверждённые каналы связи."
+crumb: "Контакты"
 ---
 
 {# =====================================================================
    /kontakty/ — Консультация и каналы связи
-   НЕ собирать чувствительные медицинские данные в форме.
-   Контакты: VERIFY_WITH_ELENA (V-03, V-04).
-   Куда поступают заявки: VERIFY_WITH_ELENA (V-08).
-   Форма: заглушка — реальный endpoint не подключён (Stage 3).
+   Контент: src/_data/pages.json → pages.kontakty, src/_data/contact.json
+   Форма записи включается флагом features.contactForm.liveEndpoint,
+   когда будет подключён реальный приём заявок (V-08). Пока — прямая связь,
+   чтобы на странице не было нерабочих кнопок.
+   Медицинские данные через сайт не собираются.
    ===================================================================== #}
 
-<nav class="breadcrumbs" aria-label="Хлебные крошки">
-  <ol class="breadcrumbs__list" role="list">
-    <li class="breadcrumbs__item">
-      <a href="/" class="breadcrumbs__link">Главная</a>
-    </li>
-    <li class="breadcrumbs__item">
-      <span class="breadcrumbs__current" aria-current="page">Контакты</span>
-    </li>
-  </ol>
-</nav>
+{% from "components/channels.njk" import channelChips, directContacts %}
+{% set liveMessengers = contact.messengers | selectattr("enabled") | selectattr("url") %}
 
+{% set pageTitle = pages.kontakty.title %}
+{% set eyebrow = pages.kontakty.eyebrow %}
+{% set pageIntro = pages.kontakty.intro %}
+{% set heroSymbol = home.audience.items[2].symbol %}
+{% set heroSymbolAlt = home.audience.items[2].symbolAlt %}
+
+{% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-<section class="section" aria-labelledby="contact-main-heading">
+{# --- Прямая связь + что происходит на консультации -------------------- #}
+<section class="chapter chapter--light chapter--arc" aria-labelledby="contact-direct-title">
   <div class="container">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-16); align-items: start;">
+    <div class="contact-layout">
 
-      {# Форма консультации #}
-      <div>
-        <p class="eyebrow section__eyebrow">Форма записи</p>
-        <h2 class="section__heading" id="contact-main-heading">Запишитесь на консультацию</h2>
-        <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-8);">
-          Оставьте имя и способ связи — и я свяжусь с вами в течение рабочего дня.
-        </p>
+      <div class="contact-card reveal">
+        <h2 class="contact-card__title" id="contact-direct-title">{{ pages.kontakty.directHeading }}</h2>
+        <p class="contact-card__text">{{ pages.kontakty.directNote }}</p>
 
-        {# Stage 3: форма — заглушка. Реальный endpoint: VERIFY_WITH_ELENA (V-08).
-           Не подключать отправку и не собирать медицинские данные. #}
-        <form
-          action="#"
-          method="POST"
-          novalidate
-          aria-label="Форма записи на консультацию">
+        {{ directContacts(contact) }}
 
-          <div style="margin-bottom: var(--space-5);">
-            <label for="contact-name" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
-              Ваше имя <span aria-label="обязательное поле">*</span>
-            </label>
-            <input
-              type="text"
-              id="contact-name"
-              name="name"
-              required
-              autocomplete="given-name"
-              style="
-                width: 100%;
-                padding: var(--space-3) var(--space-4);
-                border: 1.5px solid var(--line-strong);
-                border-radius: var(--radius-sm);
-                font-family: var(--font-body);
-                font-size: var(--fs-body);
-                color: var(--c-graphite);
-                background: var(--c-white);
-                min-height: 44px;
-              ">
-          </div>
+        {% if liveMessengers | length %}
+        <p class="contact-card__label">Мессенджеры</p>
+        {{ channelChips(contact.messengers) }}
+        {% endif %}
 
-          <div style="margin-bottom: var(--space-5);">
-            <label for="contact-messenger" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
-              Telegram или WhatsApp <span aria-label="обязательное поле">*</span>
-            </label>
-            <input
-              type="text"
-              id="contact-messenger"
-              name="messenger"
-              required
-              autocomplete="off"
-              placeholder="@username или +7..."
-              style="
-                width: 100%;
-                padding: var(--space-3) var(--space-4);
-                border: 1.5px solid var(--line-strong);
-                border-radius: var(--radius-sm);
-                font-family: var(--font-body);
-                font-size: var(--fs-body);
-                color: var(--c-graphite);
-                background: var(--c-white);
-                min-height: 44px;
-              ">
-          </div>
+        {% if contact.addressEnabled and contact.address %}
+        <p class="contact-card__label">Адрес</p>
+        <p class="contact-card__text">{{ contact.address }}</p>
+        {% endif %}
 
-          <div style="margin-bottom: var(--space-6);">
-            <label for="contact-goal" style="display: block; font-weight: 600; font-size: var(--fs-small); margin-bottom: var(--space-2);">
-              Коротко о запросе (необязательно)
-            </label>
-            <textarea
-              id="contact-goal"
-              name="goal"
-              rows="4"
-              placeholder="Что хотите изменить? Или просто — хочу узнать больше."
-              style="
-                width: 100%;
-                padding: var(--space-3) var(--space-4);
-                border: 1.5px solid var(--line-strong);
-                border-radius: var(--radius-sm);
-                font-family: var(--font-body);
-                font-size: var(--fs-body);
-                color: var(--c-graphite);
-                background: var(--c-white);
-                resize: vertical;
-                min-height: 100px;
-              "></textarea>
-            {# НЕ собирать медицинские данные — только общий запрос #}
-          </div>
+        {% if not features.contactForm.liveEndpoint %}
+        <p class="contact-card__label">{{ pages.kontakty.formPendingTitle }}</p>
+        <p class="contact-card__text">{{ pages.kontakty.formPendingNote }}</p>
+        {% endif %}
 
-          <div style="margin-bottom: var(--space-6);">
-            <label style="display: flex; align-items: flex-start; gap: var(--space-3); cursor: pointer;">
-              <input
-                type="checkbox"
-                name="consent"
-                required
-                style="width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: var(--c-olive-deep);">
-              <span style="font-size: var(--fs-small); color: var(--c-graphite-soft);">
-                Я даю <a href="/consent/">согласие на обработку персональных данных</a>
-                в соответствии с <a href="/privacy/">политикой конфиденциальности</a>.
-                {# LEGAL_REVIEW: текст согласия проверяется юристом #}
-              </span>
-            </label>
-          </div>
-
-          <button type="submit" class="btn btn-primary">
-            Записаться на консультацию
-          </button>
-
-          <p style="margin-top: var(--space-4); font-size: var(--fs-meta); color: var(--c-graphite-mute);">
-            {# Stage 3: форма — заглушка. Подключение endpoint: VERIFY_WITH_ELENA (V-08) #}
-            <em>Форма находится в разработке. Пока — напишите напрямую.</em>
-          </p>
-        </form>
+        <p class="contact-card__note">{{ pages.kontakty.privacyNote }}</p>
       </div>
 
-      {# Каналы связи #}
-      <div>
-        <p class="eyebrow section__eyebrow">Прямая связь</p>
-        <h2 class="section__heading" style="font-size: var(--fs-h2);">
-          Напишите напрямую
-        </h2>
-        <p style="color: var(--c-graphite-soft); margin-bottom: var(--space-8);">
-          {# VERIFY_WITH_ELENA (V-03): все контакты подтверждаются у Елены #}
-          Контакты уточняются.
-        </p>
-
-        <ul style="display: flex; flex-direction: column; gap: var(--space-4); list-style: none;">
-          <li>
-            <a href="tel:{{ site.phone1 }}" class="footer-contact-link" style="color: var(--c-sage-text); font-weight: 600;">
-              {{ site.phone1Display }}
-            </a>
-            <span class="placeholder-notice" style="margin-left: var(--space-2);">VERIFY_WITH_ELENA</span>
+      <div class="reveal reveal--delay-1">
+        <h2 class="chapter-head__title contact-expect__title" id="contact-expect-title">{{ pages.kontakty.expectHeading }}</h2>
+        <ol class="numbered-list" role="list">
+          {% for step in pages.kontakty.expect %}
+          <li class="numbered-list__item">
+            <span class="numbered-list__num" aria-hidden="true">0{{ loop.index }}</span>
+            <p class="numbered-list__text">{{ step }}</p>
           </li>
-          <li>
-            <a href="mailto:{{ site.email }}" class="footer-contact-link" style="color: var(--c-sage-text); font-weight: 600;">
-              {{ site.email }}
-            </a>
-            <span class="placeholder-notice" style="margin-left: var(--space-2);">VERIFY_WITH_ELENA</span>
-          </li>
-          <li>
-            <span style="font-weight: 600;">Telegram:</span>
-            <span class="placeholder-notice">VERIFY_WITH_ELENA</span>
-          </li>
-          <li>
-            <span style="font-weight: 600;">Адрес:</span>
-            <span class="placeholder-notice">VERIFY_WITH_ELENA (V-04)</span>
-          </li>
-        </ul>
-
-        {# VERIFY_WITH_ELENA (V-04): адрес офиса — публиковать? Юбилейная 2Б или 2В? #}
+          {% endfor %}
+        </ol>
       </div>
 
     </div>
   </div>
 </section>
 
-{# Нет финального CTA-блока на странице контактов — она сама является CTA #}
+{# --- Форма записи (активируется флагом) -------------------------------
+   Пока приём заявок не подключён, вместо нерабочей формы показываем
+   ответы на частые вопросы — те же, что на странице программ. #}
+<section class="chapter chapter--sand chapter--arc" aria-labelledby="contact-form-title">
+  <div class="container">
+
+    {% if features.contactForm.liveEndpoint %}
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="contact-form-title">{{ pages.kontakty.formHeading }}</h2>
+    </div>
+    <p class="measure-narrow reveal">{{ pages.kontakty.formNote }}</p>
+
+    {# Собираем только имя и способ связи. Медицинские данные не запрашиваем. #}
+    <form class="form reveal" action="{{ features.contactForm.endpoint }}" method="post"
+          aria-labelledby="contact-form-title">
+      <div class="form__field">
+        <label class="form__label" for="contact-name">
+          Ваше имя <span class="form__req" aria-hidden="true">*</span>
+        </label>
+        <input class="form__input" type="text" id="contact-name" name="name"
+               autocomplete="name" required>
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="contact-link">
+          Телефон или почта <span class="form__req" aria-hidden="true">*</span>
+        </label>
+        <input class="form__input" type="text" id="contact-link" name="contact"
+               autocomplete="tel" required>
+        <p class="form__hint">Укажите удобный способ связи — так, как вам комфортнее.</p>
+      </div>
+
+      <div class="form__field">
+        <label class="form__label" for="contact-goal">Коротко о запросе</label>
+        <textarea class="form__textarea" id="contact-goal" name="goal" rows="4"
+                  placeholder="Что хотите изменить? Или просто — хочу узнать больше."></textarea>
+        <p class="form__hint">Не указывайте медицинские данные — это обсуждается лично на консультации.</p>
+      </div>
+
+      <label class="form__consent" for="contact-consent">
+        <input class="form__checkbox" type="checkbox" id="contact-consent" name="consent" required>
+        <span class="form__consent-text">
+          Я даю <a href="/consent/">согласие на обработку персональных данных</a>
+          в соответствии с <a href="/privacy/">политикой конфиденциальности</a>.
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn-primary btn-lg">
+        Записаться на консультацию <span class="btn__arrow" aria-hidden="true">→</span>
+      </button>
+    </form>
+
+    {% else %}
+    <div class="chapter-head reveal">
+      <h2 class="chapter-head__title" id="contact-form-title">{{ pages.programmy.faqHeading }}</h2>
+    </div>
+    <div class="faq reveal">
+      {% for item in pages.programmy.faq %}
+      <details class="faq__item">
+        <summary>{{ item.q }}</summary>
+        <div class="faq__body"><p>{{ item.a }}</p></div>
+      </details>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+  </div>
+</section>

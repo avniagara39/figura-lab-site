@@ -1,16 +1,42 @@
 {#
-  Page Hero component
-  Usage: {% include "components/page-hero.njk" %}
-  Required page vars: pageTitle (h1), pageIntro (optional subtext)
+  Page hero для внутренних страниц.
+  Переменные страницы:
+    pageTitle  — h1 (обязательно)
+    eyebrow    — надзаголовок (опц.)
+    pageIntro  — вводный абзац (опц.)
+    heroSymbol / heroSymbolAlt — редакционный символ справа (опц.)
+    heroPrimary / heroSecondary — { label, url } кнопки (опц.)
 #}
-<section class="page-hero" aria-labelledby="page-title">
+<section class="page-hero chapter chapter--light" aria-labelledby="page-title">
   <div class="container">
-    {% if eyebrow %}
-    <p class="page-hero__eyebrow eyebrow">{{ eyebrow }}</p>
-    {% endif %}
-    <h1 class="page-hero__title" id="page-title">{{ pageTitle }}</h1>
-    {% if pageIntro %}
-    <p class="page-hero__intro">{{ pageIntro }}</p>
-    {% endif %}
+    <div class="page-hero__inner{% if heroSymbol %} page-hero__inner--media{% endif %}">
+
+      <div>
+        {% if eyebrow %}<p class="page-hero__eyebrow eyebrow">{{ eyebrow }}</p>{% endif %}
+        <h1 class="page-hero__title" id="page-title">{{ pageTitle }}</h1>
+        {% if pageIntro %}<p class="page-hero__intro">{{ pageIntro }}</p>{% endif %}
+
+        {% if heroPrimary or heroSecondary %}
+        <div class="page-hero__actions">
+          {% if heroPrimary %}
+          <a href="{{ heroPrimary.url }}" class="btn btn-primary">{{ heroPrimary.label }}</a>
+          {% endif %}
+          {% if heroSecondary %}
+          <a href="{{ heroSecondary.url }}" class="editorial-link">
+            {{ heroSecondary.label }} <span class="btn__arrow" aria-hidden="true">→</span>
+          </a>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+
+      {% if heroSymbol %}
+      <figure class="page-hero__figure reveal">
+        <img src="{{ heroSymbol }}" alt="{{ heroSymbolAlt }}" class="page-hero__symbol"
+             width="480" height="480" loading="lazy" decoding="async">
+      </figure>
+      {% endif %}
+
+    </div>
   </div>
 </section>

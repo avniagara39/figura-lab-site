@@ -1,0 +1,77 @@
+{
+  "_note": "Centralised contact architecture. enabled=false => канал НЕ рендерится нигде (ни в футере, ни в CTA). Ставить enabled=true только после VERIFY_WITH_ELENA (V-03) с реальным url.",
+
+  "phone": {
+    "platform": "phone",
+    "label": "8 (8482) 61-41-39",
+    "url": "tel:+78482614139",
+    "type": "direct",
+    "enabled": true,
+    "ariaLabel": "Позвонить по телефону 8 8482 61-41-39"
+  },
+  "phoneMobile": {
+    "platform": "phone",
+    "label": "8 927 891-41-39",
+    "url": "tel:+79278914139",
+    "type": "direct",
+    "enabled": true,
+    "ariaLabel": "Позвонить по телефону 8 927 891-41-39"
+  },
+  "email": {
+    "platform": "email",
+    "label": "figura.lite@mail.ru",
+    "url": "mailto:figura.lite@mail.ru",
+    "type": "direct",
+    "enabled": true,
+    "ariaLabel": "Написать на figura.lite@mail.ru"
+  },
+
+  "messengers": [
+    {
+      "platform": "telegram",
+      "label": "Telegram",
+      "url": "",
+      "type": "messenger",
+      "enabled": false,
+      "ariaLabel": "Написать в Telegram"
+    },
+    {
+      "platform": "max",
+      "label": "MAX",
+      "url": "",
+      "type": "messenger",
+      "enabled": false,
+      "ariaLabel": "Написать в MAX"
+    },
+    {
+      "platform": "whatsapp",
+      "label": "WhatsApp",
+      "url": "",
+      "type": "messenger",
+      "enabled": false,
+      "ariaLabel": "Написать в WhatsApp"
+    }
+  ],
+
+  "socials": [
+    {
+      "platform": "vk",
+      "label": "VK",
+      "url": "",
+      "type": "social",
+      "enabled": false,
+      "ariaLabel": "Figura Lab во ВКонтакте"
+    },
+    {
+      "platform": "instagram",
+      "label": "Instagram",
+      "url": "",
+      "type": "social",
+      "enabled": false,
+      "ariaLabel": "Figura Lab в Instagram"
+    }
+  ],
+
+  "addressEnabled": false,
+  "address": ""
+}

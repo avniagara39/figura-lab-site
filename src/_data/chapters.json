@@ -1,0 +1,12 @@
+[
+  { "num": "01", "id": "chapter-hero",      "label": "Герой",       "full": "Начало" },
+  { "num": "02", "id": "chapter-method",    "label": "Суть метода", "full": "Суть метода" },
+  { "num": "03", "id": "chapter-audience",  "label": "Для кого",    "full": "Для кого Figura Lab" },
+  { "num": "04", "id": "chapter-process",   "label": "Как работает","full": "Как работает метод" },
+  { "num": "05", "id": "chapter-programs",  "label": "Программы",   "full": "Программы" },
+  { "num": "06", "id": "chapter-results",   "label": "Результаты",  "full": "Результаты" },
+  { "num": "07", "id": "chapter-elena",     "label": "Елена",       "full": "Елена Бастуева" },
+  { "num": "08", "id": "chapter-journal",   "label": "Журнал",      "full": "Журнал" },
+  { "num": "09", "id": "chapter-tools",     "label": "Инструменты", "full": "Инструменты Figura Lab" },
+  { "num": "10", "id": "chapter-contact",   "label": "Консультация","full": "Начнём с разговора" }
+]
