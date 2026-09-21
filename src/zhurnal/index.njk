@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+bodyClass: editorial-page page--journal
 title: Журнал
 description: "Журнал Figura Lab — материалы о благополучии, осознанном питании и гармоничной жизни."
 crumb: "Журнал"
@@ -11,8 +12,9 @@ crumb: "Журнал"
    Карточка становится ссылкой только при published: true и заданном url.
    ===================================================================== #}
 
+{% set heroVariant = 'journal' %}
 {% set pageTitle = pages.zhurnal.title %}
-{% set eyebrow = pages.zhurnal.eyebrow %}
+{% set eyebrow = site.name %}
 {% set pageIntro = pages.zhurnal.intro %}
 {% set heroSymbol = home.audience.items[0].symbol %}
 {% set heroSymbolAlt = home.audience.items[0].symbolAlt %}
@@ -20,7 +22,7 @@ crumb: "Журнал"
 {% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-<section class="chapter chapter--light chapter--arc" aria-labelledby="journal-list-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="journal-list-title">
   <div class="container">
 
     <div class="chapter-head reveal">

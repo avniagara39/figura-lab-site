@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+bodyClass: editorial-page page--method
 title: Метод
 description: "Метод Figura Lab — целостный подход к благополучию: тело, привычки, мышление и качество жизни без крайностей и временных решений."
 crumb: "Метод"
@@ -11,6 +12,8 @@ crumb: "Метод"
    CONFLICT-03 RESOLVED: формулировки гендерно нейтральны.
    ===================================================================== #}
 
+{% set heroVariant = 'method' %}
+{% set heroResting = true %}
 {% set pageTitle = pages.metod.title %}
 {% set eyebrow = pages.metod.eyebrow %}
 {% set pageIntro = pages.metod.intro %}
@@ -23,7 +26,7 @@ crumb: "Метод"
 {% include "components/page-hero.njk" %}
 
 {# --- Философия -------------------------------------------------------- #}
-<section class="chapter chapter--light chapter--arc" aria-labelledby="philosophy-title">
+<section class="internal-section chapter chapter--light scene scene--pearl scene--shell scene--sweep method-philosophy" aria-labelledby="philosophy-title">
   <div class="container">
     <div class="method-block__inner">
 
@@ -36,7 +39,7 @@ crumb: "Метод"
       </div>
 
       <div class="reveal reveal--delay-1">
-        <figure class="program-detail__figure">
+        <figure class="editorial-media">
           <img src="/assets/img/editorial/abstract/abstract-05-900.jpg"
                alt="{{ home.immersive.image.alt }}"
                width="900" height="600" loading="lazy" decoding="async">
@@ -49,7 +52,7 @@ crumb: "Метод"
 </section>
 
 {# --- Принципы --------------------------------------------------------- #}
-<section class="chapter chapter--arc" aria-labelledby="principles-title">
+<section class="internal-section chapter" aria-labelledby="principles-title">
   <div class="container">
     <div class="chapter-head reveal">
       <h2 class="chapter-head__title" id="principles-title">{{ pages.metod.principlesHeading }}</h2>
@@ -68,7 +71,7 @@ crumb: "Метод"
 </section>
 
 {# --- Этапы работы (те же этапы, что и на главной) --------------------- #}
-<section class="chapter chapter--sand chapter--arc" aria-labelledby="stages-title">
+<section class="internal-section chapter chapter--sand scene scene--linen scene--shell scene--shell-reverse" aria-labelledby="stages-title">
   <div class="container">
     <div class="process__inner">
 
@@ -99,7 +102,7 @@ crumb: "Метод"
 {# --- Границы метода ---------------------------------------------------
    Честные ограничения без медицинских обещаний.
    LEGAL_REVIEW: итоговые формулировки проверяются юристом (см. docs). #}
-<section class="chapter chapter--light chapter--arc" aria-labelledby="limits-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="limits-title">
   <div class="container">
     <div class="chapter-head reveal">
       <h2 class="chapter-head__title" id="limits-title">{{ pages.metod.limitsHeading }}</h2>

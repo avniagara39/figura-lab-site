@@ -84,6 +84,13 @@
   --color-sand:       #E8DED0;
   --color-sand-soft:  #F0E8DC;
   --color-card:       #FCFAF6;
+  --color-pearl:      #F3ECE3;
+  --color-neutral:    #F2EEE7;
+  --color-blush:      #F0E7DF;
+  --color-rose-beige: #EBDCD6;
+  --surface-pearl: linear-gradient(115deg, var(--color-pearl), var(--color-sand));
+  --surface-linen: linear-gradient(125deg, var(--color-sand-soft), var(--color-sand));
+  --surface-rose: linear-gradient(110deg, var(--color-blush), var(--color-rose-beige));
 
   /* Text */
   --color-text:       #302F2B;
@@ -133,6 +140,8 @@
   --space-20: 5rem;
   --space-section:    clamp(3.25rem, 5.4vw, 6.25rem); /* 52 → 100 */
   --space-section-sm: clamp(2.5rem, 4.2vw, 4.5rem);
+  --space-editorial:  clamp(3rem, 6vw, 6rem);
+  --space-split:      clamp(2rem, 4vw, 4rem);
 
   /* Layout */
   --container:      1200px;
@@ -141,37 +150,43 @@
   --measure-narrow: 38rem;
   --gutter:         clamp(1.25rem, 4vw, 3rem);
   --header-h:       4.5rem;
-  --rail-w:         5.75rem;
+  --rail-w:         7rem;
   --chapter-entry:  2.5rem;  /* 40px — header → first meaningful content */
 
   /* Shape */
   --radius-pill:    999px;
   --radius-card:    22px;
   --radius-media:   18px;
-  --radius-chapter: 4rem;
+  --radius-editorial: 0 18% 0 0;
+  --shell-depth: clamp(1.75rem, 4.8vw, 7rem);
   --radius-sm:      10px;
   --arch:           16rem;
   --btn-h:          3.375rem;  /* 54px */
 
   /* Elevation */
-  --shadow-soft:  0 2px 14px rgba(48, 47, 43, 0.05);
   --shadow-card:  0 18px 48px -24px rgba(48, 47, 43, 0.22);
-  --shadow-photo: 0 40px 90px -40px rgba(48, 47, 43, 0.35);
-  --shadow-rise:  0 -30px 60px -34px rgba(48, 47, 43, 0.20);
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --t-fast: 160ms;
   --t-base: 280ms;
   --t-slow: 560ms;
-  --t-reveal: 900ms;
-
-  /* Chapter mechanics */
-  --arc-h: 3.15rem;
 }
 
 @media (min-width: 64rem) {
   :root { --header-h: 5rem; }
+}
+
+/* Wider art direction without widening long-form reading measures. */
+@media (min-width: 100rem) {
+  :root {
+    --container: clamp(1200px, 78vw, 1800px);
+    --container-wide: clamp(1280px, 84vw, 1920px);
+    --space-editorial: 5rem;
+  }
+}
+@media (max-width: 63.99rem) {
+  :root { --shell-depth: 1.25rem; }
 }
 
 /* --------------------------------------------------------------------------
@@ -662,8 +677,8 @@ body.nav-locked { overflow: hidden; }
 
 /* --------------------------------------------------------------------------
    9. CHAPTER SYSTEM — editorial stacked chapters
-   Each chapter owns its surface; chapters marked --arc rise over the previous
-   scene with a wide soft arc, so scrolling reads as "a new chapter opens".
+   Each chapter owns its surface. Optional shells paint restrained boundaries
+   without negative margins or overlapping content.
    -------------------------------------------------------------------------- */
 .chapter {
   --chapter-bg: var(--color-bg);
@@ -676,14 +691,43 @@ body.nav-locked { overflow: hidden; }
 .chapter--sand  { --chapter-bg: var(--color-sand-soft); }
 .chapter--sand-deep { --chapter-bg: var(--color-sand); }
 
-/* Chapter that rises and overlaps the previous one on inner pages.
-   Homepage resting state overrides this in 9b — no merged scenes after rail nav. */
-.chapter--arc {
-  margin-top: calc(-1 * var(--arc-h));
-  padding-top: var(--space-section);
-  border-radius: 50% 50% 0 0 / var(--arc-h) var(--arc-h) 0 0;
-  box-shadow: var(--shadow-rise);
+/* Reusable static scene surfaces. Shape belongs to the paint layer, never
+   the content box: anchors, focus outlines and chapter heights stay intact. */
+.scene {
+  --chapter-bg: var(--color-bg-light);
+  isolation: isolate;
+  background: var(--scene-fill, var(--color-bg-light));
 }
+.scene--pearl { --scene-fill: var(--surface-pearl); }
+.scene--neutral { --scene-fill: var(--color-neutral); }
+.scene--linen { --scene-fill: var(--surface-linen); }
+.scene--rose { --scene-fill: var(--surface-rose); }
+.scene--milk { --scene-fill: var(--color-card); }
+.scene--atmosphere { --scene-fill: var(--color-sand-soft); }
+.scene--shell {
+  --scene-edge: var(--shell-depth);
+  position: relative;
+  background: var(--chapter-bg);
+  margin-top: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.scene--shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--scene-fill);
+  border-radius: 42% 0 48% 0 / calc(var(--scene-edge) * 0.4) 0 var(--scene-edge) 0;
+}
+.scene--shell-reverse::before {
+  border-radius: 0 38% 0 52% / 0 calc(var(--scene-edge) * 0.45) 0 var(--scene-edge);
+}
+.scene--sweep::before { border-radius: 42% 0 42% 0 / calc(var(--scene-edge) * 0.25) 0 calc(var(--scene-edge) * 0.5) 0; }
+/* Darker approved link tone retains contrast on pearl / linen / rose. */
+.scene--shell .editorial-link { color: var(--color-primary-hover); }
+
 /* Chapter heading block */
 .chapter-head {
   display: grid;
@@ -734,12 +778,6 @@ body.nav-locked { overflow: hidden; }
     width: 100%;
   }
 
-  /* Resting chapters do not pull the previous scene into view. */
-  body.home .chapter.chapter--arc {
-    margin-top: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
 
   /* Process keeps overflow visible so the pinned aside can travel inside the scene. */
   body.home #chapter-process {
@@ -783,17 +821,19 @@ body.nav-locked { overflow: hidden; }
   .chapter-rail {
     display: block;
     position: fixed;
-    top: 50%;
-    right: max(0.85rem, calc((100vw - var(--container)) / 2 - var(--rail-w) - 0.85rem));
+    top: calc(50% + var(--header-h) / 2);
+    right: max(0.5rem, calc((100vw - var(--container)) / 2 - var(--rail-w) - 0.5rem));
     z-index: 60;
     width: var(--rail-w);
+    max-height: calc(100svh - var(--header-h) - 1rem);
+    overflow-y: auto;
     transform: translateY(-50%);
     pointer-events: none;
   }
   .chapter-rail__list {
     display: flex;
     flex-direction: column;
-    gap: 0.05rem;
+    gap: 0.125rem;
     border-left: 1px solid var(--color-border);
     pointer-events: auto;
   }
@@ -801,9 +841,11 @@ body.nav-locked { overflow: hidden; }
     display: flex;
     flex-direction: column;
     gap: 0.08rem;
-    padding: 0.38rem 0 0.38rem 0.7rem;
+    justify-content: center;
+    min-height: 3.75rem;
+    padding: 0.6rem 0.5rem 0.6rem 0.875rem;
     margin-left: -1px;
-    border-left: 1px solid transparent;
+    border-left: 2px solid transparent;
     text-decoration: none;
     color: var(--color-text-soft);
     transition: color var(--t-fast), border-color var(--t-fast);
@@ -813,11 +855,11 @@ body.nav-locked { overflow: hidden; }
     font-size: var(--fs-label);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    color: var(--color-rose-deep);
+    color: var(--color-primary-hover);
     transition: color var(--t-fast);
   }
   .chapter-rail__label {
-    font-size: 0.75rem;
+    font-size: 0.8125rem;
     line-height: 1.25;
     letter-spacing: 0.01em;
     max-width: 6.6rem;
@@ -829,9 +871,11 @@ body.nav-locked { overflow: hidden; }
   .chapter-rail__link[aria-current="true"] {
     color: var(--color-text);
     border-left-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    font-weight: 600;
   }
-  .chapter-rail__link[aria-current="true"] .chapter-rail__num { color: var(--color-primary); }
-  .chapter-rail__link:focus-visible { outline-offset: 1px; }
+  .chapter-rail__link[aria-current="true"] .chapter-rail__num { color: var(--color-text); }
+  .chapter-rail__link:focus-visible { outline-offset: -3px; }
 
   /* Decorative hero wash stops at the container, not under the rail. */
   .home-hero__portrait-wash { right: 8%; }
@@ -1152,12 +1196,7 @@ body.nav-locked { overflow: hidden; }
 .process__stage-text { color: var(--color-text-soft); max-width: 32em; }
 
 @media (min-width: 64rem) {
-  .motion .process__stage {
-    opacity: 0.58;
-    transform: translateY(0.4rem);
-    transition: opacity var(--t-slow) var(--ease-out), transform var(--t-slow) var(--ease-out);
-  }
-  .motion .process__stage.is-active { opacity: 1; transform: none; }
+  /* Reading-zone emphasis never changes stage legibility or position. */
   .motion .process__num { transition: color var(--t-slow); }
   .motion .process__stage.is-active .process__num { color: var(--color-primary); }
 }
@@ -1236,21 +1275,73 @@ body.nav-locked { overflow: hidden; }
 }
 .program-panel__cta { margin-top: auto; }
 
-/* Full program entry on /programmy/ — editorial, alternating, always open */
-.program-detail + .program-detail { margin-top: var(--space-section-sm); }
-.program-detail__inner { display: grid; gap: clamp(2rem, 4vw, 3.5rem); align-items: center; }
-@media (min-width: 56rem) {
-  .program-detail__inner { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
-  .program-detail:nth-child(even) .program-detail__inner > .program-detail__figure { order: 2; }
+/* Homepage desktop composition; expanded disclosures always grow naturally.
+   Keep type sizes and 44px summary targets, using height-aware spacing. */
+@media (min-width: 64rem) {
+  body.home #chapter-programs {
+    padding-bottom: clamp(2rem, 4svh, 3.5rem);
+  }
+  body.home #chapter-programs .chapter-head {
+    margin-bottom: clamp(1.5rem, 3svh, 2.5rem);
+  }
+  body.home #chapter-programs .chapter-head__aside { gap: var(--space-3); }
+  body.home #chapter-programs .programs-grid { gap: clamp(1rem, 1.5vw, 1.5rem); }
+  body.home #chapter-programs .program-panel__media {
+    aspect-ratio: auto;
+    height: clamp(8.5rem, 17svh, 13rem);
+  }
+  body.home #chapter-programs .program-panel__body {
+    padding: clamp(1.125rem, 2svh, 1.5rem) var(--space-6);
+  }
+  body.home #chapter-programs .program-panel__summary,
+  body.home #chapter-programs .program-panel__rows {
+    margin-bottom: clamp(1rem, 2svh, 1.5rem);
+  }
+  body.home #chapter-programs .program-panel__row > summary { padding-block: 0.375rem; }
 }
-.program-detail__figure {
+
+/* Program scenes: one composition, with replaceable semantic editorial media. */
+.program-detail {
+  display: grid;
+  align-content: center;
+  padding-block: var(--space-editorial);
+  scroll-margin-block-start: 0;
+}
+.program-detail__inner {
+  width: 100%;
+  display: grid;
+  gap: var(--space-split);
+  align-items: center;
+}
+.editorial-media {
   position: relative;
-  margin: 0;
   overflow: hidden;
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
+  border-radius: var(--radius-editorial);
   background: var(--color-sand-soft);
+  aspect-ratio: 4 / 3;
 }
-.program-detail__figure img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
+.editorial-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position, 50% 50%);
+}
+.program-detail__copy { min-width: 0; max-width: var(--measure); }
+.program-detail .spec-list__label { color: var(--color-primary-hover); }
+.program-detail:focus-visible { outline: none; }
+.program-detail:focus-visible .program-detail__title {
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+}
+@media (min-width: 64rem) {
+  .program-detail__inner { grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.55fr); }
+  .program-detail__figure { aspect-ratio: auto; height: clamp(26rem, 58svh, 52rem); }
+}
+@media (min-width: 64rem) and (min-height: 45rem) {
+  .program-detail { min-block-size: calc(100svh - var(--header-h)); }
+}
 .program-detail__title { font-size: var(--fs-h2); margin-bottom: var(--space-4); }
 .program-detail__summary {
   max-width: var(--measure-narrow);
@@ -1421,6 +1512,14 @@ body.nav-locked { overflow: hidden; }
   inset: 0;
   background: linear-gradient(100deg, var(--color-sand-soft) 6%, rgba(240, 232, 220, 0.78) 46%, rgba(240, 232, 220, 0.42) 100%);
 }
+body.home .scene--atmosphere .tools-band__bg img { opacity: 0.72; }
+body.home .scene--atmosphere .tools-list__state { color: var(--color-primary-hover); }
+body.home .scene--atmosphere .tools-band__bg {
+  border-radius: 0 24% 0 12% / 0 3rem 0 2rem;
+}
+body.home .scene--atmosphere .tools-band__bg::after {
+  background: linear-gradient(100deg, var(--color-sand-soft) 8%, rgba(240, 232, 220, 0.92) 44%, rgba(240, 232, 220, 0.52) 100%);
+}
 .tools-band__inner { position: relative; z-index: 1; display: grid; gap: clamp(2rem, 4vw, 3.5rem); }
 @media (min-width: 64rem) {
   .tools-band__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); align-items: center; }
@@ -1512,12 +1611,6 @@ body.nav-locked { overflow: hidden; }
   background: var(--color-sand);
   color: var(--color-text);
   view-transition-name: site-footer;
-}
-body:not(.home) .site-footer {
-  margin-top: calc(-1 * var(--arc-h));
-  padding-top: calc(var(--space-20) + var(--arc-h) * 0.5);
-  border-radius: 50% 50% 0 0 / var(--arc-h) var(--arc-h) 0 0;
-  box-shadow: var(--shadow-rise);
 }
 .site-footer a { color: var(--color-primary-hover); }
 
@@ -1635,15 +1728,16 @@ body:not(.home) .site-footer {
 .page-hero__title { font-size: var(--fs-h1); max-width: 22ch; }
 .page-hero__intro { margin-top: var(--space-6); max-width: var(--measure); font-size: var(--fs-lead); line-height: 1.55; color: var(--color-text-soft); }
 .page-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-8); margin-top: var(--space-8); }
+/* Default internal media is unframed; portraits opt into their own crop. */
 .page-hero__figure {
   position: relative;
   display: grid;
   place-items: center;
   margin: 0;
-  padding: clamp(1.5rem, 3vw, 2.75rem);
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
+  padding: var(--space-5);
+  background: none;
+  border: 0;
+  border-radius: 0;
 }
 .page-hero__symbol { width: min(100%, 14rem); aspect-ratio: 1; object-fit: contain; }
 
@@ -1660,14 +1754,150 @@ body:not(.home) .site-footer {
   aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: 50% 26%;
-  border-radius: var(--arch) var(--arch) var(--radius-card) var(--radius-card);
-  box-shadow: var(--shadow-photo);
+  border-radius: 0 28% 0 12% / 0 16% 0 8%;
 }
 .page-hero__figcaption {
   margin-top: var(--space-5);
   font-size: var(--fs-small);
   color: var(--color-text-soft);
   text-align: center;
+}
+
+/* Internal editorial family: shared rhythm, distinct opening compositions.
+   These pages remain ordinary documents, without homepage viewport mechanics. */
+.editorial-page { background: var(--color-bg-light); }
+.editorial-page .breadcrumbs { padding-bottom: var(--space-4); }
+.editorial-page .chapter { padding-block: clamp(3rem, 5vw, 5rem); }
+.editorial-page .page-hero { padding-top: clamp(1.75rem, 3vw, 3rem); }
+.editorial-page .page-hero__copy,
+.editorial-page .page-hero__lede { min-width: 0; }
+.editorial-page .page-hero__title { text-wrap: balance; }
+.editorial-page .page-hero__intro { max-width: 34em; }
+.editorial-page .scene .eyebrow,
+.editorial-page .scene .spec-list__label { color: var(--color-primary-hover); }
+
+/* Method: a text-led opening and a small, unframed conceptual symbol. */
+.page-hero--method .page-hero__symbol { width: 9rem; }
+.page--method .numbered-list__item { border-top: 1px solid var(--color-border); padding-top: var(--space-6); }
+
+/* Programs: a compact introduction followed by a visual, linked contents list. */
+.page-hero--programs { background: linear-gradient(115deg, var(--color-bg-light), var(--color-sand-soft)); }
+.program-index { display: grid; gap: var(--space-6); margin-top: clamp(2rem, 4vw, 3rem); }
+.program-index__link {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3) var(--space-4);
+  align-content: start;
+  color: var(--color-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-5);
+}
+.program-index__link img { grid-column: 1 / -1; width: 100%; aspect-ratio: 16 / 7; object-fit: cover; margin-bottom: var(--space-2); }
+.program-index__name { font-family: var(--font-display); font-size: var(--fs-h3); line-height: 1.15; }
+.program-index__summary { grid-column: 1; color: var(--color-text-soft); font-size: var(--fs-small); line-height: 1.6; }
+.program-index__arrow { grid-column: 2; grid-row: 2; align-self: center; color: var(--color-primary-hover); }
+.program-index__link:hover .program-index__name { color: var(--color-primary-hover); text-decoration: underline; text-underline-offset: 0.18em; }
+.page--programs .info-panel { background: none; border: 0; padding: 0; max-width: var(--measure); }
+
+/* Results: an editorial opening with an honest publication note, not a testimonial. */
+.page-hero__note { border-left: 2px solid var(--color-rose); padding-left: var(--space-6); max-width: 26rem; }
+.page-hero__note h2 { font-size: var(--fs-h4); margin-bottom: var(--space-4); }
+.page-hero__note p { font-size: var(--fs-small); color: var(--color-text-soft); line-height: 1.7; }
+.page--results .story-card {
+  padding: var(--space-6) 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+}
+.story-card__index { font-size: var(--fs-label); color: var(--color-primary-hover); font-variant-numeric: tabular-nums; margin-bottom: var(--space-6); }
+.page--results .story-card__theme { font-size: clamp(1.625rem, 2.2vw, 2rem); }
+.page--results .stories-grid { gap: clamp(1.5rem, 3vw, 3rem); }
+.page--results .page-hero + .chapter { padding-top: var(--space-8); }
+
+/* Elena: retain the portrait; connect biography through spacing and a quiet rule. */
+.page--elena [aria-labelledby="bio-title"] .chapter-head { align-self: start; }
+.page--elena [aria-labelledby="bio-title"] .container { border-top: 1px solid var(--color-border); padding-top: var(--space-8); }
+
+/* Journal: a publication masthead, compact brand mark, and editorial columns. */
+.page-hero--journal { border-bottom: 1px solid var(--color-border); }
+.page-hero--journal .page-hero__title { font-size: clamp(4rem, 8vw, 8rem); line-height: 1; }
+.page-hero--journal .page-hero__symbol { width: 5rem; }
+.page--journal .journal-note {
+  display: grid;
+  gap: var(--space-3) var(--space-8);
+  padding: var(--space-5) 0;
+  border: 0;
+  border-block: 1px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+  max-width: none;
+}
+.page--journal .journal-note .info-panel__title { margin: 0; }
+.page--journal .journal-card {
+  padding: var(--space-6) 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid var(--color-border);
+}
+.page--journal .journal-card:hover { box-shadow: none; transform: none; }
+.page--journal .journal-card__cover { margin: 0 0 var(--space-6); border-radius: 0; background: var(--color-sand-soft); }
+.page--journal .journal-card__title { font-size: clamp(1.75rem, 2.3vw, 2.25rem); }
+.page--journal .journal-card--featured .journal-card__title { font-size: var(--fs-h3); }
+.page--journal .journal-grid { gap: clamp(1.5rem, 3vw, 3rem); }
+
+@media (min-width: 48rem) {
+  .program-index { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .page--journal .journal-note { grid-template-columns: minmax(0, 0.6fr) minmax(0, 1.4fr); }
+}
+@media (min-width: 56rem) {
+  .page-hero--method .page-hero__inner { grid-template-columns: minmax(0, 1fr) 12rem; }
+  .page-hero--method .page-hero__figure { border-left: 1px solid var(--color-border); }
+  .page-hero--programs .page-hero__copy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-12); align-items: start; }
+  .page-hero--programs .page-hero__intro { margin-top: 0; }
+  .page-hero--programs .page-hero__actions { gap: var(--space-3) var(--space-6); margin-top: var(--space-5); }
+  .page-hero--results .page-hero__inner { grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.75fr); align-items: end; }
+  .page-hero--results .page-hero__title { max-width: none; }
+  .page--elena [aria-labelledby="bio-title"] .container { display: grid; grid-template-columns: minmax(0, 0.65fr) minmax(0, 1.35fr); gap: var(--space-12); }
+  .page-hero--journal .page-hero__inner { grid-template-columns: minmax(0, 1fr) 6rem; }
+  .page-hero--journal .page-hero__copy { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-8); align-items: end; }
+  .page-hero--journal .page-hero__intro { margin: 0; }
+}
+@media (min-width: 64rem) {
+  .page--journal .journal-grid { grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 1fr)); }
+  /* Keep the masthead and opening column illustrations in one readable view. */
+  .page--journal .journal-card__cover { aspect-ratio: 3 / 1; }
+  .page--journal .journal-card__cover-symbol { width: 34%; }
+  .editorial-page .page-hero--journal { padding-bottom: var(--space-8); }
+  .editorial-page .page-hero--results { padding-bottom: var(--space-8); }
+}
+@media (min-width: 64rem) and (min-height: 45rem) {
+  /* A complete linked program index precedes the full-size product scenes. */
+  .page-hero--programs {
+    min-block-size: calc(100svh - var(--header-h) - 6rem);
+    display: grid;
+    align-content: center;
+  }
+  .page-hero--programs > .container { width: 100%; }
+}
+@media (max-width: 55.99rem) {
+  .page-hero--method .page-hero__inner { grid-template-columns: minmax(0, 1fr); }
+  .page-hero--method .page-hero__figure { justify-self: start; padding: 0; }
+  .page-hero--method .page-hero__symbol { width: 5rem; }
+  .page-hero--journal .page-hero__inner { position: relative; }
+  .page-hero--journal .page-hero__heading { padding-right: 4.5rem; }
+  .page-hero--journal .page-hero__figure { position: absolute; right: 0; top: 0; padding: 0; }
+  .page-hero--journal .page-hero__symbol { width: 3.5rem; }
+  .page-hero--elena .page-hero__figure { max-width: 23rem; justify-self: center; }
+}
+@media (max-width: 47.99rem) {
+  .program-index__link { grid-template-columns: 5rem minmax(0, 1fr) auto; gap: var(--space-2) var(--space-4); }
+  .program-index__link img { grid-column: 1; grid-row: 1 / 3; aspect-ratio: 1; margin: 0; }
+  .program-index__name { grid-column: 2; font-size: 1.75rem; }
+  .program-index__summary { grid-column: 2; }
+  .program-index__arrow { grid-column: 3; grid-row: 1; }
 }
 
 /* Long-form editorial prose */
@@ -1814,12 +2044,9 @@ body:not(.home) .site-footer {
   .contact-layout { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); }
 }
 .contact-card {
-  padding: clamp(1.75rem, 3vw, 2.5rem);
-  background: var(--color-bg-light);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-card);
+  min-width: 0;
 }
-.contact-card__title { font-size: var(--fs-h3); margin-bottom: var(--space-4); }
+.contact-card__title { font-size: var(--fs-h2); margin-bottom: var(--space-4); }
 .contact-card__text { font-size: var(--fs-small); line-height: 1.6; color: var(--color-text-soft); }
 .contact-card__text + .channel-list { margin-top: var(--space-6); }
 .contact-card__label {
@@ -1840,6 +2067,87 @@ body:not(.home) .site-footer {
   color: var(--color-text-soft);
 }
 .contact-expect__title { margin-bottom: var(--space-8); }
+
+/* Internal destinations: document rhythm, with room for one program at a time.
+   The root scroll-padding already supplies the shared sticky-header offset. */
+html:has(.editorial-page) { scroll-behavior: auto; }
+.editorial-page .internal-section {
+  padding-block: var(--space-editorial);
+  scroll-margin-block-start: 0;
+}
+.editorial-page .internal-section:not(.scene) + .internal-section:not(.scene) {
+  border-top: 1px solid var(--color-border);
+}
+.editorial-page .program-chapters { padding-block: 0; }
+.page--results .internal-section .prose,
+.page--method [aria-labelledby="limits-title"] .prose {
+  border-left: 1px solid var(--color-border);
+  padding-left: clamp(1.25rem, 3vw, 3rem);
+}
+.page--elena [aria-labelledby="credentials-title"] .info-panel {
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+  padding: var(--space-6) 0;
+}
+.page--journal .internal-section { padding-top: clamp(2.5rem, 4vw, 4rem); }
+.page--journal .journal-grid { margin-top: clamp(2rem, 4vw, 4rem); }
+/* Give the wide journal columns a clear ending before the consultation close. */
+@media (min-width: 100rem) {
+  .page--journal .internal-section { padding-bottom: calc(var(--space-editorial) + var(--space-12)); }
+}
+
+@media (min-width: 64rem) {
+  .page--results [aria-labelledby="stories-how-title"] .container,
+  .page--method [aria-labelledby="limits-title"] .container {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+}
+/* Shared complete opening: show a quiet chapter edge, not a cropped title.
+   Only intermediate desktop heights need this resting composition. Taller
+   screens have room for the continuation; short screens stay content-sized. */
+@media (min-width: 64rem) and (min-height: 45rem) and (max-height: 85rem) {
+  .editorial-page .page-hero--resting {
+    min-block-size: calc(100svh - var(--header-h) - 6rem);
+    display: grid;
+    align-content: center;
+  }
+  .editorial-page .page-hero--resting > .container { width: 100%; }
+}
+
+/* Remaining internal routes use the same editorial family, without scenes
+   on document/utility pages or a decorative frame around the contact symbol. */
+.page-hero--contacts .page-hero__symbol { width: 9rem; }
+.page--contacts .contact-card__label { color: var(--color-primary-hover); }
+.page--contacts .contact-layout { gap: clamp(2.5rem, 6vw, 6rem); }
+.legal-page .container { max-width: 58rem; }
+.legal-page .page-hero__title { font-size: clamp(2.25rem, 4.5vw, 4rem); max-width: none; }
+.legal-page .page-hero__intro { font-size: var(--fs-body); }
+.legal-page .page-hero { padding-bottom: var(--space-8); }
+.legal-page .internal-section { padding-top: 0; }
+.legal-page .info-panel {
+  max-width: none;
+  padding: var(--space-6) 0;
+  border: 0;
+  border-block: 1px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+  margin-bottom: var(--space-8);
+}
+.legal-page .prose { max-width: none; }
+.legal-page .site-footer .container { max-width: var(--container); }
+@media (min-width: 56rem) {
+  .page-hero--contacts .page-hero__inner { grid-template-columns: minmax(0, 1fr) 12rem; }
+  .page-hero--contacts .page-hero__figure { border-left: 1px solid var(--color-border); }
+}
+@media (max-width: 55.99rem) {
+  .page-hero--contacts .page-hero__symbol { width: 5rem; }
+  .page-hero--contacts .page-hero__figure { justify-self: start; padding: 0; }
+}
 
 /* --------------------------------------------------------------------------
    24. FORMS
@@ -1887,7 +2195,8 @@ body:not(.home) .site-footer {
   display: grid;
   place-items: center;
   gap: var(--space-4);
-  min-height: 60vh;
+  min-height: min(36rem, calc(100svh - var(--header-h)));
+  align-content: center;
   padding-block: var(--space-section);
   text-align: center;
 }
@@ -2045,7 +2354,6 @@ body:not(.home) .site-footer {
     transform: none !important;
     opacity: 1 !important;
   }
-  .chapter--arc { box-shadow: none; }
 
   /* Immersive + tools scenes fall back to finished static composition */
   .immersive { --p: 1; padding-block: var(--space-section-sm) !important; }

@@ -3,7 +3,7 @@ layout: base.njk
 title: Политика конфиденциальности
 description: "Политика конфиденциальности Figura Lab — как сайт обращается с персональными данными посетителей."
 crumb: "Политика конфиденциальности"
-bodyClass: legal-page
+bodyClass: editorial-page legal-page
 ---
 
 {# =====================================================================
@@ -14,6 +14,7 @@ bodyClass: legal-page
    Публично показываем только фактические, проверяемые утверждения.
    ===================================================================== #}
 
+{% set heroVariant = 'document' %}
 {% set doc = pages.legal.privacy %}
 {% set pageTitle = doc.title %}
 {% set eyebrow = doc.eyebrow %}
@@ -22,7 +23,7 @@ bodyClass: legal-page
 {% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-<section class="chapter chapter--light chapter--arc" aria-labelledby="legal-facts-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="legal-facts-title">
   <div class="container">
 
     <div class="info-panel reveal">

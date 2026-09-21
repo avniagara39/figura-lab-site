@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+bodyClass: editorial-page page--results
 title: Результаты
 description: "Результаты и истории клиентов Figura Lab — реальный опыт, публикуемый только с письменного согласия."
 crumb: "Результаты"
@@ -12,18 +13,20 @@ crumb: "Результаты"
    и заполненном home.results.items. Ничего не выдумывать.
    ===================================================================== #}
 
+{% set heroVariant = 'results' %}
 {% set pageTitle = pages.rezultaty.title %}
 {% set eyebrow = pages.rezultaty.eyebrow %}
 {% set pageIntro = pages.rezultaty.intro %}
-{% set heroSymbol = home.audience.items[3].symbol %}
-{% set heroSymbolAlt = home.audience.items[3].symbolAlt %}
+{% if not features.stories.published or not home.results.items | length %}
+{% set heroNote = { title: pages.rezultaty.pendingTitle, text: pages.rezultaty.pendingNote } %}
+{% endif %}
 {% set heroPrimary = { label: "Записаться на консультацию", url: "/kontakty/" } %}
 
 {% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
 {# --- Истории --------------------------------------------------------- #}
-<section class="chapter chapter--light chapter--arc" aria-labelledby="stories-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="stories-title">
   <div class="container">
 
     <div class="chapter-head reveal">
@@ -49,7 +52,7 @@ crumb: "Результаты"
       {% else %}
         {% for theme in home.results.themes %}
         <article class="story-card reveal reveal--delay-{{ loop.index0 % 3 + 1 }}">
-          <span class="story-card__mark" aria-hidden="true">«</span>
+          <span class="story-card__index" aria-hidden="true">0{{ loop.index }}</span>
           <h3 class="story-card__theme">{{ theme.theme }}</h3>
           <p class="story-card__text">{{ theme.text }}</p>
           <div class="story-card__foot">
@@ -60,18 +63,11 @@ crumb: "Результаты"
       {% endif %}
     </div>
 
-    {% if not features.stories.published %}
-    <div class="info-panel stories-note reveal">
-      <p class="info-panel__title">{{ pages.rezultaty.pendingTitle }}</p>
-      <p>{{ pages.rezultaty.pendingNote }}</p>
-    </div>
-    {% endif %}
-
   </div>
 </section>
 
 {# --- Как мы публикуем истории ----------------------------------------- #}
-<section class="chapter chapter--sand chapter--arc" aria-labelledby="stories-how-title">
+<section class="internal-section chapter chapter--sand scene scene--pearl scene--shell scene--sweep" aria-labelledby="stories-how-title">
   <div class="container">
     <div class="chapter-head reveal">
       <h2 class="chapter-head__title" id="stories-how-title">{{ pages.rezultaty.howHeading }}</h2>

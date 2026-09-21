@@ -1,4 +1,5 @@
 {#
+  heroResting — complete desktop opening; heroDirectContacts — verified channels.
   Page hero для внутренних страниц.
   Переменные страницы:
     pageTitle  — h1 (обязательно)
@@ -6,16 +7,25 @@
     pageIntro  — вводный абзац (опц.)
     heroSymbol / heroSymbolAlt — редакционный символ справа (опц.)
     heroPrimary / heroSecondary — { label, url } кнопки (опц.)
+    heroVariant — method / programs / results / journal / contacts / document (опц.)
+    heroNote — { title, text } редакционная заметка (опц.)
 #}
-<section class="page-hero chapter chapter--light" aria-labelledby="page-title">
+<section class="page-hero chapter chapter--light{% if heroResting %} page-hero--resting{% endif %}{% if heroVariant %} page-hero--{{ heroVariant }}{% endif %}" aria-labelledby="page-title">
   <div class="container">
     <div class="page-hero__inner{% if heroSymbol %} page-hero__inner--media{% endif %}">
 
-      <div>
+      <div class="page-hero__copy">
+        <div class="page-hero__heading">
         {% if eyebrow %}<p class="page-hero__eyebrow eyebrow">{{ eyebrow }}</p>{% endif %}
         <h1 class="page-hero__title" id="page-title">{{ pageTitle }}</h1>
+        </div>
+        <div class="page-hero__lede">
         {% if pageIntro %}<p class="page-hero__intro">{{ pageIntro }}</p>{% endif %}
 
+        {% if heroDirectContacts %}
+        {% from "components/channels.njk" import directContacts %}
+        <div class="page-hero__actions">{{ directContacts(contact) }}</div>
+        {% endif %}
         {% if heroPrimary or heroSecondary %}
         <div class="page-hero__actions">
           {% if heroPrimary %}
@@ -28,8 +38,15 @@
           {% endif %}
         </div>
         {% endif %}
+        </div>
       </div>
 
+      {% if heroNote %}
+      <aside class="page-hero__note" aria-labelledby="hero-note-title">
+        <h2 id="hero-note-title">{{ heroNote.title }}</h2>
+        <p>{{ heroNote.text }}</p>
+      </aside>
+      {% endif %}
       {% if heroSymbol %}
       <figure class="page-hero__figure reveal">
         <img src="{{ heroSymbol }}" alt="{{ heroSymbolAlt }}" class="page-hero__symbol"
@@ -38,5 +55,17 @@
       {% endif %}
 
     </div>
+    {% if heroVariant == 'programs' %}
+    <nav class="program-index" aria-label="Выбрать программу">
+      {% for prog in home.programs.items %}
+      <a class="program-index__link" href="#{{ prog.url | replace('/programmy/#', '') }}">
+        <img src="{{ prog.image }}" alt="" width="900" height="600" decoding="async">
+        <span class="program-index__name">{{ prog.name }}</span>
+        <span class="program-index__summary">{{ prog.summary }}</span>
+        <span class="program-index__arrow" aria-hidden="true">↘</span>
+      </a>
+      {% endfor %}
+    </nav>
+    {% endif %}
   </div>
 </section>

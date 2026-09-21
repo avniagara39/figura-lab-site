@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+bodyClass: editorial-page page--elena
 title: Елена Бастуева
 description: "Елена Бастуева — создательница Figura Lab. Осознанный подход, уважение к себе и знания, которые работают в реальной жизни."
 crumb: "Елена"
@@ -16,7 +17,7 @@ preloadHero: true
 {% include "components/breadcrumbs.njk" %}
 
 {# --- Hero с портретом ------------------------------------------------- #}
-<section class="page-hero chapter chapter--light" aria-labelledby="page-title">
+<section class="page-hero page-hero--elena chapter chapter--light scene scene--rose scene--shell scene--shell-reverse" aria-labelledby="page-title">
   <div class="container">
     <div class="page-hero__inner page-hero__inner--media">
 
@@ -55,7 +56,7 @@ preloadHero: true
 
 {# --- Биография -------------------------------------------------------- #}
 {% if elena.bio.available %}
-<section class="chapter chapter--arc" aria-labelledby="bio-title">
+<section class="internal-section chapter" aria-labelledby="bio-title">
   <div class="container">
     <div class="chapter-head reveal">
       <h2 class="chapter-head__title" id="bio-title">{{ elena.bio.heading }}</h2>
@@ -69,7 +70,7 @@ preloadHero: true
 
 {# --- Подход ----------------------------------------------------------- #}
 {% if elena.philosophy.available %}
-<section class="chapter chapter--sand chapter--arc" aria-labelledby="approach-title">
+<section class="internal-section chapter chapter--sand scene scene--pearl scene--shell scene--sweep" aria-labelledby="approach-title">
   <div class="container">
     <div class="chapter-head chapter-head--split reveal">
       <div>
@@ -98,7 +99,7 @@ preloadHero: true
    без выдуманных дипломов, лет опыта и числа клиентов.
    Галерея документов готова к подключению: при published: true и
    заполненных items документы выводятся сеткой. #}
-<section class="chapter chapter--light chapter--arc" aria-labelledby="credentials-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="credentials-title">
   <div class="container">
     <div class="chapter-head chapter-head--split reveal">
       <div>

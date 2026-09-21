@@ -3,7 +3,7 @@ layout: base.njk
 title: Согласие на обработку персональных данных
 description: "Согласие на обработку персональных данных Figura Lab — состав данных, цель и порядок отзыва."
 crumb: "Согласие на обработку ПДн"
-bodyClass: legal-page
+bodyClass: editorial-page legal-page
 ---
 
 {# =====================================================================
@@ -13,6 +13,7 @@ bodyClass: legal-page
    Пока онлайн-форма не подключена, согласие через сайт не запрашивается.
    ===================================================================== #}
 
+{% set heroVariant = 'document' %}
 {% set doc = pages.legal.consent %}
 {% set pageTitle = doc.title %}
 {% set eyebrow = doc.eyebrow %}
@@ -21,7 +22,7 @@ bodyClass: legal-page
 {% include "components/breadcrumbs.njk" %}
 {% include "components/page-hero.njk" %}
 
-<section class="chapter chapter--light chapter--arc" aria-labelledby="consent-facts-title">
+<section class="internal-section chapter chapter--light" aria-labelledby="consent-facts-title">
   <div class="container">
 
     <div class="info-panel reveal">

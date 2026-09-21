@@ -139,7 +139,12 @@
       if (!hash || hash.charAt(0) !== "#") return null;
       var id = hash.slice(1);
       if (!id) return null;
-      return document.getElementById(id);
+      var target = document.getElementById(id);
+      // Heading fragments share the enclosing editorial section's entry edge.
+      if (target && document.body.classList.contains("editorial-page")) {
+        return target.closest(".program-detail, .chapter") || target;
+      }
+      return target;
     }
 
     document.addEventListener("click", function (e) {
@@ -153,15 +158,38 @@
       e.preventDefault();
       if (history.pushState) history.pushState(null, "", href);
       scrollToEntry(target, prefersReduce() ? "auto" : "smooth");
+      if (document.body.classList.contains("editorial-page") && !target.hasAttribute("tabindex")) {
+        target.setAttribute("tabindex", "-1");
+      }
       if (target.hasAttribute("tabindex") && typeof target.focus === "function") {
         try { target.focus({ preventScroll: true }); } catch (err) { target.focus(); }
       }
     });
 
+    // Native history traversal and changed fragments use the same section edge.
+    if (document.body.classList.contains("editorial-page")) {
+      window.addEventListener("hashchange", function () {
+        var target = resolveTarget(location.hash);
+        if (target) requestAnimationFrame(function () { scrollToEntry(target, "auto"); });
+      });
+    }
+
     if (location.hash.length > 1) {
       var initial = resolveTarget(location.hash);
       if (initial) {
         requestAnimationFrame(function () { scrollToEntry(initial, "auto"); });
+        if (document.body.classList.contains("editorial-page")) {
+          var initialHash = location.hash;
+          function settleInitialEntry() {
+            requestAnimationFrame(function () {
+              if (location.hash === initialHash) scrollToEntry(initial, "auto");
+            });
+          }
+          // Native fragment restoration can run after the first font-ready frame.
+          // Settle once after page load as well, using the same section boundary.
+          window.addEventListener("load", settleInitialEntry, { once: true });
+          if (document.fonts) document.fonts.ready.then(settleInitialEntry);
+        }
       }
     }
   })();

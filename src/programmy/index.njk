@@ -1,5 +1,6 @@
 ---
 layout: base.njk
+bodyClass: editorial-page page--programs
 title: Программы
 description: "Программы Figura Lab — три формата работы с Еленой Бастуевой. Подходящий вариант выбирается на консультации."
 crumb: "Программы"
@@ -11,6 +12,7 @@ crumb: "Программы"
    Цены, длительность и состав НЕ публикуются до подтверждения Еленой.
    ===================================================================== #}
 
+{% set heroVariant = 'programs' %}
 {% set pageTitle = pages.programmy.title %}
 {% set eyebrow = pages.programmy.eyebrow %}
 {% set pageIntro = pages.programmy.intro %}
@@ -21,23 +23,22 @@ crumb: "Программы"
 {% include "components/page-hero.njk" %}
 
 {# --- Программы -------------------------------------------------------- #}
-<section class="chapter chapter--light chapter--arc" aria-labelledby="programs-list-title">
-  <div class="container">
+<section class="internal-section program-chapters chapter chapter--light" aria-labelledby="programs-list-title">
     <h2 class="visually-hidden" id="programs-list-title">Список программ</h2>
 
     <div class="programs-page">
       {% for prog in home.programs.items %}
-      <article class="program-detail reveal" id="{{ prog.url | replace('/programmy/#', '') }}"
+      <article class="program-detail scene scene--pearl scene--shell" tabindex="-1" id="{{ prog.url | replace('/programmy/#', '') }}"
                aria-labelledby="program-{{ loop.index }}">
-        <div class="program-detail__inner">
+        <div class="program-detail__inner container">
 
-          <figure class="program-detail__figure">
+          <figure class="program-detail__figure editorial-media">
             <img src="{{ prog.image }}" alt=""
                  width="900" height="600" loading="lazy" decoding="async"
-                 class="program-panel__img--{{ loop.index }}">
+                 style="--image-position: {{ prog.imagePosition or '50% 50%' }}">
           </figure>
 
-          <div>
+          <div class="program-detail__copy">
             <h3 class="program-detail__title" id="program-{{ loop.index }}">{{ prog.name }}</h3>
             <p class="program-detail__summary">{{ prog.summary }}</p>
 
@@ -65,11 +66,10 @@ crumb: "Программы"
       </article>
       {% endfor %}
     </div>
-  </div>
 </section>
 
 {# --- О составе и условиях --------------------------------------------- #}
-<section class="chapter chapter--sand chapter--arc" aria-labelledby="programs-details-title">
+<section class="internal-section chapter chapter--sand scene scene--linen scene--shell scene--shell-reverse" aria-labelledby="programs-details-title">
   <div class="container">
     <div class="info-panel reveal">
       <h2 class="info-panel__title" id="programs-details-title">{{ pages.programmy.detailsHeading }}</h2>
@@ -79,7 +79,7 @@ crumb: "Программы"
 </section>
 
 {# --- FAQ -------------------------------------------------------------- #}
-<section class="chapter chapter--light chapter--arc" id="faq" aria-labelledby="programs-faq-title">
+<section class="internal-section chapter chapter--light" id="faq" aria-labelledby="programs-faq-title">
   <div class="container">
     <div class="chapter-head reveal">
       <h2 class="chapter-head__title" id="programs-faq-title">{{ pages.programmy.faqHeading }}</h2>

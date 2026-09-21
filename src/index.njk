@@ -18,7 +18,7 @@ bodyClass: home
 {% include "components/chapter-rail.njk" %}
 
 {# ── 01 HERO ─────────────────────────────────────────────────────────── #}
-<section class="home-hero chapter" id="chapter-hero" aria-labelledby="hero-title">
+<section class="home-hero chapter scene" id="chapter-hero" aria-labelledby="hero-title">
   <div class="container-wide">
     <div class="home-hero__inner">
 
@@ -86,7 +86,7 @@ bodyClass: home
 </section>
 
 {# ── 02 СУТЬ МЕТОДА — editorial composition + first chapter rise ─────── #}
-<section class="chapter chapter--light chapter--arc method-block" id="chapter-method" aria-labelledby="method-title"{% if features.signatureMotion %} data-scene="rise"{% endif %}>
+<section class="chapter chapter--light method-block scene scene--pearl scene--shell" id="chapter-method" aria-labelledby="method-title"{% if features.signatureMotion %} data-scene="rise"{% endif %}>
   <div class="container">
     <div class="method-block__inner">
 
@@ -114,7 +114,7 @@ bodyClass: home
 </section>
 
 {# ── 03 ДЛЯ КОГО FIGURA LAB ──────────────────────────────────────────── #}
-<section class="chapter chapter--arc" id="chapter-audience" aria-labelledby="audience-title">
+<section class="chapter scene" id="chapter-audience" aria-labelledby="audience-title">
   <div class="container">
 
     <div class="chapter-head chapter-head--split reveal">
@@ -170,7 +170,7 @@ bodyClass: home
 </section>
 
 {# ── 04 КАК РАБОТАЕТ МЕТОД — pinned storytelling ─────────────────────── #}
-<section class="chapter chapter--arc" id="chapter-process" aria-labelledby="process-title">
+<section class="chapter scene scene--neutral scene--shell scene--sweep" id="chapter-process" aria-labelledby="process-title">
   <div class="container">
     <div class="process__inner">
 
@@ -199,7 +199,7 @@ bodyClass: home
 </section>
 
 {# ── 05 ПРОГРАММЫ ────────────────────────────────────────────────────── #}
-<section class="chapter chapter--sand chapter--arc" id="chapter-programs" aria-labelledby="programs-title">
+<section class="chapter chapter--sand scene scene--linen scene--shell scene--shell-reverse" id="chapter-programs" aria-labelledby="programs-title">
   <div class="container">
 
     <div class="chapter-head chapter-head--split reveal">
@@ -258,7 +258,7 @@ bodyClass: home
 </section>
 
 {# ── 06 РЕЗУЛЬТАТЫ ───────────────────────────────────────────────────── #}
-<section class="chapter chapter--light chapter--arc" id="chapter-results" aria-labelledby="results-title">
+<section class="chapter chapter--light scene" id="chapter-results" aria-labelledby="results-title">
   <div class="container">
 
     <div class="chapter-head chapter-head--split reveal">
@@ -312,7 +312,7 @@ bodyClass: home
 </section>
 
 {# ── 07 ЕЛЕНА БАСТУЕВА — portrait reveal ─────────────────────────────── #}
-<section class="chapter chapter--sand chapter--arc" id="chapter-elena" aria-labelledby="elena-title"{% if features.signatureMotion %} data-scene="portrait"{% endif %}>
+<section class="chapter chapter--sand scene scene--rose scene--shell" id="chapter-elena" aria-labelledby="elena-title"{% if features.signatureMotion %} data-scene="portrait"{% endif %}>
   <div class="container">
     <div class="elena-block__inner">
 
@@ -354,7 +354,7 @@ bodyClass: home
 </section>
 
 {# ── 08 ЖУРНАЛ ───────────────────────────────────────────────────────── #}
-<section class="chapter chapter--light chapter--arc" id="chapter-journal" aria-labelledby="journal-title">
+<section class="chapter chapter--light scene scene--milk" id="chapter-journal" aria-labelledby="journal-title">
   <div class="container">
 
     <div class="chapter-head chapter-head--split reveal">
@@ -403,7 +403,7 @@ bodyClass: home
    Управляется features.tools. Инструмент с enabled: true автоматически
    становится ссылкой — без переработки секции. Мёртвых кнопок нет. #}
 {% if features.tools.sectionVisible %}
-<section class="chapter chapter--sand tools-band" id="chapter-tools" aria-labelledby="tools-title"{% if features.signatureMotion %} data-scene-expand{% endif %}>
+<section class="chapter chapter--sand tools-band scene scene--atmosphere" id="chapter-tools" aria-labelledby="tools-title"{% if features.signatureMotion %} data-scene-expand{% endif %}>
   <div class="tools-band__track" data-scene-track>
     <div class="tools-band__stage">
       <div class="tools-band__bg" aria-hidden="true">

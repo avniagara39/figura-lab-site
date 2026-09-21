@@ -6,7 +6,7 @@
 {% from "components/channels.njk" import channelChips, directContacts %}
 {% set liveMessengers = contact.messengers | selectattr("enabled") | selectattr("url") %}
 
-<section class="cta-block chapter chapter--arc" id="chapter-contact" aria-labelledby="cta-heading">
+<section class="cta-block chapter" id="chapter-contact" aria-labelledby="cta-heading">
   <div class="container">
     <div class="cta-block__inner">
 
